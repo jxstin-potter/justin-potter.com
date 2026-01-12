@@ -209,13 +209,15 @@ const MainContent = ({ onProjectHover }: MainContentProps) => {
             animate="visible"
             style={{
               display: 'grid',
-              gridTemplateColumns: '1fr auto auto',
+              gridTemplateColumns: '1fr 1fr',
               gridTemplateRows: 'auto auto',
-              alignItems: 'flex-start',
+              alignItems: 'center',
               gap: 'var(--spacing-md)',
               width: '100%',
+              maxWidth: '100%',
               marginTop: 'var(--hero-top-margin)',
               marginLeft: 'var(--hero-left-margin)',
+              marginRight: 'var(--header-right-padding)',
               position: 'relative'
             }}
           >
@@ -270,22 +272,40 @@ const MainContent = ({ onProjectHover }: MainContentProps) => {
             )}
           </div>
 
-          {/* Designer & Developer / Design & Development - Second column, first row */}
-          <motion.div
-            variants={subtitleVariants}
-            initial="hidden"
-            animate="visible"
+          {/* Wrapper for Designer & Developer and Location/Time - horizontal layout */}
+          <div
             style={{
               gridColumn: '2',
-              gridRow: '1',
+              gridRow: '1 / 3',
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: '6rem',
+              width: 'auto',
+              justifyContent: 'flex-end',
+              alignSelf: 'center',
+              transform: 'translateX(8rem)'
+            }}
+          >
+          {/* Designer & Developer / Design & Development - Second column, first row */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{
+              delay: 0.8,
+              duration: DURATION.slow,
+              ease: EASING,
+            }}
+            style={{
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'flex-start',
               gap: 0,
               textAlign: 'left',
-              minWidth: '6rem',
-              position: 'absolute',
-              minHeight: '2.4rem'
+              minHeight: '2.4rem',
+              width: 'auto',
+              padding: 0,
+              margin: 0
             }}
           >
               <AnimatePresence mode="wait">
@@ -301,7 +321,9 @@ const MainContent = ({ onProjectHover }: MainContentProps) => {
                       flexDirection: 'column',
                       alignItems: 'flex-start',
                       gap: 0,
-                      width: '100%'
+                      width: 'auto',
+                      padding: 0,
+                      margin: 0
                     }}
                   >
                     <p
@@ -310,10 +332,12 @@ const MainContent = ({ onProjectHover }: MainContentProps) => {
                         fontWeight: 400,
                         color: 'var(--primary-white)',
                         margin: 0,
+                        padding: 0,
                         letterSpacing: '0.1em',
                         fontFamily: 'var(--font-mono)',
                         textTransform: 'uppercase',
-                        lineHeight: 1.2
+                        lineHeight: 1.2,
+                        textAlign: 'left'
                       }}
                     >
                       Design
@@ -324,10 +348,12 @@ const MainContent = ({ onProjectHover }: MainContentProps) => {
                         fontWeight: 400,
                         color: 'var(--primary-white)',
                         margin: 0,
+                        padding: 0,
                         letterSpacing: '0.1em',
                         fontFamily: 'var(--font-mono)',
                         textTransform: 'uppercase',
-                        lineHeight: 1.2
+                        lineHeight: 1.2,
+                        textAlign: 'left'
                       }}
                     >
                       Development
@@ -345,7 +371,9 @@ const MainContent = ({ onProjectHover }: MainContentProps) => {
                       flexDirection: 'column',
                       alignItems: 'flex-start',
                       gap: 0,
-                      width: '100%'
+                      width: 'auto',
+                      padding: 0,
+                      margin: 0
                     }}
                   >
                     <p
@@ -354,10 +382,12 @@ const MainContent = ({ onProjectHover }: MainContentProps) => {
                         fontWeight: 400,
                         color: 'var(--primary-white)',
                         margin: 0,
+                        padding: 0,
                         letterSpacing: '0.1em',
                         fontFamily: 'var(--font-mono)',
                         textTransform: 'uppercase',
-                        lineHeight: 1.2
+                        lineHeight: 1.2,
+                        textAlign: 'left'
                       }}
                     >
                       Designer &
@@ -368,10 +398,12 @@ const MainContent = ({ onProjectHover }: MainContentProps) => {
                         fontWeight: 400,
                         color: 'var(--primary-white)',
                         margin: 0,
+                        padding: 0,
                         letterSpacing: '0.1em',
                         fontFamily: 'var(--font-mono)',
                         textTransform: 'uppercase',
-                        lineHeight: 1.2
+                        lineHeight: '1.2',
+                        textAlign: 'left'
                       }}
                     >
                       Developer
@@ -381,11 +413,9 @@ const MainContent = ({ onProjectHover }: MainContentProps) => {
               </AnimatePresence>
           </motion.div>
 
-          {/* Location/Time - Second column, second row */}
+          {/* Location/Time - positioned to the right of Designer & Developer */}
           <div
             style={{
-              gridColumn: '2',
-              gridRow: '2',
               fontSize: '0.875rem',
               fontWeight: 400,
               color: 'var(--primary-white)',
@@ -393,9 +423,10 @@ const MainContent = ({ onProjectHover }: MainContentProps) => {
               letterSpacing: '0.1em',
               textTransform: 'uppercase',
               margin: 0,
+              padding: 0,
               textAlign: 'left',
-              position: 'relative',
-              minHeight: '1.05rem'
+              width: 'auto',
+              whiteSpace: 'nowrap'
             }}
           >
             <AnimatePresence mode="wait">
@@ -406,6 +437,7 @@ const MainContent = ({ onProjectHover }: MainContentProps) => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
                   transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+                  style={{ display: 'block', textAlign: 'left' }}
                 >
                   {displayTime}
                 </motion.span>
@@ -416,11 +448,13 @@ const MainContent = ({ onProjectHover }: MainContentProps) => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
                   transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+                  style={{ display: 'block', textAlign: 'left' }}
                 >
-                  Brooklyn, NY {displayTime}
+                  BROOKLYN, NY {displayTime}
                 </motion.span>
               )}
             </AnimatePresence>
+          </div>
           </div>
         </motion.div>
         </div>

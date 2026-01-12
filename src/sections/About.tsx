@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { DURATION, EASING } from '../utils/animations';
 import linkedinIcon from '../assets/linkedin.png';
@@ -6,32 +6,31 @@ import githubIcon from '../assets/github.png';
 import Footer from '../components/Footer';
 
 const About = () => {
-  const [copiedEmail, setCopiedEmail] = useState(false);
-
   const email = 'Bjmpotter@gmail.com';
   
   const socialLinks = [
     {
+      name: 'Email',
+      url: `mailto:${email}`,
+      icon: null,
+      primary: 'Email',
+      secondary: email.toUpperCase()
+    },
+    {
       name: 'LinkedIn',
       url: 'https://www.linkedin.com/in/justin-mpotter/',
-      icon: linkedinIcon
+      icon: linkedinIcon,
+      primary: 'LinkedIn',
+      secondary: '/IN/JUSTIN-MPOTTER'
     },
     {
       name: 'GitHub',
       url: 'https://github.com/whitelight-whiteheat',
-      icon: githubIcon
+      icon: githubIcon,
+      primary: 'GitHub',
+      secondary: '/WHITELIGHT-WHITEHEAT'
     }
   ];
-
-  const handleCopyEmail = async () => {
-    try {
-      await navigator.clipboard.writeText(email);
-      setCopiedEmail(true);
-      setTimeout(() => setCopiedEmail(false), 2000);
-    } catch (err) {
-      console.error('Failed to copy email:', err);
-    }
-  };
 
   return (
     <section 
@@ -57,13 +56,13 @@ const About = () => {
         transition={{ duration: DURATION.slow, ease: EASING }}
         style={{
           position: 'absolute',
-          top: 'calc(var(--header-top-padding) + 1.5rem + var(--spacing-xl))',
+          top: 'calc(var(--header-top-padding) + 1.5rem + var(--spacing-lg))',
           left: 'var(--header-left-padding)',
-          fontSize: 'clamp(3rem, 8vw, 6rem)',
+          fontSize: 'clamp(4rem, 10vw, 8rem)',
           fontWeight: 700,
           color: 'var(--primary-white)',
           margin: 0,
-          letterSpacing: '-0.02em',
+          letterSpacing: '0.05em',
           fontFamily: 'var(--font-primary)',
           textTransform: 'uppercase'
         }}
@@ -84,7 +83,9 @@ const About = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: DURATION.slow, delay: 0.1, ease: EASING }}
           style={{
-            marginBottom: 'var(--spacing-xl)'
+            marginTop: 'calc(var(--spacing-xl) + var(--spacing-md))',
+            marginBottom: 'var(--spacing-xl)',
+            maxWidth: '600px'
           }}
         >
           <p style={{
@@ -94,7 +95,7 @@ const About = () => {
             marginBottom: 'var(--spacing-md)',
             fontFamily: 'var(--font-primary)'
           }}>
-            I'm Justin Potter, a fullstack developer based in Brooklyn, NY.
+            I'm Justin Potter, a fullstack developer based in Brooklyn, NY. Originally from Arlington, Virginia, I'm passionate about creating digital experiences that stand out and drive meaningful results.
           </p>
           <p style={{
             fontSize: 'clamp(1rem, 2vw, 1.25rem)',
@@ -103,25 +104,7 @@ const About = () => {
             marginBottom: 'var(--spacing-md)',
             fontFamily: 'var(--font-primary)'
           }}>
-            Originally from Arlington, Virginia and passionate about creating digital experiences that stand out and drive meaningful results.
-          </p>
-          <p style={{
-            fontSize: 'clamp(1rem, 2vw, 1.25rem)',
-            lineHeight: 1.8,
-            color: 'var(--primary-white)',
-            marginBottom: 'var(--spacing-md)',
-            fontFamily: 'var(--font-primary)'
-          }}>
-            Specializing in fullstack development, user-centered design, and modern web technologies.
-          </p>
-          <p style={{
-            fontSize: 'clamp(1rem, 2vw, 1.25rem)',
-            lineHeight: 1.8,
-            color: 'var(--primary-white)',
-            marginBottom: 'var(--spacing-md)',
-            fontFamily: 'var(--font-primary)'
-          }}>
-            Passionate about creating memorable experiences through clean code, intuitive interfaces, and thoughtful design.
+            Specializing in fullstack development, user-centered design, and modern web technologies. I create memorable experiences through clean code, intuitive interfaces, and thoughtful design.
           </p>
           <p style={{
             fontSize: 'clamp(1rem, 2vw, 1.25rem)',
@@ -136,128 +119,127 @@ const About = () => {
 
       </div>
 
-      {/* Email Section */}
+      {/* Contact Section - Social Links */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: DURATION.slow, delay: 0.2, ease: EASING }}
         style={{
           position: 'absolute',
-          bottom: 'calc(var(--spacing-xl) + 6rem)',
+          bottom: 'calc(var(--spacing-xl) + 1rem + 80px)',
           right: 'var(--header-right-padding)',
-          textAlign: 'right'
-        }}
-      >
-        <h3 style={{
-          fontSize: '0.625rem',
-          fontWeight: 400,
-          color: 'var(--medium-grey)',
-          margin: 0,
-          marginBottom: '0.25rem',
-          letterSpacing: '0.1em',
-          textTransform: 'uppercase',
-          fontFamily: 'var(--font-mono)'
-        }}>
-          Email
-        </h3>
-        <div style={{
+          textAlign: 'right',
           display: 'flex',
-          alignItems: 'center',
-          gap: '0.5rem',
-          flexWrap: 'wrap',
-          justifyContent: 'flex-end'
-        }}>
-          <a
-            href={`mailto:${email}`}
-            style={{
-              fontSize: '0.75rem',
-              color: 'var(--primary-white)',
-              textDecoration: 'none',
-              fontFamily: 'var(--font-mono)',
-              transition: 'color 0.3s ease'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.color = 'var(--lime-green)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.color = 'var(--primary-white)';
-            }}
-          >
-            {email}
-          </a>
-          <button
-            onClick={handleCopyEmail}
-            style={{
-              background: 'none',
-              border: 'none',
-              color: 'var(--medium-grey)',
-              fontSize: '0.625rem',
-              fontFamily: 'var(--font-mono)',
-              cursor: 'pointer',
-              textTransform: 'uppercase',
-              letterSpacing: '0.1em',
-              padding: '0.125rem 0.375rem',
-              transition: 'color 0.3s ease'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.color = 'var(--lime-green)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.color = 'var(--medium-grey)';
-            }}
-          >
-            {copiedEmail ? 'Copied!' : 'Copy'}
-          </button>
-        </div>
-      </motion.div>
-
-      {/* Social Links */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: DURATION.slow, delay: 0.3, ease: EASING }}
-        style={{
-          position: 'absolute',
-          bottom: 'var(--spacing-xl)',
-          right: 'var(--header-right-padding)'
+          alignItems: 'flex-end',
+          justifyContent: 'flex-end',
+          zIndex: 5
         }}
       >
         <div style={{
-          display: 'flex',
-          gap: 'var(--spacing-sm)',
-          flexDirection: 'column',
-          alignItems: 'flex-end'
+          display: 'grid',
+          gridTemplateColumns: 'repeat(2, auto)',
+          gap: '2rem 9rem',
+          alignItems: 'start',
+          justifyItems: 'end'
         }}>
           {socialLinks.map((social, index) => (
             <motion.a
               key={social.name}
               href={social.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: DURATION.normal, delay: 0.4 + index * 0.1, ease: EASING }}
-              whileHover={{ 
-                scale: 1.05,
-                transition: { duration: DURATION.fast, ease: EASING }
-              }}
+              target={social.name === 'Email' ? undefined : '_blank'}
+              rel={social.name === 'Email' ? undefined : 'noopener noreferrer'}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: DURATION.normal, delay: 0.3 + index * 0.1, ease: EASING }}
               style={{
+                display: 'flex',
+                flexDirection: 'column',
                 textDecoration: 'none',
                 color: 'var(--primary-white)',
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.75rem',
-                letterSpacing: '0.1em',
-                textTransform: 'uppercase',
-                transition: 'color 0.3s ease'
+                fontFamily: 'var(--font-primary)',
+                transition: 'opacity 0.2s ease',
+                textAlign: 'right'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.color = 'var(--lime-green)';
+                e.currentTarget.style.opacity = '0.7';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.color = 'var(--primary-white)';
+                e.currentTarget.style.opacity = '1';
               }}
             >
-              {social.name}
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                marginBottom: '0.25rem',
+                justifyContent: 'flex-end'
+              }}>
+                {social.icon && (
+                  <img 
+                    src={social.icon} 
+                    alt={social.name}
+                    style={{
+                      width: '12px',
+                      height: '12px',
+                      objectFit: 'contain',
+                      filter: 'brightness(0) invert(1)',
+                      opacity: '1',
+                      transition: 'opacity 0.2s ease',
+                      pointerEvents: 'none'
+                    }}
+                  />
+                )}
+                {!social.icon && social.name === 'Email' && (
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 12 12"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    style={{
+                      opacity: '1',
+                      pointerEvents: 'none'
+                    }}
+                  >
+                    <rect x="2" y="2" width="8" height="8" stroke="white" strokeWidth="1" fill="none"/>
+                    <path d="M2 2L6 6L10 2" stroke="white" strokeWidth="1" fill="none"/>
+                  </svg>
+                )}
+                <span style={{
+                  fontSize: '0.875rem',
+                  fontWeight: 500,
+                  letterSpacing: '0.02em',
+                  color: 'var(--primary-white)'
+                }}>
+                  {social.primary}
+                </span>
+                {social.name !== 'Email' && (
+                  <svg
+                    width="10"
+                    height="10"
+                    viewBox="0 0 10 10"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    style={{
+                      opacity: '0.8',
+                      pointerEvents: 'none',
+                      marginLeft: '2px'
+                    }}
+                  >
+                    <path d="M1 9L9 1M9 1H3M9 1V7" stroke="white" strokeWidth="1.2" strokeLinecap="round"/>
+                  </svg>
+                )}
+              </div>
+              <span style={{
+                fontSize: '0.75rem',
+                fontWeight: 400,
+                letterSpacing: '0.02em',
+                color: 'var(--primary-white)',
+                opacity: '0.7',
+                lineHeight: '1.4'
+              }}>
+                {social.secondary}
+              </span>
             </motion.a>
           ))}
         </div>
