@@ -11,22 +11,25 @@ const Footer = ({ showFooter = false }: FooterProps) => {
   return (
     <motion.footer
       initial={{ opacity: 0, y: 20 }}
-      animate={{ 
+      animate={{
         opacity: showFooter ? 1 : 0,
         y: showFooter ? 0 : 20
       }}
       transition={{ duration: DURATION.normal, ease: EASING }}
       style={{
-        position: 'relative',
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        width: '100%',
         backgroundColor: 'transparent',
         padding: '0.5rem var(--spacing-md)',
         paddingBottom: '1rem',
-        marginTop: '20px',
         pointerEvents: showFooter ? 'auto' : 'none',
-        flexShrink: 0,
         visibility: showFooter ? 'visible' : 'hidden',
         height: showFooter ? 'auto' : '76px',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        zIndex: 10
       }}
       onAnimationComplete={() => {
         // Animation complete
@@ -60,7 +63,7 @@ const Footer = ({ showFooter = false }: FooterProps) => {
             color: 'var(--medium-grey)',
             fontSize: '0.75rem'
           }}>•</span>
-          <a 
+          <a
             href="#"
             onClick={(e) => {
               e.preventDefault();

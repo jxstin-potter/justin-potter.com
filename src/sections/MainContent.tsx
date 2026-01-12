@@ -164,7 +164,7 @@ const MainContent = ({ onProjectHover }: MainContentProps) => {
 
 
   return (
-    <motion.section 
+    <motion.section
       ref={sectionRef}
       style={{
         width: '100%',

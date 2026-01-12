@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import project1Image from '../assets/landingpage.png';
 import { DURATION, EASING } from '../utils/animations';
+import Footer from '../components/Footer';
 
 const Archive = () => {
   const [hoveredCardId, setHoveredCardId] = useState<number | null>(null);
@@ -67,9 +68,9 @@ const Archive = () => {
 
 
   return (
-    <section 
-      id="archive" 
-      style={{ 
+    <section
+      id="archive"
+      style={{
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
@@ -77,7 +78,7 @@ const Archive = () => {
         justifyContent: 'flex-start',
         overflowY: 'auto',
         overflowX: 'hidden',
-        paddingTop: 'calc(var(--spacing-lg) + 80px)',
+        paddingTop: 'var(--spacing-xl)',
         paddingBottom: 'var(--spacing-xl)',
         paddingLeft: 'var(--projects-section-padding)',
         paddingRight: 'var(--projects-section-padding)',
@@ -86,8 +87,8 @@ const Archive = () => {
         WebkitOverflowScrolling: 'touch'
       }}
     >
-      <div style={{ 
-        width: '100%', 
+      <div style={{
+        width: '100%',
         maxWidth: '1200px'
       }}>
         {/* Archive Header */}
@@ -95,17 +96,22 @@ const Archive = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: DURATION.slow, ease: EASING }}
-          style={{ 
+          style={{
             marginBottom: 'var(--spacing-xl)',
-            textAlign: 'left'
+            textAlign: 'center',
+            position: 'absolute',
+            left: '50%',
+            top: '44%',
+            transform: 'translate(-50%, -50%)',
+            zIndex: 1
           }}
         >
           <h1 style={{
-            fontSize: 'clamp(2rem, 5vw, 4rem)',
+            fontSize: '90px',
             fontWeight: 700,
             color: 'var(--primary-white)',
             margin: 0,
-            marginBottom: 'var(--spacing-sm)',
+            marginBottom: '0.25rem',
             letterSpacing: '-0.02em',
             fontFamily: 'var(--font-primary)',
             textTransform: 'uppercase'
@@ -113,7 +119,7 @@ const Archive = () => {
             Archive
           </h1>
           <p style={{
-            fontSize: '0.875rem',
+            fontSize: '0.5rem',
             color: 'var(--medium-grey)',
             fontFamily: 'var(--font-mono)',
             letterSpacing: '0.1em',
@@ -134,31 +140,31 @@ const Archive = () => {
           {archiveProjects.map((project, index) => {
             const isEven = index % 2 === 0;
             const alignLeft = isEven;
-            
+
             return (
             <motion.div
               key={project.id}
-              initial={{ 
-                opacity: 0, 
+              initial={{
+                opacity: 0,
                 x: alignLeft ? -100 : 100,
                 y: 50
               }}
-              whileInView={{ 
-                opacity: 1, 
+              whileInView={{
+                opacity: 1,
                 x: 0,
                 y: 0
               }}
-              viewport={{ 
-                once: false, 
-                margin: "-100px" 
+              viewport={{
+                once: false,
+                margin: "-100px"
               }}
-              transition={{ 
-                duration: DURATION.slow, 
-                ease: EASING 
+              transition={{
+                duration: DURATION.slow,
+                ease: EASING
               }}
               onMouseEnter={() => setHoveredCardId(project.id)}
               onMouseLeave={() => setHoveredCardId(null)}
-              whileHover={{ 
+              whileHover={{
                 scale: 1.01,
                 transition: { duration: DURATION.fast, ease: EASING }
               }}
@@ -169,42 +175,46 @@ const Archive = () => {
                 gap: 'var(--spacing-md)',
                 cursor: 'pointer',
                 width: '100%',
-                maxWidth: '75%',
+                maxWidth: '50%',
                 alignSelf: alignLeft ? 'flex-start' : 'flex-end',
                 marginLeft: alignLeft ? 0 : 'auto',
-                marginRight: alignLeft ? 'auto' : 0
+                marginRight: alignLeft ? 'auto' : 0,
+                position: 'relative',
+                zIndex: 2
               }}
             >
-              {/* Project Image - Larger */}
+              {/* COMING SOON Display */}
               <motion.div
                 style={{
                   width: '100%',
-                  height: 'clamp(300px, 40vw, 500px)',
+                  height: 'clamp(200px, 30vw, 350px)',
                   position: 'relative',
                   overflow: 'hidden',
                   backgroundColor: 'var(--dark-grey)',
-                  borderRadius: '2px'
+                  borderRadius: '2px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
                 }}
               >
-                <motion.img
-                  src={project.imageUrl}
-                  alt={project.title}
-                  whileHover={{
-                    scale: 1.05,
-                    filter: 'brightness(1.1)',
-                    transition: { duration: DURATION.fast, ease: EASING }
-                  }}
+                <motion.div
                   style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover'
+                    fontSize: 'clamp(0.875rem, 2vw, 1.125rem)',
+                    color: 'var(--medium-grey)',
+                    fontFamily: 'var(--font-mono)',
+                    letterSpacing: '0.2em',
+                    textTransform: 'uppercase',
+                    textAlign: 'center'
                   }}
-                />
-                {/* Project Number Overlay - Position based on alignment */}
+                >
+                  COMING SOON
+                </motion.div>
+
+                {/* Project Number - Bottom Left */}
                 <div style={{
                   position: 'absolute',
-                  top: 'var(--spacing-md)',
-                  ...(alignLeft ? { left: 'var(--spacing-md)' } : { right: 'var(--spacing-md)' }),
+                  bottom: 0,
+                  left: 0,
                   fontSize: '0.875rem',
                   color: 'var(--primary-white)',
                   fontFamily: 'var(--font-mono)',
@@ -218,30 +228,12 @@ const Archive = () => {
                   <span className="bracket">]</span>
                 </div>
               </motion.div>
-
-              {/* Project Info - Single Line Format */}
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 'var(--spacing-sm)',
-                flexWrap: 'wrap'
-              }}>
-                <h3 style={{
-                  fontSize: 'clamp(0.9rem, 1.5vw, 1.1rem)',
-                  fontWeight: 400,
-                  color: 'var(--primary-white)',
-                  margin: 0,
-                  fontFamily: 'var(--font-primary)',
-                  lineHeight: 1.4
-                }}>
-                  {project.title} – {project.description} ({project.year})
-                </h3>
-              </div>
             </motion.div>
             );
           })}
         </div>
       </div>
+      <Footer showFooter={true} />
     </section>
   );
 };

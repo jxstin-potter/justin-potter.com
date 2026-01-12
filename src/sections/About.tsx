@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { DURATION, EASING } from '../utils/animations';
 import linkedinIcon from '../assets/linkedin.png';
 import githubIcon from '../assets/github.png';
+import Footer from '../components/Footer';
 
 const About = () => {
   const [copiedEmail, setCopiedEmail] = useState(false);
@@ -261,6 +262,7 @@ const About = () => {
           ))}
         </div>
       </motion.div>
+      <Footer showFooter={true} />
     </section>
   );
 };

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import emailIcon from '../assets/email.png';
 import linkedinIcon from '../assets/linkedin.png';
 import githubIcon from '../assets/github.png';
+import Footer from '../components/Footer';
 
 const Contact = () => {
   const contactInfo = {
@@ -302,6 +303,7 @@ const Contact = () => {
           </motion.div>
         </div>
       </div>
+      <Footer showFooter={true} />
     </section>
   );
 };
