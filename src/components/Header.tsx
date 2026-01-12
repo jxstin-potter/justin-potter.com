@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { DURATION, EASING } from '../utils/animations';
+import ScrambleText from './ScrambleText';
 
 interface HeaderProps {
   onNavigate?: (view: 'main' | 'about' | 'contact' | 'archive') => void;
@@ -9,6 +10,12 @@ interface HeaderProps {
 
 const Header = ({ onNavigate, activeView = 'main' }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLogoHovered, setIsLogoHovered] = useState(false);
+  const [hoveredNavItem, setHoveredNavItem] = useState<string | null>(null);
+  // Track retrigger keys for logo and nav items to force rescramble
+  const [logoRetriggerKey, setLogoRetriggerKey] = useState(0);
+  const navItemRetriggerKeysRef = useRef<Record<string, number>>({});
+  const lastHoveredNavItemRef = useRef<string | null>(null);
 
   // Prevent body scroll when menu is open
   useEffect(() => {
@@ -75,6 +82,47 @@ const Header = ({ onNavigate, activeView = 'main' }: HeaderProps) => {
     }
   };
 
+  // Track nav item hover changes to trigger rescramble
+  useEffect(() => {
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/3355fed9-9be5-4c30-a353-6450cdb51e60',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Header.tsx:86',message:'Nav item hover effect triggered',data:{hoveredNavItem,lastHoveredNavItem:lastHoveredNavItemRef.current},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'H2'})}).catch(()=>{});
+    // #endregion
+    if (hoveredNavItem) {
+      // If hovering a different nav item, increment retrigger key for that item
+      if (lastHoveredNavItemRef.current !== hoveredNavItem) {
+        navItemRetriggerKeysRef.current[hoveredNavItem] = 
+          (navItemRetriggerKeysRef.current[hoveredNavItem] || 0) + 1;
+        lastHoveredNavItemRef.current = hoveredNavItem;
+        // Also trigger logo rescramble when hovering nav items
+        setLogoRetriggerKey(prev => prev + 1);
+        // #region agent log
+        fetch('http://127.0.0.1:7242/ingest/3355fed9-9be5-4c30-a353-6450cdb51e60',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Header.tsx:94',message:'Nav item retrigger key incremented',data:{hoveredNavItem,newRetriggerKey:navItemRetriggerKeysRef.current[hoveredNavItem]},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'H2'})}).catch(()=>{});
+        // #endregion
+      }
+    } else {
+      lastHoveredNavItemRef.current = null;
+    }
+  }, [hoveredNavItem]);
+
+  // Track logo hover changes - only rescramble when starting to hover (true)
+  const prevLogoHoveredRef = useRef(false);
+  useEffect(() => {
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/3355fed9-9be5-4c30-a353-6450cdb51e60',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Header.tsx:103',message:'Logo hover effect triggered',data:{isLogoHovered,prevLogoHovered:prevLogoHoveredRef.current},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'H2'})}).catch(()=>{});
+    // #endregion
+    // Only increment when transitioning from not hovered to hovered
+    if (isLogoHovered && !prevLogoHoveredRef.current) {
+      setLogoRetriggerKey(prev => {
+        const newKey = prev + 1;
+        // #region agent log
+        fetch('http://127.0.0.1:7242/ingest/3355fed9-9be5-4c30-a353-6450cdb51e60',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Header.tsx:107',message:'Logo retrigger key incremented',data:{oldKey:prev,newKey},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'H2'})}).catch(()=>{});
+        // #endregion
+        return newKey;
+      });
+    }
+    prevLogoHoveredRef.current = isLogoHovered;
+  }, [isLogoHovered]);
+
   return (
     <>
       <motion.header
@@ -106,6 +154,18 @@ const Header = ({ onNavigate, activeView = 'main' }: HeaderProps) => {
             <motion.a
               href="#"
               whileTap={{ scale: 0.95 }}
+              onMouseEnter={() => {
+                // #region agent log
+                fetch('http://127.0.0.1:7242/ingest/3355fed9-9be5-4c30-a353-6450cdb51e60',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Header.tsx:142',message:'Logo mouse enter',data:{previousIsLogoHovered:isLogoHovered},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'H3'})}).catch(()=>{});
+                // #endregion
+                setIsLogoHovered(true);
+              }}
+              onMouseLeave={() => {
+                // #region agent log
+                fetch('http://127.0.0.1:7242/ingest/3355fed9-9be5-4c30-a353-6450cdb51e60',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Header.tsx:148',message:'Logo mouse leave',data:{previousIsLogoHovered:isLogoHovered},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'H3'})}).catch(()=>{});
+                // #endregion
+                setIsLogoHovered(false);
+              }}
               onClick={(e) => {
                 e.preventDefault();
                 if (onNavigate) {
@@ -129,7 +189,13 @@ const Header = ({ onNavigate, activeView = 'main' }: HeaderProps) => {
               }}
             >
               <span className="nav-bracket">[</span>
-              Justin Potter
+              <ScrambleText
+                text="Justin Potter"
+                isHovered={isLogoHovered}
+                scrambleDuration={400}
+                preserveSpaces={true}
+                retriggerKey={logoRetriggerKey}
+              />
               <span className="nav-bracket">]</span>
             </motion.a>
 
@@ -142,10 +208,23 @@ const Header = ({ onNavigate, activeView = 'main' }: HeaderProps) => {
             }}>
               {navItems.map((item) => {
                 const isActive = activeView === item.view;
+                const isHovered = hoveredNavItem === item.name;
                 return (
                   <motion.a
                     key={item.name}
                     href="#"
+                    onMouseEnter={() => {
+                      // #region agent log
+                      fetch('http://127.0.0.1:7242/ingest/3355fed9-9be5-4c30-a353-6450cdb51e60',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Header.tsx:195',message:'Nav item mouse enter',data:{itemName:item.name,previousHoveredNavItem:hoveredNavItem,retriggerKey:navItemRetriggerKeysRef.current[item.name] || 0},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'H2'})}).catch(()=>{});
+                      // #endregion
+                      setHoveredNavItem(item.name);
+                    }}
+                    onMouseLeave={() => {
+                      // #region agent log
+                      fetch('http://127.0.0.1:7242/ingest/3355fed9-9be5-4c30-a353-6450cdb51e60',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Header.tsx:201',message:'Nav item mouse leave',data:{itemName:item.name,previousHoveredNavItem:hoveredNavItem},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'H3'})}).catch(()=>{});
+                      // #endregion
+                      setHoveredNavItem(null);
+                    }}
                     onClick={(e) => {
                       e.preventDefault();
                       handleNavClick(item.view);
@@ -173,7 +252,13 @@ const Header = ({ onNavigate, activeView = 'main' }: HeaderProps) => {
                     >
                       [
                     </span>
-                    {item.name}
+                    <ScrambleText
+                      text={item.name}
+                      isHovered={isHovered}
+                      scrambleDuration={400}
+                      preserveSpaces={true}
+                      retriggerKey={navItemRetriggerKeysRef.current[item.name] || 0}
+                    />
                     <span 
                       className={`nav-bracket ${isActive ? 'nav-bracket-active' : ''}`}
                       style={isActive ? { 

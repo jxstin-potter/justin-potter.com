@@ -1,18 +1,17 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import project1Image from '../assets/landingpage.png';
 import { ProjectData } from '../types';
 import {
   containerVariants,
-  hoverAnimationVariants,
-  subtitleVariants,
   hoverTransition,
   DURATION,
   EASING,
 } from '../utils/animations';
-import { getDisplayName, formatDisplayTime } from '../utils/helpers';
+import { getDisplayName, formatDisplayTime, normalizeComingSoon } from '../utils/helpers';
 import { useProjectHover, useDisplayTime } from '../utils/hooks';
 import Footer from '../components/Footer';
+import ScrambleText from '../components/ScrambleText';
 
 interface MainContentProps {
   onProjectHover?: (project: ProjectData | null) => void;
@@ -26,8 +25,15 @@ const MainContent = ({ onProjectHover }: MainContentProps) => {
   const sectionRef = useRef<HTMLElement>(null);
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   
+  // Track the target name parts for smooth transitions
+  // This allows ScrambleText to transition from current display to new target seamlessly
+  const [targetNameParts, setTargetNameParts] = useState<[string, string]>(['JUSTIN', 'POTTER']);
+  // Retrigger key - increments when we want to force animation retrigger (e.g., moving between same-title projects)
+  const [retriggerKey, setRetriggerKey] = useState<number>(0);
+  const pendingProjectRef = useRef<ProjectData | null>(null);
+
   // Use shared hooks for consistent behavior
-  const animationKey = useProjectHover(hoveredProject);
+  useProjectHover(hoveredProject); // Triggers animation key updates
   const currentTime = useDisplayTime(hoveredProject);
 
   // Track scroll to show/hide footer
@@ -38,7 +44,7 @@ const MainContent = ({ onProjectHover }: MainContentProps) => {
       // Try to find the main element that contains this section
       const section = sectionRef.current;
       if (!section) return null;
-      
+
       let current: HTMLElement | null = section.parentElement;
       while (current && current !== document.body) {
         const style = window.getComputedStyle(current);
@@ -144,15 +150,85 @@ const MainContent = ({ onProjectHover }: MainContentProps) => {
     }
   }, [hoveredProject, onProjectHover]);
 
-  // Get name parts for display
-  const nameParts = useMemo(() => {
+  // Track last raw name parts (before normalization) to detect changes between unique identifiers
+  const lastNamePartsRef = useRef<[string, string]>(['JUSTIN', 'POTTER']);
+  // Track last normalized parts for comparison
+  const lastNormalizedPartsRef = useRef<[string, string]>(['JUSTIN', 'POTTER']);
+  
+  // Update target name parts when hoveredProject changes
+  // This is separate from the base text to allow smooth transitions
+  useEffect(() => {
+    // #region agent log
+    fetch('http://127.0.0.1:7242/ingest/3355fed9-9be5-4c30-a353-6450cdb51e60',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'MainContent.tsx:153',message:'Effect triggered - hoveredProject changed',data:{hoveredProject:hoveredProject?.title || null,hasHoveredProject:!!hoveredProject,currentTargetParts:lastNamePartsRef.current,hoveredProjectYear:hoveredProject?.year || null},timestamp:Date.now(),sessionId:'debug-session',runId:'run4',hypothesisId:'H3'})}).catch(()=>{});
+    // #endregion
+    
+    if (!hoveredProject) {
+      // Reset to base name when no project is hovered
+      const baseParts: [string, string] = ['JUSTIN', 'POTTER'];
+      if (lastNamePartsRef.current[0] !== baseParts[0] || lastNamePartsRef.current[1] !== baseParts[1]) {
+        // #region agent log
+        fetch('http://127.0.0.1:7242/ingest/3355fed9-9be5-4c30-a353-6450cdb51e60',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'MainContent.tsx:160',message:'Setting targetNameParts to base',data:{baseParts,previousParts:lastNamePartsRef.current},timestamp:Date.now(),sessionId:'debug-session',runId:'run4',hypothesisId:'H3'})}).catch(()=>{});
+        // #endregion
+        setTargetNameParts(baseParts);
+        lastNamePartsRef.current = baseParts;
+        lastNormalizedPartsRef.current = baseParts;
+      }
+      pendingProjectRef.current = null;
+      return;
+    }
+    
     try {
-      return hoveredProject ? getDisplayName(hoveredProject.title) : ['JUSTIN', 'POTTER'];
+      const rawParts = getDisplayName(hoveredProject.title);
+      // Normalize for display (removes extra letters from COMING* SOON* variants)
+      const newParts = normalizeComingSoon(rawParts);
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/3355fed9-9be5-4c30-a353-6450cdb51e60',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'MainContent.tsx:170',message:'Computed new name parts',data:{projectTitle:hoveredProject.title,rawParts,normalizedParts:newParts,currentParts:lastNamePartsRef.current,willUpdate:lastNamePartsRef.current[0] !== rawParts[0] || lastNamePartsRef.current[1] !== rawParts[1]},timestamp:Date.now(),sessionId:'debug-session',runId:'run4',hypothesisId:'H3'})}).catch(()=>{});
+      // #endregion
+      // Compare raw parts (before normalization) to detect changes between unique identifiers
+      // This ensures COMINGA vs COMINGB are detected as different, triggering rescramble
+      const rawPartsChanged = lastNamePartsRef.current[0] !== rawParts[0] || lastNamePartsRef.current[1] !== rawParts[1];
+      const normalizedPartsChanged = lastNormalizedPartsRef.current[0] !== newParts[0] || lastNormalizedPartsRef.current[1] !== newParts[1];
+      
+      if (rawPartsChanged) {
+        // Raw parts changed (different unique identifier) - always update and retrigger
+        // #region agent log
+        fetch('http://127.0.0.1:7242/ingest/3355fed9-9be5-4c30-a353-6450cdb51e60',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'MainContent.tsx:175',message:'Updating targetNameParts - raw parts changed',data:{rawParts,normalizedParts:newParts,previousRawParts:lastNamePartsRef.current,previousNormalizedParts:lastNormalizedPartsRef.current,normalizedPartsChanged},timestamp:Date.now(),sessionId:'debug-session',runId:'run5',hypothesisId:'H3'})}).catch(()=>{});
+        // #endregion
+        // Set normalized parts for display (shows "COMING SOON" without extra letters)
+        setTargetNameParts(newParts);
+        // If normalized parts are the same but raw parts changed, force retrigger with key
+        // This ensures rescramble when moving between COMING SOON cards
+        if (!normalizedPartsChanged) {
+          setRetriggerKey(prev => prev + 1);
+        }
+        // Store both raw and normalized parts for comparison
+        lastNamePartsRef.current = rawParts;
+        lastNormalizedPartsRef.current = newParts;
+      } else {
+        // Raw parts are the same but hoveredProject changed (shouldn't happen with unique names)
+        // Force retrigger by incrementing retriggerKey - this will be passed to ScrambleText
+        // #region agent log
+        fetch('http://127.0.0.1:7242/ingest/3355fed9-9be5-4c30-a353-6450cdb51e60',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'MainContent.tsx:192',message:'Same raw parts, different project - incrementing retriggerKey',data:{rawParts,normalizedParts:newParts,currentParts:lastNamePartsRef.current,hoveredProjectTitle:hoveredProject.title},timestamp:Date.now(),sessionId:'debug-session',runId:'run7',hypothesisId:'H9'})}).catch(()=>{});
+        // #endregion
+        // Increment retrigger key to force ScrambleText to detect change and retrigger
+        setRetriggerKey(prev => prev + 1);
+        lastNamePartsRef.current = rawParts;
+        lastNormalizedPartsRef.current = newParts;
+      }
+      pendingProjectRef.current = hoveredProject;
     } catch (error) {
-      return ['JUSTIN', 'POTTER'];
+      // #region agent log
+      fetch('http://127.0.0.1:7242/ingest/3355fed9-9be5-4c30-a353-6450cdb51e60',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'MainContent.tsx:186',message:'Error computing name parts',data:{error:String(error),projectTitle:hoveredProject.title},timestamp:Date.now(),sessionId:'debug-session',runId:'run4',hypothesisId:'H3'})}).catch(()=>{});
+      // #endregion
+      const baseParts: [string, string] = ['JUSTIN', 'POTTER'];
+      if (lastNamePartsRef.current[0] !== baseParts[0] || lastNamePartsRef.current[1] !== baseParts[1]) {
+        setTargetNameParts(baseParts);
+        lastNamePartsRef.current = baseParts;
+      }
+      pendingProjectRef.current = null;
     }
   }, [hoveredProject]);
-  
+
   // Display year when hovering, current time otherwise
   const displayTime = (() => {
     try {
@@ -221,20 +297,16 @@ const MainContent = ({ onProjectHover }: MainContentProps) => {
               position: 'relative'
             }}
           >
-          {/* Name - spans first column and both rows */}
-          <div style={{ 
-            display: 'flex', 
-            flexDirection: 'column', 
-            alignItems: 'flex-start', 
+          {/* Hero Name - scrambles to project title when hovering project cards */}
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
             overflow: 'visible',
             gridColumn: '1',
             gridRow: '1 / 3'
           }}>
-            <motion.h1
-              key={`${nameParts[0]}-${animationKey}`}
-              initial="initial"
-              animate={hoveredProject ? "animate" : "initial"}
-              variants={hoverAnimationVariants}
+            <h1
               style={{
                 fontSize: 'clamp(3.5rem, 12vw, 9.5rem)',
                 fontWeight: 450,
@@ -247,28 +319,38 @@ const MainContent = ({ onProjectHover }: MainContentProps) => {
                 position: 'relative'
               }}
             >
-              {nameParts[0]}
-            </motion.h1>
-            {nameParts[1] && (
-              <motion.h1
-                key={`${nameParts[1]}-${animationKey}`}
-                initial="initial"
-                animate={hoveredProject ? "animate" : "initial"}
-                variants={hoverAnimationVariants}
-              style={{
-                fontSize: 'clamp(3.5rem, 12vw, 9.5rem)',
-                fontWeight: 450,
-                lineHeight: 0.85,
-                letterSpacing: '-0.03em',
-                color: 'var(--primary-white)',
-                margin: 0,
-                fontFamily: 'var(--font-primary)',
-                textTransform: 'uppercase',
-                position: 'relative'
-              }}
-            >
-                {nameParts[1]}
-              </motion.h1>
+              <ScrambleText
+                text="JUSTIN"
+                targetText={targetNameParts[0]}
+                isHovered={!!hoveredProject}
+                scrambleDuration={250}
+                preserveSpaces={true}
+                retriggerKey={retriggerKey}
+              />
+            </h1>
+            {targetNameParts[1] && (
+              <h1
+                style={{
+                  fontSize: 'clamp(3.5rem, 12vw, 9.5rem)',
+                  fontWeight: 450,
+                  lineHeight: 0.85,
+                  letterSpacing: '-0.03em',
+                  color: 'var(--primary-white)',
+                  margin: 0,
+                  fontFamily: 'var(--font-primary)',
+                  textTransform: 'uppercase',
+                  position: 'relative'
+                }}
+              >
+                <ScrambleText
+                  text="POTTER"
+                  targetText={targetNameParts[1]}
+                  isHovered={!!hoveredProject}
+                  scrambleDuration={250}
+                  preserveSpaces={true}
+                  retriggerKey={retriggerKey}
+                />
+              </h1>
             )}
           </div>
 
@@ -279,7 +361,7 @@ const MainContent = ({ onProjectHover }: MainContentProps) => {
               gridRow: '1 / 3',
               display: 'flex',
               flexDirection: 'row',
-              alignItems: 'center',
+              alignItems: 'flex-start',
               gap: '6rem',
               width: 'auto',
               justifyContent: 'flex-end',
@@ -308,109 +390,63 @@ const MainContent = ({ onProjectHover }: MainContentProps) => {
               margin: 0
             }}
           >
-              <AnimatePresence mode="wait">
-                {hoveredProject ? (
-                  <motion.div
-                    key="project-text"
-                    initial={{ opacity: 0, y: 4 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -4 }}
-                    transition={{ duration: DURATION.normal, ease: EASING }}
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'flex-start',
-                      gap: 0,
-                      width: 'auto',
-                      padding: 0,
-                      margin: 0
-                    }}
-                  >
-                    <p
-                      style={{
-                        fontSize: '0.875rem',
-                        fontWeight: 400,
-                        color: 'var(--primary-white)',
-                        margin: 0,
-                        padding: 0,
-                        letterSpacing: '0.1em',
-                        fontFamily: 'var(--font-mono)',
-                        textTransform: 'uppercase',
-                        lineHeight: 1.2,
-                        textAlign: 'left'
-                      }}
-                    >
-                      Design
-                    </p>
-                    <p
-                      style={{
-                        fontSize: '0.875rem',
-                        fontWeight: 400,
-                        color: 'var(--primary-white)',
-                        margin: 0,
-                        padding: 0,
-                        letterSpacing: '0.1em',
-                        fontFamily: 'var(--font-mono)',
-                        textTransform: 'uppercase',
-                        lineHeight: 1.2,
-                        textAlign: 'left'
-                      }}
-                    >
-                      Development
-                    </p>
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="default-text"
-                    initial={{ opacity: 0, y: 4 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -4 }}
-                    transition={{ duration: DURATION.normal, ease: EASING }}
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'flex-start',
-                      gap: 0,
-                      width: 'auto',
-                      padding: 0,
-                      margin: 0
-                    }}
-                  >
-                    <p
-                      style={{
-                        fontSize: '0.875rem',
-                        fontWeight: 400,
-                        color: 'var(--primary-white)',
-                        margin: 0,
-                        padding: 0,
-                        letterSpacing: '0.1em',
-                        fontFamily: 'var(--font-mono)',
-                        textTransform: 'uppercase',
-                        lineHeight: 1.2,
-                        textAlign: 'left'
-                      }}
-                    >
-                      Designer &
-                    </p>
-                    <p
-                      style={{
-                        fontSize: '0.875rem',
-                        fontWeight: 400,
-                        color: 'var(--primary-white)',
-                        margin: 0,
-                        padding: 0,
-                        letterSpacing: '0.1em',
-                        fontFamily: 'var(--font-mono)',
-                        textTransform: 'uppercase',
-                        lineHeight: '1.2',
-                        textAlign: 'left'
-                      }}
-                    >
-                      Developer
-                    </p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'flex-start',
+                  gap: 0,
+                  width: 'auto',
+                  padding: 0,
+                  margin: 0,
+                  minHeight: '2.4rem'
+                }}
+              >
+                <p
+                  style={{
+                    fontSize: '0.875rem',
+                    fontWeight: 400,
+                    color: 'var(--primary-white)',
+                    margin: 0,
+                    padding: 0,
+                    letterSpacing: '0.1em',
+                    fontFamily: 'var(--font-mono)',
+                    textTransform: 'uppercase',
+                    lineHeight: 1.2,
+                    textAlign: 'left'
+                  }}
+                >
+                  <ScrambleText
+                    text="DESIGNER &"
+                    targetText={hoveredProject ? "DESIGNER" : "DESIGNER &"}
+                    isHovered={!!hoveredProject}
+                    scrambleDuration={250}
+                    preserveSpaces={true}
+                  />
+                </p>
+                <p
+                  style={{
+                    fontSize: '0.875rem',
+                    fontWeight: 400,
+                    color: 'var(--primary-white)',
+                    margin: 0,
+                    padding: 0,
+                    letterSpacing: '0.1em',
+                    fontFamily: 'var(--font-mono)',
+                    textTransform: 'uppercase',
+                    lineHeight: '1.2',
+                    textAlign: 'left'
+                  }}
+                >
+                  <ScrambleText
+                    text="DEVELOPER"
+                    targetText="DEVELOPER"
+                    isHovered={!!hoveredProject}
+                    scrambleDuration={250}
+                    preserveSpaces={true}
+                  />
+                </p>
+              </div>
           </motion.div>
 
           {/* Location/Time - positioned to the right of Designer & Developer */}
@@ -426,7 +462,12 @@ const MainContent = ({ onProjectHover }: MainContentProps) => {
               padding: 0,
               textAlign: 'left',
               width: 'auto',
-              whiteSpace: 'nowrap'
+              whiteSpace: 'nowrap',
+              minWidth: '120px',
+              position: 'relative',
+              display: 'flex',
+              alignItems: 'flex-start',
+              justifyContent: 'flex-start'
             }}
           >
             <AnimatePresence mode="wait">
@@ -437,7 +478,13 @@ const MainContent = ({ onProjectHover }: MainContentProps) => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
                   transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-                  style={{ display: 'block', textAlign: 'left' }}
+                  style={{ 
+                    display: 'block', 
+                    textAlign: 'left',
+                    position: 'absolute',
+                    left: 0,
+                    top: 0
+                  }}
                 >
                   {displayTime}
                 </motion.span>
@@ -448,7 +495,13 @@ const MainContent = ({ onProjectHover }: MainContentProps) => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
                   transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-                  style={{ display: 'block', textAlign: 'left' }}
+                  style={{ 
+                    display: 'block', 
+                    textAlign: 'left',
+                    position: 'absolute',
+                    left: 0,
+                    top: 0
+                  }}
                 >
                   BROOKLYN, NY {displayTime}
                 </motion.span>
@@ -537,7 +590,6 @@ const MainContent = ({ onProjectHover }: MainContentProps) => {
               {projects.map((project, index) => {
                 const isHovered = hoveredCardId === project.id;
                 const isAnyCardHovered = hoveredCardId !== null;
-                
                 return (
                 <motion.a
                   key={project.id}
@@ -550,27 +602,103 @@ const MainContent = ({ onProjectHover }: MainContentProps) => {
                   data-project-id={project.id}
                   className="bracket-hover"
                   onMouseEnter={(e) => {
-                    // Clear any pending timeout to prevent clearing hover state
+                    // #region agent log
+                    fetch('http://127.0.0.1:7242/ingest/3355fed9-9be5-4c30-a353-6450cdb51e60',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'MainContent.tsx:515',message:'onMouseEnter triggered',data:{projectId:project.id,projectTitle:project.title,currentHoveredProject:hoveredProject?.title || null},timestamp:Date.now(),sessionId:'debug-session',runId:'run3',hypothesisId:'H6'})}).catch(()=>{});
+                    // #endregion
+                    
+                    // Clear any pending timeout to prevent reset when quickly moving between cards
                     if (hoverTimeoutRef.current) {
                       clearTimeout(hoverTimeoutRef.current);
                       hoverTimeoutRef.current = null;
                     }
-                    setHoveredCardId(project.id);
-                    // For projects 2-5, show "COMING SOON" and year 2026
+                    
+                    // For projects 2-5, use unique internal names to trigger rescramble
+                    // These are internal identifiers - display stays as "COMING SOON" (no numbers shown)
                     const isComingSoon = project.id >= 2 && project.id <= 5;
-                    const projectData = { 
-                      title: isComingSoon ? 'COMING SOON' : project.title, 
-                      year: isComingSoon ? 2026 : project.year 
+                    // Use unique names where both first and second parts differ to force both to rescramble
+                    const comingSoonNames = {
+                      2: 'COMINGA SOONA',
+                      3: 'COMINGB SOONB', 
+                      4: 'COMINGC SOONC',
+                      5: 'COMINGD SOOND'
                     };
-                    setHoveredProject(projectData);
+                    const projectData: ProjectData = {
+                      title: isComingSoon ? comingSoonNames[project.id as keyof typeof comingSoonNames] : project.title,
+                      year: isComingSoon ? 2026 : project.year
+                    };
+                    
+                    // Check if we're moving to a different card (different ID) - check BEFORE setting hoveredCardId
+                    const isDifferentCard = hoveredCardId !== project.id;
+                    
+                    // #region agent log
+                    fetch('http://127.0.0.1:7242/ingest/3355fed9-9be5-4c30-a353-6450cdb51e60',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'MainContent.tsx:586',message:'onMouseEnter - checking card change',data:{projectId:project.id,currentHoveredCardId:hoveredCardId,isDifferentCard,currentHoveredProjectTitle:hoveredProject?.title || null,currentHoveredProjectYear:hoveredProject?.year || null,projectDataTitle:projectData.title,projectDataYear:projectData.year},timestamp:Date.now(),sessionId:'debug-session',runId:'run4',hypothesisId:'H1'})}).catch(()=>{});
+                    // #endregion
+                    
+                    // Set card hover state immediately for visual feedback
+                    setHoveredCardId(project.id);
+                    
+                    // Check if it's the same card with the same data - skip update in that case
+                    const isSameCardAndData = !isDifferentCard && 
+                      hoveredProject && 
+                      hoveredProject.title === projectData.title && 
+                      hoveredProject.year === projectData.year;
+                    
+                    // #region agent log
+                    fetch('http://127.0.0.1:7242/ingest/3355fed9-9be5-4c30-a353-6450cdb51e60',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'MainContent.tsx:599',message:'onMouseEnter - checking same card/data',data:{isSameCardAndData,isDifferentCard,hasHoveredProject:!!hoveredProject},timestamp:Date.now(),sessionId:'debug-session',runId:'run4',hypothesisId:'H1'})}).catch(()=>{});
+                    // #endregion
+                    
+                    if (isSameCardAndData) {
+                      // Same card and same data - don't retrigger
+                      // #region agent log
+                      fetch('http://127.0.0.1:7242/ingest/3355fed9-9be5-4c30-a353-6450cdb51e60',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'MainContent.tsx:605',message:'Skipping - same card and data',data:{projectId:project.id},timestamp:Date.now(),sessionId:'debug-session',runId:'run4',hypothesisId:'H1'})}).catch(()=>{});
+                      // #endregion
+                      return;
+                    }
+                    
+                    // Always retrigger animation when moving to a different card
+                    // This ensures animation retriggers when hovering from [02] to [03] etc., even if title/year are the same
+                    if (isDifferentCard && hoveredProject && hoveredProject.title === projectData.title && hoveredProject.year === projectData.year) {
+                      // Same title/year but different card (e.g., moving between COMING SOON projects)
+                      // Temporarily clear hoveredProject to force animation retrigger
+                      // #region agent log
+                      fetch('http://127.0.0.1:7242/ingest/3355fed9-9be5-4c30-a353-6450cdb51e60',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'MainContent.tsx:614',message:'Retriggering - different card, same title/year',data:{projectId:project.id,projectData,previousHoveredProject:hoveredProject},timestamp:Date.now(),sessionId:'debug-session',runId:'run4',hypothesisId:'H2'})}).catch(()=>{});
+                      // #endregion
+                      setHoveredProject(null);
+                      // Use setTimeout to ensure state update completes before setting new project
+                      setTimeout(() => {
+                        // #region agent log
+                        fetch('http://127.0.0.1:7242/ingest/3355fed9-9be5-4c30-a353-6450cdb51e60',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'MainContent.tsx:620',message:'setTimeout callback - setting projectData',data:{projectData},timestamp:Date.now(),sessionId:'debug-session',runId:'run4',hypothesisId:'H2'})}).catch(()=>{});
+                        // #endregion
+                        setHoveredProject(projectData);
+                      }, 0);
+                    } else {
+                      // Different project data or first hover - update immediately
+                      // #region agent log
+                      fetch('http://127.0.0.1:7242/ingest/3355fed9-9be5-4c30-a353-6450cdb51e60',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'MainContent.tsx:625',message:'Calling setHoveredProject directly',data:{projectData,currentHoveredProject:hoveredProject?.title || null,projectId:project.id,isDifferentCard},timestamp:Date.now(),sessionId:'debug-session',runId:'run4',hypothesisId:'H1'})}).catch(()=>{});
+                      // #endregion
+                      
+                      // Update hovered project immediately to trigger name scramble
+                      // The ScrambleText component will handle the transition smoothly
+                      setHoveredProject(projectData);
+                    }
                   }}
                   onMouseLeave={(e) => {
-                    // Add a small delay before clearing to allow smooth transition between cards
+                    // Clear card hover state immediately
+                    setHoveredCardId(null);
+                    
+                    // Clear any pending timeout
+                    if (hoverTimeoutRef.current) {
+                      clearTimeout(hoverTimeoutRef.current);
+                      hoverTimeoutRef.current = null;
+                    }
+                    
+                    // Reset hovered project to trigger scramble back to "JUSTIN POTTER"
+                    // Small delay allows smooth transition if moving between cards quickly
+                    // If user hovers another card within 100ms, the timeout will be cleared
                     hoverTimeoutRef.current = setTimeout(() => {
-                      setHoveredCardId(null);
                       setHoveredProject(null);
                       hoverTimeoutRef.current = null;
-                    }, 50);
+                    }, 100);
                   }}
                   animate={{
                     filter: isAnyCardHovered && !isHovered ? 'blur(4px)' : 'blur(0px)',
@@ -600,7 +728,7 @@ const MainContent = ({ onProjectHover }: MainContentProps) => {
                 >
                   {/* Project Image */}
                   <motion.div
-                    whileHover={{ 
+                    whileHover={{
                       scale: isHovered ? 1.05 : 1,
                       transition: { duration: DURATION.fast, ease: EASING }
                     }}
@@ -677,7 +805,6 @@ const MainContent = ({ onProjectHover }: MainContentProps) => {
                       </>
                     )}
                   </motion.div>
-
                   {/* Project Number and View Link */}
                   <div style={{
                     display: 'flex',
@@ -686,7 +813,7 @@ const MainContent = ({ onProjectHover }: MainContentProps) => {
                     width: '100%',
                     paddingTop: '-0.55rem'
                   }}>
-                    <div 
+                    <div
                       style={{
                         fontSize: '0.875rem',
                         color: 'var(--primary-white)',
@@ -699,11 +826,11 @@ const MainContent = ({ onProjectHover }: MainContentProps) => {
                     </div>
                     <motion.span
                       initial={{ opacity: 0, x: -10 }}
-                      animate={{ 
+                      animate={{
                         opacity: hoveredCardId === project.id ? 1 : 0,
                         x: hoveredCardId === project.id ? 0 : -10
                       }}
-                      whileHover={{ 
+                      whileHover={{
                         color: 'var(--lime-green)',
                         x: hoveredCardId === project.id ? 5 : 0
                       }}
@@ -729,7 +856,6 @@ const MainContent = ({ onProjectHover }: MainContentProps) => {
           </div>
         </div>
       </div>
-      
       {/* Footer at bottom of content */}
       <Footer showFooter={showFooter} />
     </motion.section>

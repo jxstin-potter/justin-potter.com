@@ -26,6 +26,18 @@ export const getDisplayName = (projectName: string): [string, string] => {
 };
 
 /**
+ * Normalizes "COMING* SOON*" variants to "COMING SOON" for display
+ * Keeps unique identifiers internally but displays cleanly
+ */
+export const normalizeComingSoon = (parts: [string, string]): [string, string] => {
+  // Check if first part starts with "COMING" and second part starts with "SOON"
+  if (parts[0].startsWith('COMING') && parts[1].startsWith('SOON')) {
+    return ['COMING', 'SOON'];
+  }
+  return parts;
+};
+
+/**
  * Formats time display - shows year when hovering project, current time otherwise
  */
 export const formatDisplayTime = (
