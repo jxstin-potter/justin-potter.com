@@ -466,15 +466,19 @@ img {
   /* Hero section mobile layout */
   .hero-container {
     grid-template-columns: 1fr !important;
-    grid-template-rows: auto auto auto !important;
+    grid-template-rows: auto auto !important;
     gap: var(--spacing-md) !important;
     marginLeft: var(--spacing-sm) !important;
     marginRight: var(--spacing-sm) !important;
+    position: relative !important;
+    /* Prevent grid recalculation */
+    grid-auto-rows: auto !important;
   }
   
-  .hero-container > div:first-child {
+  .hero-name-container {
     grid-column: 1 !important;
     grid-row: 1 !important;
+    position: relative !important;
   }
   
   .hero-meta-wrapper {
@@ -486,6 +490,165 @@ img {
     width: 100% !important;
     align-self: flex-start !important;
     margin-top: var(--spacing-md) !important;
+    position: relative !important;
+    /* Prevent layout shift when projects appear */
+    min-height: fit-content !important;
+    height: auto !important;
+    /* Position below name container - don't let POTTER push it */
+    top: 0 !important;
+    left: 0 !important;
+  }
+  
+  /* Mobile-specific: Reserve space for both JUSTIN and POTTER to prevent layout shift */
+  .hero-name-container {
+    min-height: calc(clamp(3.5rem, 12vw, 9.5rem) * 0.85 * 2 + var(--spacing-xs)) !important;
+  }
+  
+  /* Ensure name container doesn't expand beyond reserved space on mobile */
+  .hero-name-container h1 {
+    margin-bottom: 0 !important;
+  }
+  
+  /* Ensure spacer maintains exact height of POTTER on mobile */
+  .name-spacer-mobile {
+    display: block !important;
+  }
+  
+  /* Desktop: Remove all mobile overrides - let original inline styles take precedence */
+  @media (min-width: 769px) {
+    .hero-container {
+      grid-template-columns: 1fr 1fr !important;
+      grid-template-rows: auto auto !important;
+      marginLeft: unset !important;
+      marginRight: unset !important;
+    }
+    
+    .hero-container > div:first-child {
+      grid-column: unset !important;
+      grid-row: unset !important;
+    }
+    
+    .hero-name-container {
+      grid-column: unset !important;
+      grid-row: unset !important;
+      min-height: unset !important;
+    }
+    
+    .hero-name-container h1 {
+      margin-bottom: unset !important;
+    }
+    
+    .hero-meta-wrapper {
+      grid-column: unset !important;
+      grid-row: unset !important;
+      flex-direction: row !important;
+      gap: 6rem !important;
+      transform: unset !important;
+      width: max-content !important;
+      align-self: flex-start !important;
+      margin-top: unset !important;
+      top: unset !important;
+      left: unset !important;
+      min-height: unset !important;
+      height: unset !important;
+    }
+    
+    .hero-meta-wrapper > * {
+      position: unset !important;
+    }
+    
+    .hero-meta-wrapper > div {
+      position: unset !important;
+      transform: unset !important;
+      width: unset !important;
+      minWidth: unset !important;
+    }
+    
+    /* Ensure Designer div maintains width on desktop */
+    .hero-meta-wrapper > div:first-child {
+      width: max-content !important;
+      min-width: max-content !important;
+    }
+    
+    .hero-meta-wrapper > div:last-child {
+      width: unset !important;
+      min-width: unset !important;
+    }
+    
+    .hero-meta-wrapper > div:last-child > div {
+      width: unset !important;
+      min-width: unset !important;
+    }
+    
+    .hero-meta-wrapper * {
+      vertical-align: unset !important;
+    }
+    
+    .name-spacer-mobile {
+      display: none !important;
+    }
+  }
+  
+  /* Prevent hero section from shifting when projects appear */
+  .hero-section-container {
+    position: relative !important;
+    /* Reserve space to prevent layout shift */
+    margin-bottom: 0 !important;
+    /* Prevent container from expanding and pushing content */
+    overflow: visible !important;
+  }
+  
+  /* Mobile-only: Ensure meta wrapper maintains position during transitions */
+  .hero-meta-wrapper > * {
+    position: relative !important;
+  }
+  
+  /* Mobile-only: Lock meta wrapper children positions */
+  .hero-meta-wrapper > div {
+    position: relative !important;
+    transform: none !important;
+  }
+  
+  /* Mobile-only: Ensure location/time container maintains width */
+  .hero-meta-wrapper > div:last-child {
+    width: max-content !important;
+    min-width: max-content !important;
+  }
+  
+  .hero-meta-wrapper > div:last-child > div {
+    width: max-content !important;
+    min-width: max-content !important;
+  }
+  
+  /* Mobile-only: Prevent any vertical movement in meta wrapper */
+  .hero-meta-wrapper * {
+    vertical-align: top !important;
+  }
+  
+  /* Desktop: Reset all mobile-specific meta wrapper overrides */
+  @media (min-width: 769px) {
+    .hero-meta-wrapper > * {
+      position: auto !important;
+    }
+    
+    .hero-meta-wrapper > div {
+      position: auto !important;
+      transform: auto !important;
+    }
+    
+    .hero-meta-wrapper > div:last-child {
+      width: auto !important;
+      min-width: auto !important;
+    }
+    
+    .hero-meta-wrapper > div:last-child > div {
+      width: auto !important;
+      min-width: auto !important;
+    }
+    
+    .hero-meta-wrapper * {
+      vertical-align: auto !important;
+    }
   }
   
   /* Project cards mobile */

@@ -300,6 +300,7 @@ const MainContent = ({ onProjectHover, shouldScrambleFromWelcome = false, showWe
     };
   }, []);
 
+
   // Notify parent of hover changes
   useEffect(() => {
     if (onProjectHover) {
@@ -408,6 +409,7 @@ const MainContent = ({ onProjectHover, shouldScrambleFromWelcome = false, showWe
       >
         {/* Hero Section - Independent Container */}
         <div
+          className="hero-section-container"
           style={{
             width: '100%',
             padding: `0 var(--hero-right-padding) 0 0`,
@@ -437,39 +439,67 @@ const MainContent = ({ onProjectHover, shouldScrambleFromWelcome = false, showWe
             }}
           >
           {/* Hero Name - scrambles to project title when hovering project cards */}
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-            overflow: 'visible',
-            gridColumn: '1',
-            gridRow: '1 / 3'
-          }}>
+          <div 
+            className="hero-name-container"
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              overflow: 'visible',
+              gridColumn: '1',
+              gridRow: '1 / 3'
+            }}
+          >
             {!welcomeTransitionComplete ? (
               // Single entity scramble: WELCOME -> JUSTIN (as one animation)
-              <h1
-                style={{
-                  fontSize: 'clamp(3.5rem, 12vw, 9.5rem)',
-                  fontWeight: 450,
-                  lineHeight: 0.85,
-                  letterSpacing: '-0.03em',
-                  color: 'var(--primary-white)',
-                  margin: 0,
-                  fontFamily: 'var(--font-primary)',
-                  textTransform: 'uppercase',
-                  position: 'relative'
-                }}
-              >
-                <ScrambleText
-                  text="WELCOME"
-                  targetText={shouldScrambleFromWelcome ? "JUSTIN" : undefined}
-                  isHovered={shouldScrambleFromWelcome}
-                  scrambleDuration={300}
-                  iterations={8}
-                  preserveSpaces={true}
-                  retriggerKey={retriggerKey}
-                />
-              </h1>
+              <>
+                <h1
+                  style={{
+                    fontSize: 'clamp(3.5rem, 12vw, 9.5rem)',
+                    fontWeight: 450,
+                    lineHeight: 0.85,
+                    letterSpacing: '-0.03em',
+                    color: 'var(--primary-white)',
+                    margin: 0,
+                    fontFamily: 'var(--font-primary)',
+                    textTransform: 'uppercase',
+                    position: 'relative'
+                  }}
+                >
+                  <ScrambleText
+                    text="WELCOME"
+                    targetText={shouldScrambleFromWelcome ? "JUSTIN" : undefined}
+                    isHovered={shouldScrambleFromWelcome}
+                    scrambleDuration={300}
+                    iterations={8}
+                    preserveSpaces={true}
+                    retriggerKey={retriggerKey}
+                  />
+                </h1>
+                {/* Hidden spacer to reserve space for POTTER on mobile - prevents layout shift */}
+                {!welcomeTransitionComplete && (
+                  <h1
+                    className="name-spacer-mobile"
+                    style={{
+                      fontSize: 'clamp(3.5rem, 12vw, 9.5rem)',
+                      fontWeight: 450,
+                      lineHeight: 0.85,
+                      letterSpacing: '-0.03em',
+                      margin: 0,
+                      fontFamily: 'var(--font-primary)',
+                      textTransform: 'uppercase',
+                      position: 'relative',
+                      visibility: 'hidden',
+                      height: 'auto',
+                      pointerEvents: 'none',
+                      flexShrink: 0
+                    }}
+                    aria-hidden="true"
+                  >
+                    POTTER
+                  </h1>
+                )}
+              </>
             ) : (
               // Two-part system for project hovers (after welcome transition)
               <>
@@ -582,7 +612,9 @@ const MainContent = ({ onProjectHover, shouldScrambleFromWelcome = false, showWe
                   style={{
                     position: 'relative',
                     minHeight: '2.4rem',
-                    display: 'inline-block'
+                    display: 'inline-block',
+                    width: 'max-content',
+                    minWidth: 'max-content'
                   }}
                 >
                   {/* Hidden width spacer in normal flow - maintains container width */}
@@ -605,6 +637,30 @@ const MainContent = ({ onProjectHover, shouldScrambleFromWelcome = false, showWe
                     aria-hidden="true"
                   >
                     DESIGNER & DEVELOPER
+                  </span>
+                  {/* Spacer for DESIGNER DEVELOPER (without &) - also in normal flow for width calculation */}
+                  <span
+                    style={{
+                      fontSize: '0.875rem',
+                      fontWeight: 400,
+                      letterSpacing: '0.1em',
+                      fontFamily: 'var(--font-mono)',
+                      textTransform: 'uppercase',
+                      lineHeight: 1.2,
+                      visibility: 'hidden',
+                      display: 'inline-block',
+                      whiteSpace: 'nowrap',
+                      pointerEvents: 'none',
+                      margin: 0,
+                      padding: 0,
+                      height: '1.2em',
+                      position: 'absolute',
+                      top: 0,
+                      left: 0
+                    }}
+                    aria-hidden="true"
+                  >
+                    DESIGNER DEVELOPER
                   </span>
                   {/* Single ScrambleText element - absolutely positioned to overlay spacer exactly */}
                   <p
@@ -663,10 +719,12 @@ const MainContent = ({ onProjectHover, shouldScrambleFromWelcome = false, showWe
               style={{
                 position: 'relative',
                 minHeight: '1.2em',
-                display: 'inline-block'
+                display: 'inline-block',
+                width: 'max-content',
+                minWidth: 'max-content'
               }}
             >
-              {/* Hidden width spacer - maintains container width */}
+              {/* Hidden width spacer - maintains container width (use longest text) - MUST be in normal flow */}
               <span
                 style={{
                   fontSize: '0.875rem',
@@ -686,6 +744,30 @@ const MainContent = ({ onProjectHover, shouldScrambleFromWelcome = false, showWe
                 aria-hidden="true"
               >
                 BROOKLYN, NY 12:00 PM
+              </span>
+              {/* Additional spacer for PORTFOLIO 2026 - absolutely positioned so it doesn't affect width */}
+              <span
+                style={{
+                  fontSize: '0.875rem',
+                  fontWeight: 400,
+                  letterSpacing: '0.1em',
+                  fontFamily: 'var(--font-mono)',
+                  textTransform: 'uppercase',
+                  lineHeight: 1.2,
+                  visibility: 'hidden',
+                  display: 'inline-block',
+                  whiteSpace: 'nowrap',
+                  pointerEvents: 'none',
+                  margin: 0,
+                  padding: 0,
+                  height: '1.2em',
+                  position: 'absolute',
+                  top: 0,
+                  left: 0
+                }}
+                aria-hidden="true"
+              >
+                PORTFOLIO 2026
               </span>
               {/* Single element - absolutely positioned to overlay spacer exactly */}
               <p
@@ -720,19 +802,21 @@ const MainContent = ({ onProjectHover, shouldScrambleFromWelcome = false, showWe
                     style={{ display: 'inline-block' }}
                   />
                 ) : (
-                  <span style={{ display: 'inline-block', position: 'relative', width: '100%' }}>
+                  <span style={{ display: 'inline-block', position: 'absolute', top: 0, left: 0, width: '100%' }}>
                     <AnimatePresence mode="wait">
                       {hoveredProject ? (
                         <motion.span
                           key="year"
-                          initial={{ opacity: 0, y: 4 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -4 }}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
                           transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
                           style={{ 
                             display: 'inline-block', 
                             textAlign: 'left',
-                            position: 'relative'
+                            position: 'relative',
+                            top: 0,
+                            left: 0
                           }}
                         >
                           {displayTime}
@@ -740,14 +824,16 @@ const MainContent = ({ onProjectHover, shouldScrambleFromWelcome = false, showWe
                       ) : (
                         <motion.span
                           key="location"
-                          initial={{ opacity: 0, y: 4 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -4 }}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
                           transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
                           style={{ 
                             display: 'inline-block', 
                             textAlign: 'left',
-                            position: 'relative'
+                            position: 'relative',
+                            top: 0,
+                            left: 0
                           }}
                         >
                           BROOKLYN, NY {displayTime}
