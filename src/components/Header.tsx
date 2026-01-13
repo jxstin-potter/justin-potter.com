@@ -6,14 +6,16 @@ import ScrambleText from './ScrambleText';
 interface HeaderProps {
   onNavigate?: (view: 'main' | 'about' | 'contact' | 'archive') => void;
   activeView?: 'main' | 'about' | 'contact' | 'archive';
+  showWelcome?: boolean;
 }
 
-const Header = ({ onNavigate, activeView = 'main' }: HeaderProps) => {
+const Header = ({ onNavigate, activeView = 'main', showWelcome = false }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLogoHovered, setIsLogoHovered] = useState(false);
   const [hoveredNavItem, setHoveredNavItem] = useState<string | null>(null);
   // Track retrigger keys for logo and nav items to force rescramble
   const [logoRetriggerKey, setLogoRetriggerKey] = useState(0);
+  const [navItemsRetriggerKey, setNavItemsRetriggerKey] = useState(0);
   const navItemRetriggerKeysRef = useRef<Record<string, number>>({});
   const lastHoveredNavItemRef = useRef<string | null>(null);
 
@@ -108,6 +110,22 @@ const Header = ({ onNavigate, activeView = 'main' }: HeaderProps) => {
     prevLogoHoveredRef.current = isLogoHovered;
   }, [isLogoHovered]);
 
+  // Continuous scramble during intro sequence
+  useEffect(() => {
+    if (!showWelcome) return;
+
+    // Continuously increment retrigger keys every 250ms to force continuous scrambling
+    // This affects both logo and all nav items
+    const intervalId = setInterval(() => {
+      setLogoRetriggerKey(prev => prev + 1);
+      setNavItemsRetriggerKey(prev => prev + 1);
+    }, 250);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [showWelcome]);
+
   return (
     <>
       <motion.header
@@ -166,7 +184,7 @@ const Header = ({ onNavigate, activeView = 'main' }: HeaderProps) => {
               <span className="nav-bracket">[</span>
               <ScrambleText
                 text="Justin Potter"
-                isHovered={isLogoHovered}
+                isHovered={isLogoHovered || showWelcome}
                 scrambleDuration={400}
                 preserveSpaces={true}
                 retriggerKey={logoRetriggerKey}
@@ -219,10 +237,10 @@ const Header = ({ onNavigate, activeView = 'main' }: HeaderProps) => {
                     </span>
                     <ScrambleText
                       text={item.name}
-                      isHovered={isHovered}
+                      isHovered={isHovered || showWelcome}
                       scrambleDuration={400}
                       preserveSpaces={true}
-                      retriggerKey={navItemRetriggerKeysRef.current[item.name] || 0}
+                      retriggerKey={(navItemRetriggerKeysRef.current[item.name] || 0) + navItemsRetriggerKey}
                     />
                     <span 
                       className={`nav-bracket ${isActive ? 'nav-bracket-active' : ''}`}

@@ -7,6 +7,8 @@ import {
   hoverTransition,
   DURATION,
   EASING,
+  projectCardVariants,
+  projectsContainerVariants,
 } from '../utils/animations';
 import { getDisplayName, formatDisplayTime, normalizeComingSoon } from '../utils/helpers';
 import { useProjectHover, useDisplayTime } from '../utils/hooks';
@@ -47,7 +49,7 @@ const MainContent = ({ onProjectHover, shouldScrambleFromWelcome = false, showWe
   const [hoveredProject, setHoveredProject] = useState<ProjectData | null>(null);
   const [hoveredCardId, setHoveredCardId] = useState<number | null>(null);
   const [showFooter, setShowFooter] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -763,10 +765,10 @@ const MainContent = ({ onProjectHover, shouldScrambleFromWelcome = false, showWe
         <AnimatePresence>
           {welcomeTransitionComplete && (
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: DURATION.normal, ease: EASING, delay: 0.2 }}
+              variants={projectsContainerVariants}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
               style={{
                 width: '100%',
                 display: 'flex',
@@ -782,7 +784,7 @@ const MainContent = ({ onProjectHover, shouldScrambleFromWelcome = false, showWe
             >
 
           {/* Horizontal Scrollable Projects Container */}
-          <div
+          <motion.div
             ref={containerRef}
             style={{
               display: 'flex',
@@ -827,23 +829,18 @@ const MainContent = ({ onProjectHover, shouldScrambleFromWelcome = false, showWe
                   href={project.liveUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  initial={{ opacity: 0, x: 50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
+                  variants={projectCardVariants}
                   data-project-id={project.id}
                   className="bracket-hover"
                   onMouseEnter={() => handleProjectMouseEnter(project)}
                   onMouseLeave={handleProjectMouseLeave}
                   animate={{
                     filter: isAnyCardHovered && !isHovered ? 'blur(4px)' : 'blur(0px)',
-                    scale: isHovered ? 1.02 : 1
+                    scale: isHovered ? 1.02 : 1,
                   }}
                   transition={{
-                    opacity: { duration: DURATION.slow, delay: index * 0.1, ease: EASING },
-                    x: { duration: DURATION.slow, delay: index * 0.1, ease: EASING },
                     filter: { duration: DURATION.fast, ease: EASING },
                     scale: { duration: DURATION.fast, ease: EASING },
-                    default: { duration: DURATION.slow, delay: index * 0.1, ease: EASING }
                   }}
                   style={{
                     minWidth: '320px',
@@ -987,7 +984,7 @@ const MainContent = ({ onProjectHover, shouldScrambleFromWelcome = false, showWe
                 );
               })}
                 </div>
-              </div>
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>

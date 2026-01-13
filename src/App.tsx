@@ -153,7 +153,7 @@ function App() {
         }}
       />
 
-      {!showWelcome && <Header onNavigate={setActiveView} activeView={activeView} />}
+      <Header onNavigate={setActiveView} activeView={activeView} showWelcome={showWelcome} />
 
       {/* Content Container with smooth transitions */}
       <AnimatePresence mode="wait">

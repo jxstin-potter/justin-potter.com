@@ -92,6 +92,42 @@ export const slideInRightVariants: Variants = {
   },
 };
 
+// Projects container animation - coordinates with welcome transition
+export const projectsContainerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      duration: DURATION.normal,
+      ease: EASING,
+      delay: 0.2,
+      staggerChildren: 0.08,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+// Professional project card animation variant
+// Seamlessly integrated with container stagger pattern
+export const projectCardVariants: Variants = {
+  hidden: {
+    opacity: 0,
+    x: 50,
+    y: 15,
+    scale: 0.95,
+  },
+  visible: {
+    opacity: 1,
+    x: 0,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: DURATION.slow,
+      ease: EASING,
+    },
+  },
+};
+
 // Standard transition for hover effects
 export const hoverTransition = {
   duration: DURATION.fast,
