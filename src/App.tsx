@@ -30,21 +30,21 @@ function App() {
   useEffect(() => {
     if (!showWelcome) return;
 
-    // Trigger scramble after 3 seconds
+    // Trigger scramble after 1.5 seconds (reduced from 3 seconds)
     const timeoutId = setTimeout(() => {
       setShouldScramble(true);
       // Hide welcome state after scramble completes
       setTimeout(() => {
         setShowWelcome(false);
-      }, 600);
-    }, 3000);
+      }, 300);
+    }, 1500);
 
     // Allow immediate skip on user interaction
     const hideWelcome = () => {
       setShouldScramble(true);
       setTimeout(() => {
         setShowWelcome(false);
-      }, 600);
+      }, 300);
     };
 
     const events = ["click", "keydown", "scroll", "touchstart"];

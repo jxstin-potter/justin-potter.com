@@ -18,8 +18,8 @@ import ScrambleText from '../components/ScrambleText';
 // Constants
 const COMING_SOON_PROJECT_IDS = { min: 2, max: 5 } as const;
 const HOVER_RESET_DELAY = 100; // ms
-const WELCOME_SCRAMBLE_DELAY = 100; // ms
-const WELCOME_TRANSITION_DELAY = 600; // ms
+const WELCOME_SCRAMBLE_DELAY = 50; // ms (reduced from 100ms)
+const WELCOME_TRANSITION_DELAY = 300; // ms (reduced from 600ms)
 const DRAG_MULTIPLIER = 2;
 
 // Coming soon project name mapping - unique identifiers for animation retriggering
@@ -464,8 +464,8 @@ const MainContent = ({ onProjectHover, shouldScrambleFromWelcome = false, showWe
                   text="WELCOME"
                   targetText={shouldScrambleFromWelcome ? "JUSTIN" : undefined}
                   isHovered={shouldScrambleFromWelcome}
-                  scrambleDuration={500}
-                  iterations={10}
+                  scrambleDuration={300}
+                  iterations={8}
                   preserveSpaces={true}
                   retriggerKey={retriggerKey}
                 />
@@ -713,8 +713,8 @@ const MainContent = ({ onProjectHover, shouldScrambleFromWelcome = false, showWe
                     text="PORTFOLIO 2026"
                     targetText={shouldScrambleFromWelcome ? `BROOKLYN, NY ${displayTime}` : undefined}
                     isHovered={shouldScrambleFromWelcome}
-                    scrambleDuration={500}
-                    iterations={10}
+                    scrambleDuration={300}
+                    iterations={8}
                     preserveSpaces={true}
                     retriggerKey={retriggerKey}
                     style={{ display: 'inline-block' }}
