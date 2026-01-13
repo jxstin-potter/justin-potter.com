@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import project1Image from '../assets/landingpage.png';
 import { DURATION, EASING } from '../utils/animations';
 import Footer from '../components/Footer';
 
 const Archive = () => {
-  const [hoveredCardId, setHoveredCardId] = useState<number | null>(null);
 
   const archiveProjects = [
     {
@@ -162,8 +161,6 @@ const Archive = () => {
                 duration: DURATION.slow,
                 ease: EASING
               }}
-              onMouseEnter={() => setHoveredCardId(project.id)}
-              onMouseLeave={() => setHoveredCardId(null)}
               whileHover={{
                 scale: 1.01,
                 transition: { duration: DURATION.fast, ease: EASING }

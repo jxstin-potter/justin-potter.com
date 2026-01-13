@@ -63,10 +63,8 @@ const Footer = ({ showFooter = false }: FooterProps) => {
             color: 'var(--medium-grey)',
             fontSize: '0.75rem'
           }}>•</span>
-          <a
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
+          <button
+            onClick={() => {
               // Add imprint/privacy modal or page navigation here
             }}
             style={{
@@ -76,7 +74,11 @@ const Footer = ({ showFooter = false }: FooterProps) => {
               letterSpacing: '0.05em',
               textDecoration: 'none',
               transition: 'color 0.3s ease',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              background: 'none',
+              border: 'none',
+              padding: 0,
+              fontFamily: 'inherit'
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.color = 'var(--lime-green)';
@@ -86,7 +88,7 @@ const Footer = ({ showFooter = false }: FooterProps) => {
             }}
           >
             Imprint & Data Privacy
-          </a>
+          </button>
         </div>
         <p style={{
           position: 'absolute',

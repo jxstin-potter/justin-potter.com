@@ -6,7 +6,6 @@ import MainContent from "./sections/MainContent";
 import About from "./sections/About";
 import Contact from "./sections/Contact";
 import Archive from "./sections/Archive";
-import { ProjectData } from "./types";
 import { DURATION, EASING } from "./utils/animations";
 
 // Shared main container styles
@@ -24,9 +23,6 @@ function App() {
   const [activeView, setActiveView] = useState<
     "main" | "about" | "contact" | "archive"
   >("main");
-  const [hoveredProject, setHoveredProject] = useState<ProjectData | null>(
-    null
-  );
   const [showWelcome, setShowWelcome] = useState(true);
   const [shouldScramble, setShouldScramble] = useState(false);
 
@@ -167,7 +163,6 @@ function App() {
             style={mainContainerStyle}
           >
             <MainContent 
-              onProjectHover={setHoveredProject} 
               shouldScrambleFromWelcome={shouldScramble}
               showWelcome={showWelcome}
             />
