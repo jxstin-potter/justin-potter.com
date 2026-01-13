@@ -60,8 +60,14 @@ function App() {
     };
   }, [showWelcome]);
 
-  // Slow down scroll speed for smoother, slower scrolling
+  // Slow down scroll speed for smoother, slower scrolling (desktop only)
   useEffect(() => {
+    // Only apply custom scroll on desktop (non-touch devices)
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    if (isTouchDevice) {
+      return; // Let native touch scrolling work on mobile
+    }
+
     const handleWheel = (e: WheelEvent) => {
       const mainElement = document.querySelector("main");
       // Only intercept vertical scrolling, allow horizontal scrolling for project cards

@@ -35,6 +35,7 @@ const About = () => {
   return (
     <section 
       id="about" 
+      className="about-section"
       style={{ 
         height: '100%',
         display: 'flex',
@@ -49,45 +50,48 @@ const About = () => {
         position: 'relative'
       }}
     >
-      {/* Title */}
-      <motion.h1
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: DURATION.slow, ease: EASING }}
-        style={{
-          position: 'absolute',
-          top: 'calc(var(--header-top-padding) + 1.5rem + var(--spacing-lg))',
-          left: 'var(--header-left-padding)',
-          fontSize: 'clamp(4rem, 10vw, 8rem)',
-          fontWeight: 700,
-          color: 'var(--primary-white)',
-          margin: 0,
-          letterSpacing: '0.05em',
-          fontFamily: 'var(--font-primary)',
-          textTransform: 'uppercase'
-        }}
-      >
-        Info
-      </motion.h1>
-      <div style={{ 
-        width: 'calc(100% - var(--header-left-padding) - var(--projects-section-padding))',
-        maxWidth: '800px',
-        position: 'absolute',
-        top: 'calc(var(--header-top-padding) + 1.5rem + var(--spacing-xl) + clamp(3rem, 8vw, 6rem) + var(--spacing-lg))',
-        left: 'var(--header-left-padding)'
-      }}>
-
-        {/* Main Content */}
-        <motion.div
+      <div className="about-container">
+        {/* Title */}
+        <motion.h1
+          className="about-title"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: DURATION.slow, delay: 0.1, ease: EASING }}
+          transition={{ duration: DURATION.slow, ease: EASING }}
           style={{
-            marginTop: 'calc(var(--spacing-xl) + var(--spacing-md))',
-            marginBottom: 'var(--spacing-xl)',
-            maxWidth: '600px'
+            position: 'absolute',
+            top: 'calc(var(--header-top-padding) + 1.5rem + var(--spacing-lg))',
+            left: 'var(--header-left-padding)',
+            fontSize: 'clamp(4rem, 10vw, 8rem)',
+            fontWeight: 700,
+            color: 'var(--primary-white)',
+            margin: 0,
+            letterSpacing: '0.05em',
+            fontFamily: 'var(--font-primary)',
+            textTransform: 'uppercase'
           }}
         >
+          Info
+        </motion.h1>
+        <div className="about-content-wrapper" style={{ 
+          width: 'calc(100% - var(--header-left-padding) - var(--projects-section-padding))',
+          maxWidth: '800px',
+          position: 'absolute',
+          top: 'calc(var(--header-top-padding) + 1.5rem + var(--spacing-xl) + clamp(3rem, 8vw, 6rem) + var(--spacing-lg))',
+          left: 'var(--header-left-padding)'
+        }}>
+
+          {/* Main Content */}
+          <motion.div
+            className="about-main-content"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: DURATION.slow, delay: 0.1, ease: EASING }}
+            style={{
+              marginTop: 'calc(var(--spacing-xl) + var(--spacing-md))',
+              marginBottom: 'var(--spacing-xl)',
+              maxWidth: '600px'
+            }}
+          >
           <p style={{
             fontSize: 'clamp(1rem, 2vw, 1.25rem)',
             lineHeight: 1.8,
@@ -117,25 +121,26 @@ const About = () => {
           </p>
         </motion.div>
 
-      </div>
+        </div>
 
-      {/* Contact Section - Social Links */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: DURATION.slow, delay: 0.2, ease: EASING }}
-        style={{
-          position: 'absolute',
-          bottom: 'calc(var(--spacing-xl) + 1rem + 80px)',
-          right: 'var(--header-right-padding)',
-          textAlign: 'right',
-          display: 'flex',
-          alignItems: 'flex-end',
-          justifyContent: 'flex-end',
-          zIndex: 5
-        }}
-      >
-        <div style={{
+        {/* Contact Section - Social Links */}
+        <motion.div
+          className="about-social-links"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: DURATION.slow, delay: 0.2, ease: EASING }}
+          style={{
+            position: 'absolute',
+            bottom: 'calc(var(--spacing-xl) + 1rem + 80px)',
+            right: 'var(--header-right-padding)',
+            textAlign: 'right',
+            display: 'flex',
+            alignItems: 'flex-end',
+            justifyContent: 'flex-end',
+            zIndex: 5
+          }}
+        >
+        <div className="social-links-grid" style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(2, auto)',
           gap: '2rem 9rem',
@@ -243,7 +248,8 @@ const About = () => {
             </motion.a>
           ))}
         </div>
-      </motion.div>
+        </motion.div>
+      </div>
       <Footer showFooter={true} />
     </section>
   );

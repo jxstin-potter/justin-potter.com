@@ -92,6 +92,7 @@ const Archive = () => {
       }}>
         {/* Archive Header */}
         <motion.div
+          className="archive-header"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: DURATION.slow, ease: EASING }}
@@ -165,7 +166,7 @@ const Archive = () => {
                 scale: 1.01,
                 transition: { duration: DURATION.fast, ease: EASING }
               }}
-              className="bracket-hover"
+              className="bracket-hover archive-project-card"
               style={{
                 display: 'flex',
                 flexDirection: 'column',

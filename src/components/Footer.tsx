@@ -90,7 +90,7 @@ const Footer = ({ showFooter = false }: FooterProps) => {
             Imprint & Data Privacy
           </button>
         </div>
-        <p style={{
+        <p className="footer-credit" style={{
           position: 'absolute',
           left: 'calc(0.5rem + 320px * 3 + 1rem * 3)',
           color: 'var(--medium-grey)',

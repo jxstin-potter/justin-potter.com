@@ -421,6 +421,7 @@ const MainContent = ({ onProjectHover, shouldScrambleFromWelcome = false, showWe
             variants={containerVariants}
             initial="hidden"
             animate="visible"
+            className="hero-container"
             style={{
               display: 'grid',
               gridTemplateColumns: '1fr 1fr',
@@ -524,6 +525,7 @@ const MainContent = ({ onProjectHover, shouldScrambleFromWelcome = false, showWe
 
           {/* Wrapper for Designer & Developer and Location/Time - horizontal layout */}
           <div
+            className="hero-meta-wrapper"
             style={{
               gridColumn: '2',
               gridRow: '1 / 3',
@@ -786,6 +788,7 @@ const MainContent = ({ onProjectHover, shouldScrambleFromWelcome = false, showWe
           {/* Horizontal Scrollable Projects Container */}
           <motion.div
             ref={containerRef}
+            className="projects-scroll-container"
             style={{
               display: 'flex',
               overflowX: 'auto',
@@ -801,7 +804,8 @@ const MainContent = ({ onProjectHover, shouldScrambleFromWelcome = false, showWe
               paddingBottom: '0',
               justifyContent: 'flex-start',
               alignItems: 'flex-end',
-              gap: 'var(--spacing-md)'
+              gap: 'var(--spacing-md)',
+              touchAction: 'pan-x'
             }}
             onMouseDown={handleContainerMouseDown}
               >
@@ -843,8 +847,8 @@ const MainContent = ({ onProjectHover, shouldScrambleFromWelcome = false, showWe
                     scale: { duration: DURATION.fast, ease: EASING },
                   }}
                   style={{
-                    minWidth: '320px',
-                    maxWidth: '320px',
+                    minWidth: 'min(320px, calc(100vw - 2rem))',
+                    maxWidth: 'min(320px, calc(100vw - 2rem))',
                     scrollSnapAlign: 'start',
                     flexShrink: 0,
                     display: 'flex',

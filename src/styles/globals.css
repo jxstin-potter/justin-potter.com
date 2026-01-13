@@ -43,6 +43,9 @@ html {
   scroll-behavior: smooth;
   overflow: hidden;
   height: 100%;
+  /* Prevent horizontal scroll on mobile */
+  overflow-x: hidden;
+  width: 100%;
 }
 
 /* Slower, more controlled scrolling */
@@ -86,7 +89,9 @@ main {
 
 body {
   overflow: hidden;
+  overflow-x: hidden;
   height: 100%;
+  width: 100%;
   font-family: var(--font-primary);
   line-height: 1.6;
   color: var(--primary-white);
@@ -94,6 +99,7 @@ body {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  position: relative;
 }
 
 #root {
@@ -348,14 +354,40 @@ img {
   h2 {
     font-size: 2.25rem;
   }
+  
+  /* Tablet adjustments */
+  .hero-meta-wrapper {
+    transform: translate(8rem, 4rem) !important;
+    gap: 4rem !important;
+  }
+}
+
+/* Tablet specific */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .desktop-nav {
+    display: flex !important;
+  }
+  
+  .mobile-menu-button {
+    display: none !important;
+  }
+  
+  .hero-container {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  
+  .hero-meta-wrapper {
+    flex-direction: row !important;
+    transform: translate(8rem, 4rem) !important;
+  }
 }
 
 @media (max-width: 768px) {
   :root {
-    --hero-right-padding: 2rem;
-    --hero-top-margin: 6rem;
-    --header-right-padding: 2rem;
-    --projects-section-padding: 1.5rem;
+    --hero-right-padding: 1rem;
+    --hero-top-margin: 5rem;
+    --header-right-padding: 1rem;
+    --projects-section-padding: 1rem;
     --spacing-xl: 2rem; /* Reduce gap between nav items on mobile */
   }
   
@@ -373,6 +405,32 @@ img {
   
   .container {
     padding: 0 var(--spacing-sm);
+  }
+  
+  /* Header mobile optimizations */
+  .desktop-nav {
+    display: none !important;
+  }
+  
+  .mobile-menu-button {
+    display: flex !important;
+    position: relative !important;
+    z-index: 1002 !important;
+  }
+  
+  /* Ensure menu button is always clickable when menu is open */
+  header {
+    z-index: 1002 !important;
+  }
+  
+  .mobile-menu-button:active,
+  .mobile-menu-button:focus {
+    outline: none !important;
+  }
+  
+  /* Ensure header nav doesn't overflow */
+  header nav {
+    flex-wrap: wrap !important;
   }
   
   /* Hero section responsive */
@@ -395,14 +453,254 @@ img {
   .hero-socials {
     justify-content: center !important;
   }
+  
+  /* Touch optimizations */
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  button, a {
+    touch-action: manipulation;
+  }
+  
+  /* Hero section mobile layout */
+  .hero-container {
+    grid-template-columns: 1fr !important;
+    grid-template-rows: auto auto auto !important;
+    gap: var(--spacing-md) !important;
+    marginLeft: var(--spacing-sm) !important;
+    marginRight: var(--spacing-sm) !important;
+  }
+  
+  .hero-container > div:first-child {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+  }
+  
+  .hero-meta-wrapper {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+    flex-direction: column !important;
+    gap: var(--spacing-md) !important;
+    transform: none !important;
+    width: 100% !important;
+    align-self: flex-start !important;
+    margin-top: var(--spacing-md) !important;
+  }
+  
+  /* Project cards mobile */
+  .project-card-container {
+    padding-left: var(--spacing-sm) !important;
+    padding-right: var(--spacing-sm) !important;
+  }
+  
+  /* Mobile menu button improvements */
+  .mobile-menu-button {
+    min-width: 44px !important;
+    min-height: 44px !important;
+    padding: 0.75rem !important;
+  }
+  
+  /* Ensure menu backdrop is clickable */
+  header + div[style*="position: fixed"] {
+    pointer-events: auto !important;
+  }
+  
+  /* About section mobile - Complete restructure */
+  .about-section {
+    padding-top: calc(var(--spacing-md) + 60px) !important;
+    padding-bottom: var(--spacing-lg) !important;
+    padding-left: var(--spacing-sm) !important;
+    padding-right: var(--spacing-sm) !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    flex-direction: column !important;
+  }
+  
+  .about-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: var(--spacing-md) !important;
+    position: relative !important;
+  }
+  
+  .about-title {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    margin-bottom: var(--spacing-md) !important;
+    margin-left: 0 !important;
+    margin-top: 0 !important;
+    font-size: clamp(2.5rem, 12vw, 4rem) !important;
+    width: 100% !important;
+  }
+  
+  .about-content-wrapper {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    margin-top: 0 !important;
+  }
+  
+  .about-main-content {
+    margin-top: 0 !important;
+    margin-bottom: var(--spacing-lg) !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+  
+  .about-main-content p {
+    margin-bottom: var(--spacing-md) !important;
+    font-size: clamp(0.95rem, 3vw, 1.125rem) !important;
+    line-height: 1.7 !important;
+    width: 100% !important;
+  }
+  
+  .about-social-links {
+    position: relative !important;
+    bottom: auto !important;
+    right: auto !important;
+    margin-top: var(--spacing-md) !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    margin-bottom: var(--spacing-md) !important;
+    text-align: left !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    width: 100% !important;
+  }
+  
+  .social-links-grid {
+    grid-template-columns: 1fr !important;
+    gap: var(--spacing-md) !important;
+    justify-items: start !important;
+    width: 100% !important;
+  }
+  
+  .social-links-grid a {
+    text-align: left !important;
+    align-items: flex-start !important;
+  }
+  
+  .social-links-grid a > div {
+    justify-content: flex-start !important;
+  }
+  
+  /* Archive section mobile */
+  .archive-project-card {
+    max-width: 100% !important;
+    align-self: flex-start !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  
+  #archive {
+    padding-top: calc(var(--spacing-xl) + 60px) !important;
+  }
+  
+  /* Archive section mobile */
+  #archive {
+    padding-top: calc(var(--spacing-md) + 60px) !important;
+    padding-left: var(--spacing-sm) !important;
+    padding-right: var(--spacing-sm) !important;
+    padding-bottom: var(--spacing-lg) !important;
+    align-items: flex-start !important;
+  }
+  
+  #archive > div {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  
+  .archive-header {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    margin-bottom: var(--spacing-lg) !important;
+    margin-top: 0 !important;
+    width: 100% !important;
+  }
+  
+  .archive-header h1 {
+    font-size: clamp(2.5rem, 12vw, 4rem) !important;
+  }
+  
+  .archive-header p {
+    font-size: 0.875rem !important;
+    margin-top: var(--spacing-xs) !important;
+  }
+  
+  #archive > div > div:last-child {
+    gap: var(--spacing-md) !important;
+  }
+  
+  /* Footer mobile */
+  .footer-credit {
+    position: relative !important;
+    left: auto !important;
+    margin-top: var(--spacing-sm) !important;
+    text-align: center !important;
+    width: 100% !important;
+  }
+  
+  footer > div {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: var(--spacing-xs) !important;
+  }
+  
+  /* Contact section mobile */
+  #contact {
+    padding-top: calc(var(--spacing-md) + 60px) !important;
+    padding-left: var(--spacing-sm) !important;
+    padding-right: var(--spacing-sm) !important;
+    padding-bottom: var(--spacing-lg) !important;
+  }
+  
+  #contact .container {
+    padding: 0 !important;
+  }
+  
+  .contact-info-grid {
+    grid-template-columns: 1fr !important;
+    gap: var(--spacing-sm) !important;
+  }
+  
+  #contact h2 {
+    font-size: clamp(1.75rem, 8vw, 2.5rem) !important;
+  }
+  
+  #contact p {
+    font-size: clamp(0.95rem, 3vw, 1.125rem) !important;
+    padding: 0 var(--spacing-xs) !important;
+  }
+  
+  /* Projects scroll container mobile */
+  .projects-scroll-container {
+    cursor: grab !important;
+    -webkit-overflow-scrolling: touch !important;
+    scroll-snap-type: x mandatory !important;
+  }
+  
+  .projects-scroll-container:active {
+    cursor: grabbing !important;
+  }
 }
 
 @media (max-width: 480px) {
   :root {
-    --hero-right-padding: 1rem;
+    --hero-right-padding: 0.75rem;
     --hero-top-margin: 4rem;
-    --header-right-padding: 1rem;
-    --projects-section-padding: 1rem;
+    --header-right-padding: 0.75rem;
+    --projects-section-padding: 0.75rem;
+    --header-left-padding: 0.75rem;
   }
   
   h1 {
@@ -425,10 +723,65 @@ img {
   .btn {
     padding: 0.75rem 1.5rem;
     font-size: 0.9rem;
+    min-height: 44px; /* Better touch target */
   }
   
   .btn + .btn {
     margin-top: var(--spacing-sm);
     margin-left: 0 !important;
+  }
+  
+  /* Ensure minimum touch target sizes */
+  a, button {
+    min-height: 44px;
+    min-width: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* About section extra small mobile */
+  .about-section {
+    padding-top: calc(var(--spacing-md) + 50px) !important;
+    padding-left: var(--spacing-sm) !important;
+    padding-right: var(--spacing-sm) !important;
+  }
+  
+  /* Contact section extra small mobile */
+  #contact {
+    padding-left: var(--spacing-sm) !important;
+    padding-right: var(--spacing-sm) !important;
+  }
+  
+  /* Archive section extra small mobile */
+  #archive {
+    padding-left: var(--spacing-sm) !important;
+    padding-right: var(--spacing-sm) !important;
+  }
+  
+  .about-title {
+    margin-left: 0 !important;
+    margin-bottom: var(--spacing-sm) !important;
+    font-size: clamp(2rem, 15vw, 2.5rem) !important;
+  }
+  
+  .about-content-wrapper {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  
+  .about-main-content {
+    margin-bottom: var(--spacing-md) !important;
+  }
+  
+  .about-main-content p {
+    margin-bottom: var(--spacing-sm) !important;
+    font-size: 0.95rem !important;
+  }
+  
+  .about-social-links {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    margin-top: var(--spacing-md) !important;
   }
 } 

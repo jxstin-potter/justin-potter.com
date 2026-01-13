@@ -137,7 +137,7 @@ const Header = ({ onNavigate, activeView = 'main', showWelcome = false }: Header
           top: 0,
           left: 0,
           right: 0,
-          zIndex: 1000,
+          zIndex: 1002,
           backgroundColor: 'transparent',
           transition: 'all 0.3s ease'
         }}
@@ -192,13 +192,16 @@ const Header = ({ onNavigate, activeView = 'main', showWelcome = false }: Header
               <span className="nav-bracket">]</span>
             </motion.a>
 
-            {/* Navigation Links */}
-            <div style={{
-              display: 'flex',
-              gap: 'var(--spacing-xl)',
-              alignItems: 'center',
-              flexWrap: 'wrap'
-            }}>
+            {/* Navigation Links - Hidden on mobile, shown on desktop */}
+            <div 
+              className="desktop-nav"
+              style={{
+                display: 'flex',
+                gap: 'var(--spacing-xl)',
+                alignItems: 'center',
+                flexWrap: 'wrap'
+              }}
+            >
               {navItems.map((item) => {
                 const isActive = activeView === item.view;
                 const isHovered = hoveredNavItem === item.name;
@@ -255,6 +258,76 @@ const Header = ({ onNavigate, activeView = 'main', showWelcome = false }: Header
                 );
               })}
             </div>
+
+            {/* Mobile Menu Button - Transforms to X when menu is open */}
+            <motion.button
+              className="mobile-menu-button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsMenuOpen(!isMenuOpen);
+              }}
+              whileTap={{ scale: 0.95 }}
+              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+              style={{
+                display: 'none',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                padding: '0.5rem',
+                marginRight: 'var(--header-left-padding)',
+                marginTop: 'var(--header-top-padding)',
+                zIndex: 1002,
+                flexDirection: 'column',
+                gap: '4px',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '44px',
+                height: '44px',
+                minWidth: '44px',
+                minHeight: '44px',
+                position: 'relative',
+                touchAction: 'manipulation'
+              }}
+            >
+              <motion.span
+                animate={{
+                  rotate: isMenuOpen ? 45 : 0,
+                  y: isMenuOpen ? 8 : 0
+                }}
+                transition={{ duration: 0.3 }}
+                style={{
+                  width: '20px',
+                  height: '2px',
+                  backgroundColor: 'var(--primary-white)',
+                  display: 'block'
+                }}
+              />
+              <motion.span
+                animate={{
+                  opacity: isMenuOpen ? 0 : 1
+                }}
+                transition={{ duration: 0.3 }}
+                style={{
+                  width: '20px',
+                  height: '2px',
+                  backgroundColor: 'var(--primary-white)',
+                  display: 'block'
+                }}
+              />
+              <motion.span
+                animate={{
+                  rotate: isMenuOpen ? -45 : 0,
+                  y: isMenuOpen ? -8 : 0
+                }}
+                transition={{ duration: 0.3 }}
+                style={{
+                  width: '20px',
+                  height: '2px',
+                  backgroundColor: 'var(--primary-white)',
+                  display: 'block'
+                }}
+              />
+            </motion.button>
           </nav>
         </div>
       </motion.header>
@@ -269,7 +342,12 @@ const Header = ({ onNavigate, activeView = 'main', showWelcome = false }: Header
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              onClick={() => setIsMenuOpen(false)}
+              onClick={(e) => {
+                // Only close if clicking directly on backdrop, not on menu content
+                if (e.target === e.currentTarget) {
+                  setIsMenuOpen(false);
+                }
+              }}
               style={{
                 position: 'fixed',
                 top: 0,
@@ -278,7 +356,8 @@ const Header = ({ onNavigate, activeView = 'main', showWelcome = false }: Header
                 bottom: 0,
                 backgroundColor: 'rgba(0, 0, 0, 0.95)',
                 backdropFilter: 'blur(20px)',
-                zIndex: 999
+                zIndex: 999,
+                cursor: 'pointer'
               }}
             />
 
@@ -288,6 +367,7 @@ const Header = ({ onNavigate, activeView = 'main', showWelcome = false }: Header
               initial="closed"
               animate="open"
               exit="closed"
+              onClick={(e) => e.stopPropagation()}
               style={{
                 position: 'fixed',
                 top: 0,
@@ -298,8 +378,9 @@ const Header = ({ onNavigate, activeView = 'main', showWelcome = false }: Header
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
-                zIndex: 1000,
-                padding: 'var(--spacing-xl)'
+                zIndex: 1001,
+                padding: 'var(--spacing-xl)',
+                pointerEvents: 'auto'
               }}
             >
               {/* Navigation Items */}
@@ -378,7 +459,7 @@ const Header = ({ onNavigate, activeView = 'main', showWelcome = false }: Header
                 }}
               >
                 <p style={{ margin: 0 }}>
-                  Portfolio 2K25
+                  Portfolio 2K26
                 </p>
               </motion.div>
             </motion.div>
