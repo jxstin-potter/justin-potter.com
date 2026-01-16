@@ -1,7 +1,7 @@
 import React, { useRef, useMemo, memo } from 'react';
 import { motion } from 'framer-motion';
 import { ProjectData } from '../types';
-import { useProjectHover, useDisplayTime } from '../utils/hooks';
+import { useDisplayTime } from '../utils/hooks';
 import { formatDisplayTime } from '../utils/helpers';
 import Footer from '../components/layout/Footer';
 import HeroSection from '../components/sections/HeroSection';
@@ -52,7 +52,6 @@ const MainContent = ({
   }, [welcomeTransitionComplete, welcomeTargetNameParts, setHoverTargetNameParts]);
 
   // Use shared hooks for consistent behavior
-  useProjectHover(hoveredProject); // Triggers animation key updates
   const currentTime = useDisplayTime();
 
   // Memoize projects array to prevent unnecessary re-renders

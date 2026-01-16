@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 import { DURATION, EASING } from '../../utils/animations';
@@ -179,14 +179,14 @@ const Header = ({
               transition={{ duration: DURATION.fast, ease: EASING }}
               onMouseEnter={() => setIsLogoHovered(true)}
               onMouseLeave={() => setIsLogoHovered(false)}
-              onClick={(e) => {
+              onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
                 e.preventDefault();
                 if (onNavigate) {
                   onNavigate('main');
                 }
                 setIsMenuOpen(false);
               }}
-              onKeyDown={(e) => {
+              onKeyDown={(e: React.KeyboardEvent<HTMLAnchorElement>) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault();
                   if (onNavigate) {
@@ -245,11 +245,11 @@ const Header = ({
                     href="#"
                     onMouseEnter={() => setHoveredNavItem(item.name)}
                     onMouseLeave={() => setHoveredNavItem(null)}
-                    onClick={(e) => {
+                    onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
                       e.preventDefault();
                       handleNavClick(item.view);
                     }}
-                    onKeyDown={(e) => {
+                    onKeyDown={(e: React.KeyboardEvent<HTMLAnchorElement>) => {
                       if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
                         handleNavClick(item.view);
@@ -307,11 +307,11 @@ const Header = ({
             {/* Mobile Menu Button - Transforms to X when menu is open */}
             <motion.button
               className="mobile-menu-button"
-              onClick={(e) => {
+              onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                 e.stopPropagation();
                 setIsMenuOpen(!isMenuOpen);
               }}
-              onKeyDown={(e) => {
+              onKeyDown={(e: React.KeyboardEvent<HTMLButtonElement>) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault();
                   setIsMenuOpen(!isMenuOpen);
@@ -396,7 +396,7 @@ const Header = ({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: DURATION.normal, ease: EASING }}
-              onClick={(e) => {
+              onClick={(e: React.MouseEvent<HTMLDivElement>) => {
                 // Only close if clicking directly on backdrop, not on menu content
                 if (e.target === e.currentTarget) {
                   setIsMenuOpen(false);
@@ -422,7 +422,7 @@ const Header = ({
               initial="closed"
               animate="open"
               exit="closed"
-              onClick={(e) => e.stopPropagation()}
+              onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
               role="menu"
               aria-label="Mobile navigation menu"
               style={{
@@ -457,11 +457,11 @@ const Header = ({
                     >
                       <motion.a
                         href="#"
-                        onClick={(e) => {
+                        onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
                           e.preventDefault();
                           handleNavClick(item.view);
                         }}
-                        onKeyDown={(e) => {
+                        onKeyDown={(e: React.KeyboardEvent<HTMLAnchorElement>) => {
                           if (e.key === 'Enter' || e.key === ' ') {
                             e.preventDefault();
                             handleNavClick(item.view);

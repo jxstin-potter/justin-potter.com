@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import OptimizedImage from '../common/OptimizedImage';
 
 interface ProjectDetailHeroProps {
@@ -26,44 +26,6 @@ const ProjectDetailHero: React.FC<ProjectDetailHeroProps> = ({
   const textRef = useRef<HTMLDivElement | null>(null);
   const mediaRef = useRef<HTMLDivElement | null>(null);
   const titleRef = useRef<HTMLHeadingElement | null>(null);
-
-  useEffect(() => {
-    const logLayout = (reason: string) => {
-      const heroRect = heroRef.current?.getBoundingClientRect();
-      const textRect = textRef.current?.getBoundingClientRect();
-      const mediaRect = mediaRef.current?.getBoundingClientRect();
-      const titleRect = titleRef.current?.getBoundingClientRect();
-      const titleOverlapsMedia = Boolean(
-        titleRect &&
-          mediaRect &&
-          titleRect.right > mediaRect.left &&
-          titleRect.left < mediaRect.right
-      );
-      const textOverlapsMedia = Boolean(
-        textRect &&
-          mediaRect &&
-          textRect.right > mediaRect.left &&
-          textRect.left < mediaRect.right
-      );
-      const mediaStyles = mediaRef.current ? window.getComputedStyle(mediaRef.current) : null;
-      const textStyles = textRef.current ? window.getComputedStyle(textRef.current) : null;
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/3355fed9-9be5-4c30-a353-6450cdb51e60',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'ProjectDetailHero.tsx',message:'project-detail layout snapshot',data:{reason,hero:heroRect,text:textRect,media:mediaRect,title:titleRect,titleOverlapsMedia,textOverlapsMedia,mediaStyle:mediaStyles ? {position:mediaStyles.position,zIndex:mediaStyles.zIndex,overflow:mediaStyles.overflow} : null,textStyle:textStyles ? {position:textStyles.position,zIndex:textStyles.zIndex} : null,viewport:{w:window.innerWidth,h:window.innerHeight}},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'A'})}).catch(()=>{});
-      // #endregion
-    };
-
-    logLayout('mount');
-    const handleResize = () => logLayout('resize');
-    window.addEventListener('resize', handleResize);
-    const observer = new ResizeObserver(() => logLayout('resize-observer'));
-    if (heroRef.current) {
-      observer.observe(heroRef.current);
-    }
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      observer.disconnect();
-    };
-  }, []);
 
   return (
     <section className="project-detail-hero" ref={heroRef}>

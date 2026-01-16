@@ -1,12 +1,10 @@
 // Service Worker for Portfolio PWA
-const CACHE_NAME = 'justin-potter-portfolio-v1';
-const RUNTIME_CACHE = 'runtime-cache-v1';
+const CACHE_NAME = 'justin-potter-portfolio-v2';
+const RUNTIME_CACHE = 'runtime-cache-v2';
 
 // Assets to cache on install
 const PRECACHE_ASSETS = [
   '/',
-  '/static/css/main.css',
-  '/static/js/main.js',
 ];
 
 // Install event - cache static assets
@@ -48,6 +46,26 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  const isHtmlRequest =
+    event.request.mode === 'navigate' ||
+    (event.request.headers.get('accept') || '').includes('text/html');
+
+  if (isHtmlRequest) {
+    // Network-first for HTML to avoid stale cached shells after new deploys.
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          const responseToCache = response.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, responseToCache);
+          });
+          return response;
+        })
+        .catch(() => caches.match(event.request).then((cached) => cached || caches.match('/')))
+    );
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request)
       .then((cachedResponse) => {
@@ -72,12 +90,6 @@ self.addEventListener('fetch', (event) => {
               });
 
             return response;
-          })
-          .catch(() => {
-            // Return offline fallback if available
-            if (event.request.destination === 'document') {
-              return caches.match('/');
-            }
           });
       })
   );

@@ -81,7 +81,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           ease: EASING,
           clipPath: { duration: DURATION.fast, ease: EASING },
         }}
-        onMouseEnter={(e) => e.stopPropagation()}
+        onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
         style={{
           width: '100%',
           height: '213px',

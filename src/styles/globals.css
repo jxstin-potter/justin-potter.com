@@ -129,12 +129,6 @@ main {
   }
 }
 
-/* Font loading optimization */
-@font-face {
-  font-family: 'Inter';
-  font-display: swap;
-}
-
 /* Custom scrollbar styling - make it bigger */
 main::-webkit-scrollbar {
   width: 12px;
@@ -901,8 +895,8 @@ img {
     grid-template-columns: 1fr !important;
     grid-template-rows: auto auto !important;
     gap: var(--spacing-md) !important;
-    marginLeft: var(--spacing-sm) !important;
-    marginRight: var(--spacing-sm) !important;
+    margin-left: var(--spacing-sm) !important;
+    margin-right: var(--spacing-sm) !important;
     position: relative !important;
     /* Prevent grid recalculation */
     grid-auto-rows: auto !important;
@@ -952,8 +946,8 @@ img {
     .hero-container {
       grid-template-columns: 1fr 1fr !important;
       grid-template-rows: auto auto !important;
-      marginLeft: unset !important;
-      marginRight: unset !important;
+      margin-left: unset !important;
+      margin-right: unset !important;
     }
     
     .hero-container > div:first-child {
@@ -994,7 +988,7 @@ img {
       position: unset !important;
       transform: unset !important;
       width: unset !important;
-      minWidth: unset !important;
+      min-width: unset !important;
     }
     
     /* Ensure Designer div maintains width on desktop */

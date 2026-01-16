@@ -1,3 +1,4 @@
+import React from 'react';
 import { motion } from 'framer-motion';
 import { DURATION, EASING } from '../../utils/animations';
 
@@ -73,10 +74,10 @@ const Footer = ({ showFooter = false }: FooterProps) => {
               padding: 0,
               fontFamily: 'inherit'
             }}
-            onMouseEnter={(e) => {
+            onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => {
               e.currentTarget.style.color = 'var(--lime-green)';
             }}
-            onMouseLeave={(e) => {
+            onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => {
               e.currentTarget.style.color = 'var(--primary-white)';
             }}
           >

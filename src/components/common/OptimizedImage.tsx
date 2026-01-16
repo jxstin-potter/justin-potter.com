@@ -201,7 +201,7 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
   // Otherwise, use a span for ref (invisible, just for observation)
   return (
     <>
-      <span ref={containerRef} style={{ display: 'none' }} aria-hidden="true" />
+      <span ref={containerRef as React.RefObject<HTMLSpanElement>} style={{ display: 'none' }} aria-hidden="true" />
       {pictureContent}
     </>
   );
