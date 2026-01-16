@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, memo } from 'react';
 
 interface ScrambleTextProps {
   /** Current text to display */
@@ -43,7 +43,6 @@ const ScrambleText: React.FC<ScrambleTextProps> = ({
   retriggerKey = 0
 }) => {
   const actualTarget = targetText !== undefined ? targetText : text;
-  
   // State for displayed text - always starts with base text
   const [displayText, setDisplayText] = useState<string>(text);
   
@@ -82,7 +81,7 @@ const ScrambleText: React.FC<ScrambleTextProps> = ({
   const startScramble = useCallback((from: string, to: string) => {
     // Clear any existing animation
     if (intervalRef.current) {
-      clearInterval(intervalRef.current);
+      cancelAnimationFrame(intervalRef.current as unknown as number);
       intervalRef.current = null;
     }
     
@@ -93,29 +92,31 @@ const ScrambleText: React.FC<ScrambleTextProps> = ({
     const fromChars = from.split('');
     const toChars = to.split('');
     const maxLength = Math.max(fromChars.length, toChars.length);
-    const intervalTime = scrambleDuration / iterations;
+    const frameTime = scrambleDuration / iterations;
     let iteration = 0;
+    let lastFrameTime = performance.now();
     
-    const animate = () => {
+    const animate = (currentTime: number) => {
       // Check if this animation was cancelled (target changed)
       if (targetRef.current !== to) {
-        if (intervalRef.current) {
-          clearInterval(intervalRef.current);
-          intervalRef.current = null;
-        }
         isAnimatingRef.current = false;
+        intervalRef.current = null;
         return;
       }
+      
+      // Throttle to frameTime
+      if (currentTime - lastFrameTime < frameTime) {
+        intervalRef.current = requestAnimationFrame(animate) as unknown as NodeJS.Timeout;
+        return;
+      }
+      lastFrameTime = currentTime;
       
       if (iteration >= iterations) {
         // Animation complete
         setDisplayText(to);
         displayTextRef.current = to;
         isAnimatingRef.current = false;
-        if (intervalRef.current) {
-          clearInterval(intervalRef.current);
-          intervalRef.current = null;
-        }
+        intervalRef.current = null;
         return;
       }
       
@@ -138,11 +139,13 @@ const ScrambleText: React.FC<ScrambleTextProps> = ({
       setDisplayText(scrambled);
       displayTextRef.current = scrambled;
       iteration++;
+      
+      // Continue animation
+      intervalRef.current = requestAnimationFrame(animate) as unknown as NodeJS.Timeout;
     };
     
-    // Start animation
-    intervalRef.current = setInterval(animate, intervalTime);
-    animate(); // Run immediately
+    // Start animation with requestAnimationFrame
+    intervalRef.current = requestAnimationFrame(animate) as unknown as NodeJS.Timeout;
   }, [scrambleDuration, iterations, getRandomChar, shouldPreserve]);
   
   // Handle targetText changes (for project name transitions)
@@ -257,16 +260,17 @@ const ScrambleText: React.FC<ScrambleTextProps> = ({
   useEffect(() => {
     return () => {
       if (intervalRef.current) {
-        clearInterval(intervalRef.current);
+        cancelAnimationFrame(intervalRef.current as unknown as number);
       }
     };
   }, []);
   
   return (
-    <span className={className} style={style}>
+    <span className={className} style={{ ...style, willChange: 'contents' }}>
       {displayText}
     </span>
   );
 };
 
-export default ScrambleText;
+// Memoize component to prevent unnecessary re-renders
+export default memo(ScrambleText);

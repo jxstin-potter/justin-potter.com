@@ -38,22 +38,20 @@ export const normalizeComingSoon = (parts: [string, string]): [string, string] =
 };
 
 /**
- * Formats time display - shows year when hovering project, current time otherwise
+ * Formats time display - always shows current time
  */
 export const formatDisplayTime = (
-  hoveredProject: { year: number } | null,
+  _hoveredProject: { year: number } | null,
   currentTime: Date
 ): string => {
   try {
-    return hoveredProject
-      ? hoveredProject.year.toString()
-      : currentTime.toLocaleTimeString('en-US', {
-          hour12: false,
-          hour: '2-digit',
-          minute: '2-digit',
-          second: '2-digit',
-        });
+    return currentTime.toLocaleTimeString('en-US', {
+      hour12: false,
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    });
   } catch (error) {
-    return hoveredProject ? hoveredProject.year.toString() : '00:00:00';
+    return '00:00:00';
   }
 };

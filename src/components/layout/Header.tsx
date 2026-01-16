@@ -1,23 +1,33 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
-import { DURATION, EASING } from '../utils/animations';
-import ScrambleText from './ScrambleText';
+import { useLocation } from 'react-router-dom';
+import { DURATION, EASING } from '../../utils/animations';
+import ScrambleText from '../animations/ScrambleText';
 
 interface HeaderProps {
   onNavigate?: (view: 'main' | 'about' | 'contact' | 'archive') => void;
   activeView?: 'main' | 'about' | 'contact' | 'archive';
-  showWelcome?: boolean;
+  delayUntilProjects?: boolean;
+  welcomeTransitionComplete?: boolean;
 }
 
-const Header = ({ onNavigate, activeView = 'main', showWelcome = false }: HeaderProps) => {
+const Header = ({
+  onNavigate,
+  activeView = 'main',
+  delayUntilProjects = false,
+  welcomeTransitionComplete = true,
+}: HeaderProps) => {
+  const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const isCommerceflowRoute = location.pathname === '/projects/commerceflow';
   const [isLogoHovered, setIsLogoHovered] = useState(false);
   const [hoveredNavItem, setHoveredNavItem] = useState<string | null>(null);
   // Track retrigger keys for logo and nav items to force rescramble
   const [logoRetriggerKey, setLogoRetriggerKey] = useState(0);
-  const [navItemsRetriggerKey, setNavItemsRetriggerKey] = useState(0);
   const navItemRetriggerKeysRef = useRef<Record<string, number>>({});
   const lastHoveredNavItemRef = useRef<string | null>(null);
+  const introScrambleTriggeredRef = useRef(false);
+  const introScrambleActive = welcomeTransitionComplete && !introScrambleTriggeredRef.current;
 
   // Prevent body scroll when menu is open
   useEffect(() => {
@@ -110,28 +120,31 @@ const Header = ({ onNavigate, activeView = 'main', showWelcome = false }: Header
     prevLogoHoveredRef.current = isLogoHovered;
   }, [isLogoHovered]);
 
-  // Continuous scramble during intro sequence
   useEffect(() => {
-    if (!showWelcome) return;
-
-    // Continuously increment retrigger keys every 250ms to force continuous scrambling
-    // This affects both logo and all nav items
-    const intervalId = setInterval(() => {
+    if (welcomeTransitionComplete && !introScrambleTriggeredRef.current) {
       setLogoRetriggerKey(prev => prev + 1);
-      setNavItemsRetriggerKey(prev => prev + 1);
-    }, 250);
-
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [showWelcome]);
+      navItems.forEach((item) => {
+        navItemRetriggerKeysRef.current[item.name] =
+          (navItemRetriggerKeysRef.current[item.name] || 0) + 1;
+      });
+      introScrambleTriggeredRef.current = true;
+    }
+    if (!welcomeTransitionComplete) {
+      introScrambleTriggeredRef.current = false;
+    }
+  }, [welcomeTransitionComplete, navItems]);
 
   return (
     <>
       <motion.header
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        initial={delayUntilProjects ? { y: -40, opacity: 0 } : false}
+        animate={
+          delayUntilProjects && !welcomeTransitionComplete
+            ? { y: -40, opacity: 0 }
+            : { y: 0, opacity: 1 }
+        }
+        transition={{ duration: DURATION.fast, ease: EASING }}
+        className={`site-header${isCommerceflowRoute ? ' site-header-commerceflow' : ''}`}
         style={{
           position: 'fixed',
           top: 0,
@@ -139,24 +152,29 @@ const Header = ({ onNavigate, activeView = 'main', showWelcome = false }: Header
           right: 0,
           zIndex: 1002,
           backgroundColor: 'transparent',
-          transition: 'all 0.3s ease'
+          transition: 'all var(--motion-duration-normal) var(--motion-ease-standard)'
         }}
       >
         <div style={{ width: '100%', margin: '0', padding: '0' }}>
-          <nav style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            paddingTop: '0',
-            paddingBottom: 'var(--spacing-sm)',
-            paddingRight: 'var(--header-right-padding)',
-            paddingLeft: '0',
-            width: '100%'
-          }}>
+          <nav 
+            role="navigation"
+            aria-label="Main navigation"
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              paddingTop: '0',
+              paddingBottom: 'var(--spacing-sm)',
+              paddingRight: 'var(--header-right-padding)',
+              paddingLeft: '0',
+              width: '100%'
+            }}
+          >
             {/* Logo/Home Link */}
             <motion.a
               href="#"
               whileTap={{ scale: 0.95 }}
+              transition={{ duration: DURATION.fast, ease: EASING }}
               onMouseEnter={() => setIsLogoHovered(true)}
               onMouseLeave={() => setIsLogoHovered(false)}
               onClick={(e) => {
@@ -166,7 +184,19 @@ const Header = ({ onNavigate, activeView = 'main', showWelcome = false }: Header
                 }
                 setIsMenuOpen(false);
               }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  if (onNavigate) {
+                    onNavigate('main');
+                  }
+                  setIsMenuOpen(false);
+                }
+              }}
               className="nav-link"
+              aria-label="Home - Justin Potter Portfolio"
+              role="button"
+              tabIndex={0}
               style={{
                 fontSize: '0.7rem',
                 fontWeight: '400',
@@ -178,14 +208,14 @@ const Header = ({ onNavigate, activeView = 'main', showWelcome = false }: Header
                 cursor: 'pointer',
                 paddingLeft: 'var(--header-left-padding)',
                 marginLeft: '0',
-                marginTop: 'var(--header-top-padding)',
+                marginTop: 'calc(var(--header-top-padding) + 0.5rem)',
               }}
             >
               <span className="nav-bracket">[</span>
               <ScrambleText
                 text="Justin Potter"
-                isHovered={isLogoHovered || showWelcome}
-                scrambleDuration={400}
+                isHovered={isLogoHovered}
+                scrambleDuration={450}
                 preserveSpaces={true}
                 retriggerKey={logoRetriggerKey}
               />
@@ -197,14 +227,16 @@ const Header = ({ onNavigate, activeView = 'main', showWelcome = false }: Header
               className="desktop-nav"
               style={{
                 display: 'flex',
-                gap: 'var(--spacing-xl)',
+                gap: 'calc(var(--spacing-xl) + 1.5rem)',
                 alignItems: 'center',
-                flexWrap: 'wrap'
+                flexWrap: 'wrap',
+                marginTop: 'calc(var(--header-top-padding) + 0.5rem)',
+                transform: 'translateX(-4.3rem)'
               }}
             >
               {navItems.map((item) => {
                 const isActive = activeView === item.view;
-                const isHovered = hoveredNavItem === item.name;
+                const isHovered = hoveredNavItem === item.name || introScrambleActive;
                 return (
                   <motion.a
                     key={item.name}
@@ -215,10 +247,21 @@ const Header = ({ onNavigate, activeView = 'main', showWelcome = false }: Header
                       e.preventDefault();
                       handleNavClick(item.view);
                     }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        handleNavClick(item.view);
+                      }
+                    }}
                     whileTap={{ scale: 0.95 }}
+                    transition={{ duration: DURATION.fast, ease: EASING }}
                     className={`nav-link ${isActive ? 'nav-link-active' : ''}`}
+                    aria-label={`Navigate to ${item.label}`}
+                    aria-current={isActive ? 'page' : undefined}
+                    role="link"
+                    tabIndex={0}
                     style={{
-                      fontSize: '0.7rem',
+                      fontSize: '0.68rem',
                       fontWeight: '400',
                       color: 'var(--primary-white)',
                       textDecoration: 'none',
@@ -240,10 +283,10 @@ const Header = ({ onNavigate, activeView = 'main', showWelcome = false }: Header
                     </span>
                     <ScrambleText
                       text={item.name}
-                      isHovered={isHovered || showWelcome}
-                      scrambleDuration={400}
+                      isHovered={isHovered}
+                      scrambleDuration={450}
                       preserveSpaces={true}
-                      retriggerKey={(navItemRetriggerKeysRef.current[item.name] || 0) + navItemsRetriggerKey}
+                      retriggerKey={navItemRetriggerKeysRef.current[item.name] || 0}
                     />
                     <span 
                       className={`nav-bracket ${isActive ? 'nav-bracket-active' : ''}`}
@@ -266,8 +309,17 @@ const Header = ({ onNavigate, activeView = 'main', showWelcome = false }: Header
                 e.stopPropagation();
                 setIsMenuOpen(!isMenuOpen);
               }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  setIsMenuOpen(!isMenuOpen);
+                }
+              }}
               whileTap={{ scale: 0.95 }}
+              transition={{ duration: DURATION.fast, ease: EASING }}
               aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={isMenuOpen}
+              aria-controls="mobile-menu"
               style={{
                 display: 'none',
                 background: 'none',
@@ -294,7 +346,7 @@ const Header = ({ onNavigate, activeView = 'main', showWelcome = false }: Header
                   rotate: isMenuOpen ? 45 : 0,
                   y: isMenuOpen ? 8 : 0
                 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: DURATION.fast, ease: EASING }}
                 style={{
                   width: '20px',
                   height: '2px',
@@ -306,7 +358,7 @@ const Header = ({ onNavigate, activeView = 'main', showWelcome = false }: Header
                 animate={{
                   opacity: isMenuOpen ? 0 : 1
                 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: DURATION.fast, ease: EASING }}
                 style={{
                   width: '20px',
                   height: '2px',
@@ -319,7 +371,7 @@ const Header = ({ onNavigate, activeView = 'main', showWelcome = false }: Header
                   rotate: isMenuOpen ? -45 : 0,
                   y: isMenuOpen ? -8 : 0
                 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: DURATION.fast, ease: EASING }}
                 style={{
                   width: '20px',
                   height: '2px',
@@ -341,7 +393,7 @@ const Header = ({ onNavigate, activeView = 'main', showWelcome = false }: Header
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: DURATION.normal, ease: EASING }}
               onClick={(e) => {
                 // Only close if clicking directly on backdrop, not on menu content
                 if (e.target === e.currentTarget) {
@@ -363,11 +415,14 @@ const Header = ({ onNavigate, activeView = 'main', showWelcome = false }: Header
 
             {/* Menu Content */}
             <motion.div
+              id="mobile-menu"
               variants={menuVariants}
               initial="closed"
               animate="open"
               exit="closed"
               onClick={(e) => e.stopPropagation()}
+              role="menu"
+              aria-label="Mobile navigation menu"
               style={{
                 position: 'fixed',
                 top: 0,
@@ -390,62 +445,79 @@ const Header = ({ onNavigate, activeView = 'main', showWelcome = false }: Header
                 gap: 'var(--spacing-lg)',
                 alignItems: 'center'
               }}>
-                {navItems.map((item, index) => (
-                  <motion.div
-                    key={item.name}
-                    variants={itemVariants}
-                    style={{ textAlign: 'center' }}
-                  >
-                    <motion.a
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleNavClick(item.view);
-                      }}
-                      whileHover={{ 
-                        scale: 1.05,
-                        x: 10
-                      }}
-                      whileTap={{ scale: 0.95 }}
-                      style={{
-                        fontSize: 'clamp(2rem, 6vw, 4rem)',
-                        fontWeight: 400,
-                        color: 'var(--primary-white)',
-                        textDecoration: 'none',
-                        letterSpacing: '0.05em',
-                        display: 'block',
-                        cursor: 'pointer',
-                        position: 'relative'
-                      }}
+                {navItems.map((item, index) => {
+                  const isActive = activeView === item.view;
+                  const menuItem = (
+                    <motion.div
+                      key={item.name}
+                      variants={itemVariants}
+                      style={{ textAlign: 'center' }}
                     >
-                      <span style={{ opacity: 0.3 }}>[</span>
-                      {item.name}
-                      <span style={{ opacity: 0.3 }}>]</span>
-                    </motion.a>
-                    <motion.p
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.3 + index * 0.1 }}
-                      style={{
-                        fontSize: '0.875rem',
-                        color: 'var(--primary-white)',
-                        marginTop: '0.5rem',
-                        fontWeight: 300,
-                        letterSpacing: '0.1em',
-                        textTransform: 'uppercase'
-                      }}
-                    >
-                      {item.label}
-                    </motion.p>
-                  </motion.div>
-                ))}
+                      <motion.a
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleNavClick(item.view);
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            handleNavClick(item.view);
+                          } else if (e.key === 'Escape') {
+                            setIsMenuOpen(false);
+                          }
+                        }}
+                        whileHover={{ 
+                          scale: 1.05,
+                          x: 10
+                        }}
+                        whileTap={{ scale: 0.95 }}
+                        transition={{ duration: DURATION.fast, ease: EASING }}
+                        role="menuitem"
+                        aria-label={`Navigate to ${item.label}`}
+                        aria-current={isActive ? 'page' : undefined}
+                        tabIndex={0}
+                        style={{
+                          fontSize: 'clamp(2rem, 6vw, 4rem)',
+                          fontWeight: 400,
+                          color: 'var(--primary-white)',
+                          textDecoration: 'none',
+                          letterSpacing: '0.05em',
+                          display: 'block',
+                          cursor: 'pointer',
+                          position: 'relative'
+                        }}
+                      >
+                        <span style={{ opacity: 0.3 }}>[</span>
+                        {item.name}
+                        <span style={{ opacity: 0.3 }}>]</span>
+                      </motion.a>
+                      <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: DURATION.fast, delay: 0.3 + index * 0.1, ease: EASING }}
+                        style={{
+                          fontSize: '0.875rem',
+                          color: 'var(--primary-white)',
+                          marginTop: '0.5rem',
+                          fontWeight: 300,
+                          letterSpacing: '0.1em',
+                          textTransform: 'uppercase'
+                        }}
+                      >
+                        {item.label}
+                      </motion.p>
+                    </motion.div>
+                  );
+                  return menuItem;
+                })}
               </div>
 
               {/* Footer Info in Menu */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 }}
+              transition={{ duration: DURATION.normal, delay: 0.6, ease: EASING }}
                 style={{
                   position: 'absolute',
                   bottom: 'var(--spacing-lg)',

@@ -20,19 +20,16 @@ export const useProjectHover = (hoveredProject: ProjectData | null) => {
 /**
  * Shared hook for managing current time display
  */
-export const useDisplayTime = (hoveredProject: ProjectData | null) => {
+export const useDisplayTime = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
-    // Only update time if not hovering over a project
-    if (!hoveredProject) {
-      const timer = setInterval(() => {
-        setCurrentTime(new Date());
-      }, 1000);
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
 
-      return () => clearInterval(timer);
-    }
-  }, [hoveredProject]);
+    return () => clearInterval(timer);
+  }, []);
 
   return currentTime;
 };

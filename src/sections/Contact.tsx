@@ -1,9 +1,9 @@
-import React from 'react';
 import { motion } from 'framer-motion';
+import { DURATION, EASING } from '../utils/animations';
 import emailIcon from '../assets/email.png';
 import linkedinIcon from '../assets/linkedin.png';
 import githubIcon from '../assets/github.png';
-import Footer from '../components/Footer';
+import Footer from '../components/layout/Footer';
 
 const Contact = () => {
   const contactInfo = {
@@ -51,7 +51,7 @@ const Contact = () => {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: DURATION.slow, ease: EASING }}
           style={{ textAlign: 'center', marginBottom: 'var(--spacing-xl)' }}
         >
           <motion.div style={{ 
@@ -84,7 +84,7 @@ const Contact = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: DURATION.slow, delay: 0.2, ease: EASING }}
             style={{ 
               fontSize: 'clamp(1rem, 2vw, 1.25rem)',
               lineHeight: 1.8,
@@ -102,7 +102,7 @@ const Contact = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
+            transition={{ duration: DURATION.slow, delay: 0.4, ease: EASING }}
             style={{ 
               display: 'grid', 
               gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
@@ -111,13 +111,13 @@ const Contact = () => {
             }}
           >
             <motion.div
-              whileHover={{ scale: 1.05, y: -5 }}
+              whileHover={{ scale: 1.05, y: -5, transition: { duration: DURATION.fast, ease: EASING } }}
               style={{ 
                 padding: 'var(--spacing-md)',
                 backgroundColor: 'var(--dark-grey)',
                 borderRadius: '8px',
                 border: '1px solid var(--medium-grey)',
-                transition: 'all 0.3s ease'
+                transition: 'all var(--motion-duration-normal) var(--motion-ease-standard)'
               }}
             >
               <div style={{ 
@@ -150,7 +150,7 @@ const Contact = () => {
                 color: 'var(--primary-white)',
                 fontSize: '1rem',
                 textDecoration: 'none',
-                transition: 'color 0.3s ease'
+                transition: 'color var(--motion-duration-fast) var(--motion-ease-standard)'
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.color = 'var(--medium-grey)';
@@ -163,13 +163,13 @@ const Contact = () => {
             </motion.div>
             
             <motion.div
-              whileHover={{ scale: 1.05, y: -5 }}
+              whileHover={{ scale: 1.05, y: -5, transition: { duration: DURATION.fast, ease: EASING } }}
               style={{ 
                 padding: 'var(--spacing-md)',
                 backgroundColor: 'var(--dark-grey)',
                 borderRadius: '8px',
                 border: '1px solid var(--medium-grey)',
-                transition: 'all 0.3s ease'
+                transition: 'all var(--motion-duration-normal) var(--motion-ease-standard)'
               }}
             >
               <div style={{ 
@@ -197,13 +197,13 @@ const Contact = () => {
             </motion.div>
             
             <motion.div
-              whileHover={{ scale: 1.05, y: -5 }}
+              whileHover={{ scale: 1.05, y: -5, transition: { duration: DURATION.fast, ease: EASING } }}
               style={{ 
                 padding: 'var(--spacing-md)',
                 backgroundColor: 'var(--dark-grey)',
                 borderRadius: '8px',
                 border: '1px solid var(--medium-grey)',
-                transition: 'all 0.3s ease'
+                transition: 'all var(--motion-duration-normal) var(--motion-ease-standard)'
               }}
             >
               <div style={{ 
@@ -236,7 +236,7 @@ const Contact = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.6 }}
+            transition={{ duration: DURATION.slow, delay: 0.6, ease: EASING }}
           >
             <h3 style={{
               fontSize: 'clamp(1.5rem, 3vw, 2rem)',
@@ -260,6 +260,7 @@ const Contact = () => {
                   rel="noopener noreferrer"
                   whileHover={{ scale: 1.1, y: -5 }}
                   whileTap={{ scale: 0.95 }}
+                  transition={{ duration: DURATION.fast, ease: EASING }}
                   style={{
                     display: 'flex',
                     flexDirection: 'column',
@@ -270,7 +271,7 @@ const Contact = () => {
                     border: '1px solid var(--medium-grey)',
                     textDecoration: 'none',
                     color: 'var(--primary-white)',
-                    transition: 'all 0.3s ease',
+                    transition: 'all var(--motion-duration-normal) var(--motion-ease-standard)',
                     minWidth: '120px'
                   }}
                 >

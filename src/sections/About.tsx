@@ -1,9 +1,8 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { DURATION, EASING } from '../utils/animations';
 import linkedinIcon from '../assets/linkedin.png';
 import githubIcon from '../assets/github.png';
-import Footer from '../components/Footer';
+import Footer from '../components/layout/Footer';
 
 const About = () => {
   const email = 'Bjmpotter@gmail.com';
@@ -162,7 +161,7 @@ const About = () => {
                 textDecoration: 'none',
                 color: 'var(--primary-white)',
                 fontFamily: 'var(--font-primary)',
-                transition: 'opacity 0.2s ease',
+                transition: 'opacity var(--motion-duration-fast) var(--motion-ease-standard)',
                 textAlign: 'right'
               }}
               onMouseEnter={(e) => {
@@ -189,7 +188,7 @@ const About = () => {
                       objectFit: 'contain',
                       filter: 'brightness(0) invert(1)',
                       opacity: '1',
-                      transition: 'opacity 0.2s ease',
+                      transition: 'opacity var(--motion-duration-fast) var(--motion-ease-standard)',
                       pointerEvents: 'none'
                     }}
                   />

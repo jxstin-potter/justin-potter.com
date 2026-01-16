@@ -1,6 +1,5 @@
-import React from 'react';
 import { motion } from 'framer-motion';
-import { DURATION, EASING } from '../utils/animations';
+import { DURATION, EASING } from '../../utils/animations';
 
 interface FooterProps {
   showFooter?: boolean;
@@ -31,9 +30,6 @@ const Footer = ({ showFooter = false }: FooterProps) => {
         overflow: 'hidden',
         zIndex: 10
       }}
-      onAnimationComplete={() => {
-        // Animation complete
-      }}
     >
       <div style={{
         position: 'relative',
@@ -46,9 +42,10 @@ const Footer = ({ showFooter = false }: FooterProps) => {
       }}>
         <div style={{
           display: 'flex',
-          gap: 'var(--spacing-md)',
+          gap: 'calc(var(--spacing-md) + 16.8rem)',
           alignItems: 'center',
-          flexWrap: 'wrap'
+          flexWrap: 'wrap',
+          transform: 'translateX(-0.75rem)'
         }}>
           <p style={{
             color: 'var(--primary-white)',
@@ -59,10 +56,6 @@ const Footer = ({ showFooter = false }: FooterProps) => {
           }}>
             © {currentYear}
           </p>
-          <span style={{
-            color: 'var(--medium-grey)',
-            fontSize: '0.75rem'
-          }}>•</span>
           <button
             onClick={() => {
               // Add imprint/privacy modal or page navigation here
@@ -73,7 +66,7 @@ const Footer = ({ showFooter = false }: FooterProps) => {
               fontWeight: 300,
               letterSpacing: '0.05em',
               textDecoration: 'none',
-              transition: 'color 0.3s ease',
+              transition: 'color var(--motion-duration-fast) var(--motion-ease-standard)',
               cursor: 'pointer',
               background: 'none',
               border: 'none',
@@ -92,7 +85,7 @@ const Footer = ({ showFooter = false }: FooterProps) => {
         </div>
         <p className="footer-credit" style={{
           position: 'absolute',
-          left: 'calc(0.5rem + 320px * 3 + 1rem * 3)',
+          left: 'calc(0.5rem + 320px * 3 + 1rem * 3.2)',
           color: 'var(--medium-grey)',
           fontSize: '0.75rem',
           margin: 0,

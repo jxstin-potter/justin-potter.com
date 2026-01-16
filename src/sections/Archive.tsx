@@ -1,8 +1,7 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import project1Image from '../assets/landingpage.png';
 import { DURATION, EASING } from '../utils/animations';
-import Footer from '../components/Footer';
+import Footer from '../components/layout/Footer';
 
 const Archive = () => {
 

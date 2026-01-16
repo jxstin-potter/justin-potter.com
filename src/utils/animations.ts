@@ -2,12 +2,20 @@ import { Variants } from 'framer-motion';
 
 // Consistent easing curve used throughout the application
 export const EASING = [0.25, 0.1, 0.25, 1] as const;
+export const EASING_CSS = 'cubic-bezier(0.25, 0.1, 0.25, 1)' as const;
 
 // Standard animation durations
 export const DURATION = {
   fast: 0.2,
   normal: 0.4,
   slow: 0.6,
+} as const;
+
+// Reusable transitions for consistent motion timing
+export const TRANSITION = {
+  fast: { duration: DURATION.fast, ease: EASING },
+  normal: { duration: DURATION.normal, ease: EASING },
+  slow: { duration: DURATION.slow, ease: EASING },
 } as const;
 
 // Container animation variants - for staggered children
@@ -108,7 +116,7 @@ export const projectsContainerVariants: Variants = {
 };
 
 // Professional project card animation variant
-// Seamlessly integrated with container stagger pattern
+// Optimized with GPU acceleration (transform3d)
 export const projectCardVariants: Variants = {
   hidden: {
     opacity: 0,
@@ -126,6 +134,12 @@ export const projectCardVariants: Variants = {
       ease: EASING,
     },
   },
+};
+
+// Hook to check for reduced motion preference
+export const useReducedMotion = (): boolean => {
+  if (typeof window === 'undefined') return false;
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 };
 
 // Standard transition for hover effects

@@ -5,29 +5,69 @@
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes" />
     <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Justin Potter - Fullstack Developer Portfolio. Crafting seamless digital experiences with modern technologies."
-    />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <meta name="description" content="Justin Potter - Fullstack Developer Portfolio. Crafting seamless digital experiences with modern technologies." />
+    <meta name="keywords" content="Justin Potter, Fullstack Developer, Web Developer, Portfolio, React, TypeScript, Frontend Developer" />
+    <meta name="author" content="Justin Potter" />
+    <meta name="robots" content="index, follow" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.justin-potter.com/" />
+    <meta property="og:title" content="Justin Potter - Fullstack Developer Portfolio" />
+    <meta property="og:description" content="Crafting seamless digital experiences with modern technologies." />
+    <meta property="og:image" content="%PUBLIC_URL%/og-image.png" />
+    <meta property="og:site_name" content="Justin Potter Portfolio" />
+    <meta property="og:locale" content="en_US" />
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://www.justin-potter.com/" />
+    <meta name="twitter:title" content="Justin Potter - Fullstack Developer Portfolio" />
+    <meta name="twitter:description" content="Crafting seamless digital experiences with modern technologies." />
+    <meta name="twitter:image" content="%PUBLIC_URL%/og-image.png" />
+    <meta name="twitter:creator" content="@justinpotter" />
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://www.justin-potter.com/" />
+    
+    <!-- Preconnect for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    
+    <!-- Font loading with display swap -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
+    
+    <!-- Apple Touch Icon -->
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    
+    <!-- Manifest -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
-
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>Justin Potter - Portfolio</title>
+    
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Justin Potter",
+      "url": "https://www.justin-potter.com",
+      "jobTitle": "Fullstack Developer",
+      "description": "Fullstack Developer crafting seamless digital experiences with modern technologies.",
+      "sameAs": [
+        "https://www.linkedin.com/in/justin-mpotter/",
+        "https://github.com/whitelight-whiteheat"
+      ],
+      "email": "Bjmpotter@gmail.com",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Brooklyn",
+        "addressRegion": "NY",
+        "addressCountry": "US"
+      }
+    }
+    </script>
+    
+    <title>Justin Potter - Fullstack Developer Portfolio</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
