@@ -23,6 +23,20 @@ const WEB_VITALS_THRESHOLDS = {
   FCP: { good: 1800, poor: 3000 },
 };
 
+const devLog = (...args: unknown[]) => {
+  if (process.env.NODE_ENV === 'development') {
+    // eslint-disable-next-line no-console
+    console.log(...args);
+  }
+};
+
+const devError = (...args: unknown[]) => {
+  if (process.env.NODE_ENV === 'development') {
+    // eslint-disable-next-line no-console
+    console.error(...args);
+  }
+};
+
 // Determine rating for a metric
 const getRating = (name: string, value: number): 'good' | 'needs-improvement' | 'poor' => {
   const thresholds = WEB_VITALS_THRESHOLDS[name as keyof typeof WEB_VITALS_THRESHOLDS];
@@ -46,7 +60,7 @@ export const reportWebVital = (metric: WebVitalMetric) => {
   // Log to console in development
   if (process.env.NODE_ENV === 'development') {
     const emoji = rating === 'good' ? '✅' : rating === 'needs-improvement' ? '⚠️' : '❌';
-    console.log(`${emoji} Web Vital [${rating.toUpperCase()}]:`, {
+    devLog(`${emoji} Web Vital [${rating.toUpperCase()}]:`, {
       name: metric.name,
       value: `${metric.value.toFixed(2)}${metric.name === 'CLS' ? '' : 'ms'}`,
       id: metric.id,
@@ -75,7 +89,7 @@ export const reportError = (error: Error, errorInfo?: ErrorInfo) => {
     userAgent: navigator.userAgent,
   };
 
-  console.error('Error caught:', error, errorInfo);
+  devError('Error caught:', error, errorInfo);
 
   // In production, send to error tracking service (e.g., Sentry)
   // Example: Sentry.captureException(error, { contexts: { react: errorInfo } });
@@ -100,7 +114,7 @@ export const measurePerformance = (name: string, fn: () => void) => {
     
     const measure = performance.getEntriesByName(name)[0];
     if (measure) {
-      console.log(`${name} took ${measure.duration.toFixed(2)}ms`);
+      devLog(`${name} took ${measure.duration.toFixed(2)}ms`);
     }
   } else {
     fn();
@@ -126,7 +140,7 @@ export const logBundleSize = () => {
       };
 
       if (process.env.NODE_ENV === 'development') {
-        console.log('📦 Bundle size:', bundleInfo);
+        devLog('📦 Bundle size:', bundleInfo);
       }
 
       // Report TTFB (Time to First Byte)

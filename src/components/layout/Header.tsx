@@ -11,6 +11,12 @@ interface HeaderProps {
   welcomeTransitionComplete?: boolean;
 }
 
+const NAV_ITEMS = [
+  { name: 'Work', view: 'main' as const, label: 'Projects' },
+  { name: 'Info', view: 'about' as const, label: 'About' },
+  { name: 'Archive', view: 'archive' as const, label: 'Archive' }
+];
+
 const Header = ({
   onNavigate,
   activeView = 'main',
@@ -41,11 +47,7 @@ const Header = ({
     };
   }, [isMenuOpen]);
 
-  const navItems = [
-    { name: 'Work', view: 'main' as const, label: 'Projects' },
-    { name: 'Info', view: 'about' as const, label: 'About' },
-    { name: 'Archive', view: 'archive' as const, label: 'Archive' }
-  ];
+  const navItems = NAV_ITEMS;
 
   const menuVariants: Variants = {
     closed: {

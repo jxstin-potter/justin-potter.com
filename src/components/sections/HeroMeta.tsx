@@ -69,7 +69,6 @@ const HeroMeta: React.FC<HeroMetaProps> = ({
       roleIntroTriggeredRef.current = false;
     }
   }, [welcomeTransitionComplete]);
-  
 
   return (
     <div
@@ -320,12 +319,13 @@ const HeroMeta: React.FC<HeroMetaProps> = ({
           </span>
           <span
             style={{
-              position: 'absolute',
+              position: 'static',
               top: 0,
               right: 0,
               lineHeight: 1.2,
               whiteSpace: 'nowrap',
-              transform: 'none'
+              transform: 'none',
+              marginLeft: '-7.3rem'
             }}
           >
             <ScrambleText

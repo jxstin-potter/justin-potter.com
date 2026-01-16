@@ -12,6 +12,13 @@ import {
   reportError 
 } from './utils/performance';
 
+const devLog = (...args: unknown[]) => {
+  if (process.env.NODE_ENV === 'development') {
+    // eslint-disable-next-line no-console
+    console.log(...args);
+  }
+};
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
@@ -31,10 +38,10 @@ if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
     navigator.serviceWorker
       .register('/service-worker.js')
       .then((registration) => {
-        console.log('Service Worker registered:', registration);
+        devLog('Service Worker registered:', registration);
       })
       .catch((error) => {
-        console.log('Service Worker registration failed:', error);
+        devLog('Service Worker registration failed:', error);
       });
   });
 }
