@@ -1,13 +1,30 @@
-import React, { useState, useEffect, useRef, Suspense, lazy, useMemo } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  Suspense,
+  lazy,
+  useMemo,
+} from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import {
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import "./styles/globals.css";
 import Header from "./components/layout/Header";
 import MainContent from "./sections/MainContent";
 import { useWelcomeTransition } from "./hooks/useWelcomeTransition";
 import LoadingFallback from "./components/common/LoadingFallback";
 import { DURATION, EASING } from "./utils/animations";
-import { WELCOME_SCRAMBLE_TIMEOUT, WELCOME_HIDE_DELAY, FOCUS_DELAY } from "./utils/constants";
+import {
+  WELCOME_SCRAMBLE_TIMEOUT,
+  WELCOME_HIDE_DELAY,
+  FOCUS_DELAY,
+} from "./utils/constants";
 
 // Lazy load sections for code splitting
 const About = lazy(() => import("./sections/About"));
@@ -94,7 +111,8 @@ function App() {
       return;
     }
     // Only apply custom scroll on desktop (non-touch devices)
-    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    const isTouchDevice =
+      "ontouchstart" in window || navigator.maxTouchPoints > 0;
     if (isTouchDevice) {
       return; // Let native touch scrolling work on mobile
     }
@@ -113,7 +131,7 @@ function App() {
       const maxScroll = activeElement.scrollHeight - activeElement.clientHeight;
       const nextScroll = Math.min(
         Math.max(activeElement.scrollTop + velocity, 0),
-        maxScroll
+        maxScroll,
       );
       activeElement.scrollTop = nextScroll;
       velocity *= friction;
@@ -127,13 +145,14 @@ function App() {
 
     const handleWheel = (e: WheelEvent) => {
       // Use ref first (React way), fallback to querySelector for safety
-      const mainElement = mainElementRef.current || document.querySelector("main");
+      const mainElement =
+        mainElementRef.current || document.querySelector("main");
       // Only intercept vertical scrolling, allow horizontal scrolling for project cards
       if (mainElement && Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
         const target = e.target as HTMLElement;
         // Check if we're in a horizontally scrollable container (project cards)
         const horizontalScrollContainer = target.closest(
-          '[style*="overflow-x"]'
+          '[style*="overflow-x"]',
         );
         if (
           horizontalScrollContainer &&
@@ -155,7 +174,7 @@ function App() {
           activeElement = mainElement;
           velocity = Math.max(
             Math.min(velocity + e.deltaY * 0.35, maxVelocity),
-            -maxVelocity
+            -maxVelocity,
           );
 
           if (rafId === null) {
@@ -221,22 +240,22 @@ function App() {
       <a
         href="#main-content"
         style={{
-          position: 'absolute',
-          top: '-40px',
+          position: "absolute",
+          top: "-40px",
           left: 0,
-          background: 'var(--primary-white)',
-          color: 'var(--primary-black)',
-          padding: '8px 16px',
-          textDecoration: 'none',
+          background: "var(--primary-white)",
+          color: "var(--primary-black)",
+          padding: "8px 16px",
+          textDecoration: "none",
           zIndex: 10000,
-          fontFamily: 'var(--font-mono)',
-          fontSize: '0.875rem',
+          fontFamily: "var(--font-mono)",
+          fontSize: "0.875rem",
         }}
         onFocus={(e) => {
-          e.currentTarget.style.top = '0';
+          e.currentTarget.style.top = "0";
         }}
         onBlur={(e) => {
-          e.currentTarget.style.top = '-40px';
+          e.currentTarget.style.top = "-40px";
         }}
       >
         Skip to main content

@@ -1,6 +1,8 @@
-import { useState, useEffect, RefObject } from 'react';
+import { useState, useEffect, RefObject } from "react";
 
-export const useScrollTracking = (sectionRef: RefObject<HTMLElement | null>): boolean => {
+export const useScrollTracking = (
+  sectionRef: RefObject<HTMLElement | null>,
+): boolean => {
   const [showFooter, setShowFooter] = useState(false);
 
   useEffect(() => {
@@ -15,7 +17,10 @@ export const useScrollTracking = (sectionRef: RefObject<HTMLElement | null>): bo
         const style = window.getComputedStyle(current);
         const tagName = current.tagName.toLowerCase();
         // Look for main element with overflowY: auto
-        if (tagName === 'main' && (style.overflowY === 'auto' || style.overflowY === 'scroll')) {
+        if (
+          tagName === "main" &&
+          (style.overflowY === "auto" || style.overflowY === "scroll")
+        ) {
           return current;
         }
         current = current.parentElement;
@@ -36,7 +41,9 @@ export const useScrollTracking = (sectionRef: RefObject<HTMLElement | null>): bo
         const threshold = 20;
         const nearBottomThreshold = 30;
         // Only check near bottom if there's enough scrollable content and we're actually near the bottom
-        const nearBottom = maxScroll > nearBottomThreshold && scrollTop >= maxScroll - nearBottomThreshold;
+        const nearBottom =
+          maxScroll > nearBottomThreshold &&
+          scrollTop >= maxScroll - nearBottomThreshold;
         const pastThreshold = scrollTop >= threshold;
         const shouldShow = pastThreshold || nearBottom;
         setShowFooter(shouldShow);
@@ -45,8 +52,10 @@ export const useScrollTracking = (sectionRef: RefObject<HTMLElement | null>): bo
       // Check initial scroll position - should be 0, so footer should be hidden
       handleScroll();
 
-      scrollableMain.addEventListener('scroll', handleScroll, { passive: true });
-      return () => scrollableMain.removeEventListener('scroll', handleScroll);
+      scrollableMain.addEventListener("scroll", handleScroll, {
+        passive: true,
+      });
+      return () => scrollableMain.removeEventListener("scroll", handleScroll);
     };
 
     // Retry with delay to ensure DOM is ready

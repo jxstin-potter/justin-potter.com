@@ -1,6 +1,6 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { EASING } from '../../utils/animations';
+import React from "react";
+import { motion } from "framer-motion";
+import { EASING } from "../../utils/animations";
 
 interface SkeletonLoaderProps {
   width?: string;
@@ -10,10 +10,10 @@ interface SkeletonLoaderProps {
 }
 
 const SkeletonLoader: React.FC<SkeletonLoaderProps> = ({
-  width = '100%',
-  height = '1rem',
-  borderRadius = '4px',
-  className = '',
+  width = "100%",
+  height = "1rem",
+  borderRadius = "4px",
+  className = "",
 }) => {
   return (
     <motion.div
@@ -30,7 +30,7 @@ const SkeletonLoader: React.FC<SkeletonLoaderProps> = ({
         width,
         height,
         borderRadius,
-        backgroundColor: 'var(--dark-grey)',
+        backgroundColor: "var(--dark-grey)",
       }}
       aria-label="Loading"
       role="status"

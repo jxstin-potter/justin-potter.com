@@ -1,11 +1,13 @@
-import React from 'react';
-import { ProjectCarbonFootprint } from '../../data/projects';
+import React from "react";
+import { ProjectCarbonFootprint } from "../../data/projects";
 
 interface ProjectDetailCarbonProps {
   carbonFootprint: ProjectCarbonFootprint;
 }
 
-const ProjectDetailCarbon: React.FC<ProjectDetailCarbonProps> = ({ carbonFootprint }) => {
+const ProjectDetailCarbon: React.FC<ProjectDetailCarbonProps> = ({
+  carbonFootprint,
+}) => {
   return (
     <section className="project-detail-carbon">
       <p className="project-detail-section-title">Carbon Footprint</p>

@@ -1,7 +1,10 @@
-import React from 'react';
-import OptimizedImage, { OptimizedImageProps } from './OptimizedImage';
+import React from "react";
+import OptimizedImage, { OptimizedImageProps } from "./OptimizedImage";
 
-export interface OptimizedIconProps extends Omit<OptimizedImageProps, 'src' | 'alt'> {
+export interface OptimizedIconProps extends Omit<
+  OptimizedImageProps,
+  "src" | "alt"
+> {
   src: string;
   alt: string;
   size?: number | string; // Icon size in pixels or CSS value
@@ -12,7 +15,7 @@ export interface OptimizedIconProps extends Omit<OptimizedImageProps, 'src' | 'a
 /**
  * OptimizedIcon component for small icons (email, social media, etc.)
  * Automatically handles WebP/AVIF conversion and provides proper sizing
- * 
+ *
  * Usage:
  * <OptimizedIcon
  *   src="/icons/email.png"
@@ -30,7 +33,7 @@ const OptimizedIcon: React.FC<OptimizedIconProps> = ({
   style,
   ...rest
 }) => {
-  const sizeValue = typeof size === 'number' ? `${size}px` : size;
+  const sizeValue = typeof size === "number" ? `${size}px` : size;
 
   return (
     <OptimizedImage
@@ -42,8 +45,8 @@ const OptimizedIcon: React.FC<OptimizedIconProps> = ({
       style={{
         width: sizeValue,
         height: sizeValue,
-        objectFit: 'contain',
-        display: 'block',
+        objectFit: "contain",
+        display: "block",
         ...style,
       }}
       {...rest}

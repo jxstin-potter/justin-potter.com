@@ -1,8 +1,8 @@
-import { Variants } from 'framer-motion';
+import { Variants } from "framer-motion";
 
 // Consistent easing curve used throughout the application
 export const EASING = [0.25, 0.1, 0.25, 1] as const;
-export const EASING_CSS = 'cubic-bezier(0.25, 0.1, 0.25, 1)' as const;
+export const EASING_CSS = "cubic-bezier(0.25, 0.1, 0.25, 1)" as const;
 
 // Standard animation durations
 export const DURATION = {
@@ -138,8 +138,8 @@ export const projectCardVariants: Variants = {
 
 // Hook to check for reduced motion preference
 export const useReducedMotion = (): boolean => {
-  if (typeof window === 'undefined') return false;
-  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (typeof window === "undefined") return false;
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 };
 
 // Standard transition for hover effects

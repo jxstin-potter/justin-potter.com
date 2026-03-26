@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface ProjectDetailInfoProps {
   year: number;
@@ -34,10 +34,10 @@ const ProjectDetailInfo: React.FC<ProjectDetailInfoProps> = ({
         <a
           className="project-detail-link"
           href={liveUrl}
-          target={liveUrl === '#' ? undefined : '_blank'}
-          rel={liveUrl === '#' ? undefined : 'noopener noreferrer'}
+          target={liveUrl === "#" ? undefined : "_blank"}
+          rel={liveUrl === "#" ? undefined : "noopener noreferrer"}
         >
-          {liveUrl === '#' ? 'Coming soon' : 'Visit website'}
+          {liveUrl === "#" ? "Coming soon" : "Visit website"}
         </a>
       </div>
       {awards && (

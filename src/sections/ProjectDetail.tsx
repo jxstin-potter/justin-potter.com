@@ -1,15 +1,15 @@
-import { useMemo } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { getProjectBySlug } from '../data/projects';
-import ProjectDetailHero from '../components/sections/ProjectDetailHero';
-import ProjectDetailInfo from '../components/sections/ProjectDetailInfo';
+import { useMemo } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { getProjectBySlug } from "../data/projects";
+import ProjectDetailHero from "../components/sections/ProjectDetailHero";
+import ProjectDetailInfo from "../components/sections/ProjectDetailInfo";
 
 const ProjectDetail = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
   const project = useMemo(
     () => (slug ? getProjectBySlug(slug) : undefined),
-    [slug]
+    [slug],
   );
 
   if (!project) {
@@ -20,7 +20,11 @@ const ProjectDetail = () => {
           <p className="project-detail-summary">
             The project you are looking for does not exist yet.
           </p>
-          <button type="button" onClick={() => navigate('/')} className="project-detail-link">
+          <button
+            type="button"
+            onClick={() => navigate("/")}
+            className="project-detail-link"
+          >
             Back to Work
           </button>
         </div>
@@ -28,12 +32,13 @@ const ProjectDetail = () => {
     );
   }
 
-  const isCommerceflow = project.slug === 'commerceflow' || project.slug === '2du';
-  const showCommerceflowStackImages = project.slug === '2du';
+  const isCommerceflow =
+    project.slug === "commerceflow" || project.slug === "2du";
+  const showCommerceflowStackImages = project.slug === "2du";
 
   return (
     <section
-      className={`project-detail${isCommerceflow ? ' project-detail-commerceflow' : ''}`}
+      className={`project-detail${isCommerceflow ? " project-detail-commerceflow" : ""}`}
     >
       <ProjectDetailHero
         title={project.title}

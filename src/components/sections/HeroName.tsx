@@ -1,6 +1,6 @@
-import React from 'react';
-import ScrambleText from '../animations/ScrambleText';
-import { ProjectData } from '../../types';
+import React from "react";
+import ScrambleText from "../animations/ScrambleText";
+import { ProjectData } from "../../types";
 
 interface HeroNameProps {
   welcomeTransitionComplete: boolean;
@@ -18,35 +18,35 @@ const HeroName: React.FC<HeroNameProps> = ({
   retriggerKey,
 }) => {
   return (
-    <div 
+    <div
       className="hero-name-container"
       role="banner"
       aria-label="Portfolio name"
       style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        overflow: 'visible',
-        gridColumn: '1',
-        gridRow: '1 / 3',
-        position: 'relative',
-        transform: 'translateY(3rem)'
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-start",
+        overflow: "visible",
+        gridColumn: "1",
+        gridRow: "1 / 3",
+        position: "relative",
+        transform: "translateY(3rem)",
       }}
     >
       {/* Hidden spacers in normal flow to reserve space for layout stability */}
       <>
         <h1
           style={{
-            fontSize: 'clamp(3rem, 10.5vw, 8.5rem)',
+            fontSize: "clamp(3rem, 10.5vw, 8.5rem)",
             fontWeight: 450,
             lineHeight: 0.85,
-            letterSpacing: '-0.03em',
+            letterSpacing: "-0.03em",
             margin: 0,
-            fontFamily: 'var(--font-primary)',
-            textTransform: 'uppercase',
-            visibility: 'hidden',
-            pointerEvents: 'none',
-            whiteSpace: 'nowrap'
+            fontFamily: "var(--font-primary)",
+            textTransform: "uppercase",
+            visibility: "hidden",
+            pointerEvents: "none",
+            whiteSpace: "nowrap",
           }}
           aria-hidden="true"
         >
@@ -54,16 +54,16 @@ const HeroName: React.FC<HeroNameProps> = ({
         </h1>
         <h1
           style={{
-            fontSize: 'clamp(3rem, 10.5vw, 8.5rem)',
+            fontSize: "clamp(3rem, 10.5vw, 8.5rem)",
             fontWeight: 450,
             lineHeight: 0.85,
-            letterSpacing: '-0.03em',
+            letterSpacing: "-0.03em",
             margin: 0,
-            fontFamily: 'var(--font-primary)',
-            textTransform: 'uppercase',
-            visibility: 'hidden',
-            pointerEvents: 'none',
-            whiteSpace: 'nowrap'
+            fontFamily: "var(--font-primary)",
+            textTransform: "uppercase",
+            visibility: "hidden",
+            pointerEvents: "none",
+            whiteSpace: "nowrap",
           }}
           aria-hidden="true"
         >
@@ -76,17 +76,17 @@ const HeroName: React.FC<HeroNameProps> = ({
           <h1
             aria-label="Welcome"
             style={{
-              fontSize: 'clamp(3rem, 10.5vw, 8.5rem)',
+              fontSize: "clamp(3rem, 10.5vw, 8.5rem)",
               fontWeight: 450,
               lineHeight: 0.85,
-              letterSpacing: '-0.03em',
-              color: 'var(--primary-white)',
+              letterSpacing: "-0.03em",
+              color: "var(--primary-white)",
               margin: 0,
-              fontFamily: 'var(--font-primary)',
-              textTransform: 'uppercase',
-              position: 'absolute',
+              fontFamily: "var(--font-primary)",
+              textTransform: "uppercase",
+              position: "absolute",
               top: 0,
-              left: 0
+              left: 0,
             }}
           >
             <ScrambleText
@@ -104,18 +104,18 @@ const HeroName: React.FC<HeroNameProps> = ({
             <h1
               className="name-spacer-mobile"
               style={{
-                fontSize: 'clamp(3rem, 10.5vw, 8.5rem)',
+                fontSize: "clamp(3rem, 10.5vw, 8.5rem)",
                 fontWeight: 450,
                 lineHeight: 0.85,
-                letterSpacing: '-0.03em',
+                letterSpacing: "-0.03em",
                 margin: 0,
-                fontFamily: 'var(--font-primary)',
-                textTransform: 'uppercase',
-                position: 'relative',
-                visibility: 'hidden',
-                height: 'auto',
-                pointerEvents: 'none',
-                flexShrink: 0
+                fontFamily: "var(--font-primary)",
+                textTransform: "uppercase",
+                position: "relative",
+                visibility: "hidden",
+                height: "auto",
+                pointerEvents: "none",
+                flexShrink: 0,
               }}
               aria-hidden="true"
             >
@@ -127,19 +127,21 @@ const HeroName: React.FC<HeroNameProps> = ({
         // Two-part system for project hovers (after welcome transition)
         <>
           <h1
-            aria-label={hoveredProject ? `Project: ${hoveredProject.title}` : "Justin"}
+            aria-label={
+              hoveredProject ? `Project: ${hoveredProject.title}` : "Justin"
+            }
             style={{
-              fontSize: 'clamp(3rem, 10.5vw, 8.5rem)',
+              fontSize: "clamp(3rem, 10.5vw, 8.5rem)",
               fontWeight: 450,
               lineHeight: 0.85,
-              letterSpacing: '-0.03em',
-              color: 'var(--primary-white)',
+              letterSpacing: "-0.03em",
+              color: "var(--primary-white)",
               margin: 0,
-              fontFamily: 'var(--font-primary)',
-              textTransform: 'uppercase',
-              position: 'absolute',
+              fontFamily: "var(--font-primary)",
+              textTransform: "uppercase",
+              position: "absolute",
               top: 0,
-              left: 0
+              left: 0,
             }}
           >
             <ScrambleText
@@ -153,19 +155,23 @@ const HeroName: React.FC<HeroNameProps> = ({
           </h1>
           {targetNameParts[1] && (
             <h1
-              aria-label={hoveredProject ? `Project year: ${hoveredProject.year}` : "Potter"}
+              aria-label={
+                hoveredProject
+                  ? `Project year: ${hoveredProject.year}`
+                  : "Potter"
+              }
               style={{
-                fontSize: 'clamp(3rem, 10.5vw, 8.5rem)',
+                fontSize: "clamp(3rem, 10.5vw, 8.5rem)",
                 fontWeight: 450,
                 lineHeight: 0.85,
-                letterSpacing: '-0.03em',
-                color: 'var(--primary-white)',
+                letterSpacing: "-0.03em",
+                color: "var(--primary-white)",
                 margin: 0,
-                fontFamily: 'var(--font-primary)',
-                textTransform: 'uppercase',
-                position: 'absolute',
-                top: 'calc(clamp(3rem, 10.5vw, 8.5rem) * 0.85)',
-                left: 0
+                fontFamily: "var(--font-primary)",
+                textTransform: "uppercase",
+                position: "absolute",
+                top: "calc(clamp(3rem, 10.5vw, 8.5rem) * 0.85)",
+                left: 0,
               }}
             >
               <ScrambleText

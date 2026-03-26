@@ -1,6 +1,6 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { ProjectDetailData } from '../../data/projects';
+import React from "react";
+import { Link } from "react-router-dom";
+import { ProjectDetailData } from "../../data/projects";
 
 interface ProjectDetailNextProps {
   projects: ProjectDetailData[];

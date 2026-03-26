@@ -8,10 +8,10 @@ export const COMING_SOON_PROJECT_IDS = { min: 3, max: 5 } as const;
 
 // Coming soon project name mapping - unique identifiers for animation retriggering
 export const COMING_SOON_NAMES: Record<number, string> = {
-  2: 'COMINGA SOONA',
-  3: 'COMINGB SOONB',
-  4: 'COMINGC SOONC',
-  5: 'COMINGD SOOND'
+  2: "COMINGA SOONA",
+  3: "COMINGB SOONB",
+  4: "COMINGC SOONC",
+  5: "COMINGD SOOND",
 } as const;
 
 // Timing Constants (in milliseconds)

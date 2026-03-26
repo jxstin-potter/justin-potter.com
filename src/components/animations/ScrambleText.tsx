@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback, memo } from 'react';
+import React, { useState, useEffect, useRef, useCallback, memo } from "react";
 
 interface ScrambleTextProps {
   /** Current text to display */
@@ -35,119 +35,125 @@ const ScrambleText: React.FC<ScrambleTextProps> = ({
   isHovered = false,
   scrambleDuration = 200,
   iterations = 5,
-  scrambleChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-  className = '',
+  scrambleChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+  className = "",
   style = {},
   preserveSpaces = true,
   preserveSpecialChars = true,
-  retriggerKey = 0
+  retriggerKey = 0,
 }) => {
   const actualTarget = targetText !== undefined ? targetText : text;
   // State for displayed text - always starts with base text
   const [displayText, setDisplayText] = useState<string>(text);
-  
+
   // Refs to track animation state
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<number | null>(null);
   const isAnimatingRef = useRef<boolean>(false);
   const targetRef = useRef<string>(actualTarget);
   const lastActualTargetRef = useRef<string>(actualTarget);
   const previousTargetTextRef = useRef<string | undefined>(targetText); // Track targetText prop changes
   const lastRetriggerKeyRef = useRef<number>(retriggerKey); // Track retriggerKey changes
-  
+
   // Scramble animation function - use ref to access current displayText without dependency
   const displayTextRef = useRef<string>(text);
-  
+
   // Keep ref in sync with state - CRITICAL: this must always reflect current display
   useEffect(() => {
     displayTextRef.current = displayText;
   }, [displayText]);
-  
+
   // Track when actualTarget changes to prevent unnecessary effect runs
   useEffect(() => {
     lastActualTargetRef.current = actualTarget;
   }, [actualTarget]);
-  
+
   // Helper functions
   const getRandomChar = useCallback((): string => {
     return scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
   }, [scrambleChars]);
-  
-  const shouldPreserve = useCallback((char: string): boolean => {
-    if (preserveSpaces && char === ' ') return true;
-    if (preserveSpecialChars && /[^A-Za-z0-9\s]/.test(char)) return true;
-    return false;
-  }, [preserveSpaces, preserveSpecialChars]);
-  
-  const startScramble = useCallback((from: string, to: string) => {
-    // Clear any existing animation
-    if (intervalRef.current) {
-      cancelAnimationFrame(intervalRef.current as unknown as number);
-      intervalRef.current = null;
-    }
-    
-    // Set refs immediately to prevent race conditions
-    isAnimatingRef.current = true;
-    targetRef.current = to;
-    
-    const fromChars = from.split('');
-    const toChars = to.split('');
-    const maxLength = Math.max(fromChars.length, toChars.length);
-    const frameTime = scrambleDuration / iterations;
-    let iteration = 0;
-    let lastFrameTime = performance.now();
-    
-    const animate = (currentTime: number) => {
-      // Check if this animation was cancelled (target changed)
-      if (targetRef.current !== to) {
-        isAnimatingRef.current = false;
+
+  const shouldPreserve = useCallback(
+    (char: string): boolean => {
+      if (preserveSpaces && char === " ") return true;
+      if (preserveSpecialChars && /[^A-Za-z0-9\s]/.test(char)) return true;
+      return false;
+    },
+    [preserveSpaces, preserveSpecialChars],
+  );
+
+  const startScramble = useCallback(
+    (from: string, to: string) => {
+      // Clear any existing animation
+      if (intervalRef.current) {
+        cancelAnimationFrame(intervalRef.current);
         intervalRef.current = null;
-        return;
       }
-      
-      // Throttle to frameTime
-      if (currentTime - lastFrameTime < frameTime) {
-        intervalRef.current = requestAnimationFrame(animate) as unknown as NodeJS.Timeout;
-        return;
-      }
-      lastFrameTime = currentTime;
-      
-      if (iteration >= iterations) {
-        // Animation complete
-        setDisplayText(to);
-        displayTextRef.current = to;
-        isAnimatingRef.current = false;
-        intervalRef.current = null;
-        return;
-      }
-      
-      // Generate scrambled text
-      const scrambled = Array.from({ length: maxLength }, (_, i) => {
-        const toChar = toChars[i] || '';
-        
-        if (shouldPreserve(toChar)) {
-          return toChar;
+
+      // Set refs immediately to prevent race conditions
+      isAnimatingRef.current = true;
+      targetRef.current = to;
+
+      const fromChars = from.split("");
+      const toChars = to.split("");
+      const maxLength = Math.max(fromChars.length, toChars.length);
+      const frameTime = scrambleDuration / iterations;
+      let iteration = 0;
+      let lastFrameTime = performance.now();
+
+      const animate = (currentTime: number) => {
+        // Check if this animation was cancelled (target changed)
+        if (targetRef.current !== to) {
+          isAnimatingRef.current = false;
+          intervalRef.current = null;
+          return;
         }
-        
-        const progress = iteration / iterations;
-        if (progress > 0.7) {
-          return Math.random() > 0.3 ? toChar : getRandomChar();
+
+        // Throttle to frameTime
+        if (currentTime - lastFrameTime < frameTime) {
+          intervalRef.current = requestAnimationFrame(animate);
+          return;
         }
-        
-        return getRandomChar();
-      }).join('');
-      
-      setDisplayText(scrambled);
-      displayTextRef.current = scrambled;
-      iteration++;
-      
-      // Continue animation
-      intervalRef.current = requestAnimationFrame(animate) as unknown as NodeJS.Timeout;
-    };
-    
-    // Start animation with requestAnimationFrame
-    intervalRef.current = requestAnimationFrame(animate) as unknown as NodeJS.Timeout;
-  }, [scrambleDuration, iterations, getRandomChar, shouldPreserve]);
-  
+        lastFrameTime = currentTime;
+
+        if (iteration >= iterations) {
+          // Animation complete
+          setDisplayText(to);
+          displayTextRef.current = to;
+          isAnimatingRef.current = false;
+          intervalRef.current = null;
+          return;
+        }
+
+        // Generate scrambled text
+        const scrambled = Array.from({ length: maxLength }, (_, i) => {
+          const toChar = toChars[i] || "";
+
+          if (shouldPreserve(toChar)) {
+            return toChar;
+          }
+
+          const progress = iteration / iterations;
+          if (progress > 0.7) {
+            return Math.random() > 0.3 ? toChar : getRandomChar();
+          }
+
+          return getRandomChar();
+        }).join("");
+
+        setDisplayText(scrambled);
+        displayTextRef.current = scrambled;
+        iteration++;
+
+        // Continue animation
+        intervalRef.current = requestAnimationFrame(animate);
+      };
+
+      // Start animation with requestAnimationFrame
+      intervalRef.current = requestAnimationFrame(animate);
+    },
+    [scrambleDuration, iterations, getRandomChar, shouldPreserve],
+  );
+
   // Handle targetText changes (for project name transitions)
   // CRITICAL: Only run when actualTarget actually changes, not on every render
   useEffect(() => {
@@ -156,42 +162,50 @@ const ScrambleText: React.FC<ScrambleTextProps> = ({
     if (retriggerKeyChanged) {
       lastRetriggerKeyRef.current = retriggerKey;
     }
-    
+
     // If retriggerKey changed, force animation even if target is same
-    if (retriggerKeyChanged && actualTarget !== '' && !isAnimatingRef.current) {
+    if (retriggerKeyChanged && actualTarget !== "" && !isAnimatingRef.current) {
       const currentFrom = displayTextRef.current;
       startScramble(currentFrom, actualTarget);
       return;
     }
-    
+
     // Skip if target hasn't actually changed and retriggerKey hasn't changed
     if (lastActualTargetRef.current === actualTarget && !retriggerKeyChanged) {
       return;
     }
-    
+
     // Update last target immediately to prevent duplicate runs
     lastActualTargetRef.current = actualTarget;
-    
+
     // Skip if currently animating to the same target (unless retriggerKey changed)
-    if (isAnimatingRef.current && targetRef.current === actualTarget && !retriggerKeyChanged) {
+    if (
+      isAnimatingRef.current &&
+      targetRef.current === actualTarget &&
+      !retriggerKeyChanged
+    ) {
       return;
     }
-    
+
     // Skip if display already matches target and not animating (unless retriggerKey changed)
-    if (!isAnimatingRef.current && displayTextRef.current === actualTarget && !retriggerKeyChanged) {
+    if (
+      !isAnimatingRef.current &&
+      displayTextRef.current === actualTarget &&
+      !retriggerKeyChanged
+    ) {
       targetRef.current = actualTarget;
       return;
     }
-    
+
     // Start new animation - always use current display as starting point for seamless transitions
     // This ensures smooth transitions when switching between projects
     const currentFrom = displayTextRef.current;
     startScramble(currentFrom, actualTarget);
     // actualTarget is derived from targetText, so we don't need targetText in deps
     // text is the base text and shouldn't trigger re-runs when it changes
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [actualTarget, startScramble, retriggerKey]);
-  
+
   // Handle hover state (for logo, nav items, and project name transitions)
   // When isHovered is true, scramble to targetText (which may differ from text)
   // When isHovered is false, scramble back to base text
@@ -201,34 +215,37 @@ const ScrambleText: React.FC<ScrambleTextProps> = ({
       // Always retrigger when isHovered is true and targetText prop changes (even if value is same)
       // This ensures animation retriggers when moving between projects with same title
       const targetChanged = targetRef.current !== actualTarget;
-      const isAtTarget = !isAnimatingRef.current && displayTextRef.current === actualTarget;
-      
+      const isAtTarget =
+        !isAnimatingRef.current && displayTextRef.current === actualTarget;
+
       // Track previous targetText to detect prop changes even when value is same
-      const targetTextPropChanged = previousTargetTextRef.current !== targetText;
+      const targetTextPropChanged =
+        previousTargetTextRef.current !== targetText;
       previousTargetTextRef.current = targetText;
-      
+
       // Track retriggerKey changes - this forces retrigger when moving between same-title projects
       const retriggerKeyChanged = lastRetriggerKeyRef.current !== retriggerKey;
       if (retriggerKeyChanged) {
         lastRetriggerKeyRef.current = retriggerKey;
       }
-      
+
       // Check if this is an in-place scramble (no targetText, so actualTarget === text)
       const isInPlaceScramble = targetText === undefined;
-      
+
       // Always start if:
       // 1. Not animating and target changed, OR
       // 2. Currently animating but target changed, OR
       // 3. At target and targetText prop changed (for retriggering same project name), OR
       // 4. RetriggerKey changed (forces retrigger for same-title projects), OR
       // 5. In-place scramble (no targetText) - always scramble when hovered (even if already at target)
-      const shouldStart = (!isAnimatingRef.current && targetChanged) || 
-                         (isAnimatingRef.current && targetChanged) || 
-                         (isAtTarget && targetTextPropChanged) ||
-                         (retriggerKeyChanged && isHovered) ||
-                         (isInPlaceScramble && isHovered);
-      
-      if (shouldStart && actualTarget !== '') {
+      const shouldStart =
+        (!isAnimatingRef.current && targetChanged) ||
+        (isAnimatingRef.current && targetChanged) ||
+        (isAtTarget && targetTextPropChanged) ||
+        (retriggerKeyChanged && isHovered) ||
+        (isInPlaceScramble && isHovered);
+
+      if (shouldStart && actualTarget !== "") {
         // Use current display TEXT (state) as starting point, not ref
         // The ref might be stale, but state is always current
         // Fallback to ref only if state seems wrong
@@ -245,7 +262,7 @@ const ScrambleText: React.FC<ScrambleTextProps> = ({
       } else {
         // Already at base text, just ensure state is clean
         if (intervalRef.current) {
-          clearInterval(intervalRef.current);
+          cancelAnimationFrame(intervalRef.current);
           intervalRef.current = null;
         }
         isAnimatingRef.current = false;
@@ -255,18 +272,18 @@ const ScrambleText: React.FC<ScrambleTextProps> = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isHovered, actualTarget, text, startScramble, retriggerKey]);
-  
+
   // Cleanup on unmount
   useEffect(() => {
     return () => {
       if (intervalRef.current) {
-        cancelAnimationFrame(intervalRef.current as unknown as number);
+        cancelAnimationFrame(intervalRef.current);
       }
     };
   }, []);
-  
+
   return (
-    <span className={className} style={{ ...style, willChange: 'contents' }}>
+    <span className={className} style={{ ...style, willChange: "contents" }}>
       {displayText}
     </span>
   );

@@ -1,11 +1,13 @@
-import React from 'react';
-import { ProjectResult } from '../../data/projects';
+import React from "react";
+import { ProjectResult } from "../../data/projects";
 
 interface ProjectDetailResultsProps {
   results: ProjectResult[];
 }
 
-const ProjectDetailResults: React.FC<ProjectDetailResultsProps> = ({ results }) => {
+const ProjectDetailResults: React.FC<ProjectDetailResultsProps> = ({
+  results,
+}) => {
   return (
     <section className="project-detail-results">
       <p className="project-detail-section-title">Results</p>

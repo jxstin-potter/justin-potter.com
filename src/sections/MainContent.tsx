@@ -1,15 +1,15 @@
-import React, { useRef, useMemo, memo } from 'react';
-import { motion } from 'framer-motion';
-import { ProjectData } from '../types';
-import { useDisplayTime } from '../utils/hooks';
-import { formatDisplayTime } from '../utils/helpers';
-import Footer from '../components/layout/Footer';
-import HeroSection from '../components/sections/HeroSection';
-import ProjectsList from '../components/sections/ProjectsList';
-import { useProjectHoverState } from '../hooks/useProjectHoverState';
-import { useScrollTracking } from '../hooks/useScrollTracking';
-import { useNameParts } from '../hooks/useNameParts';
-import { projectSummaries } from '../data/projects';
+import React, { useRef, useMemo, memo } from "react";
+import { motion } from "framer-motion";
+import { ProjectData } from "../types";
+import { useDisplayTime } from "../utils/hooks";
+import { formatDisplayTime } from "../utils/helpers";
+import Footer from "../components/layout/Footer";
+import HeroSection from "../components/sections/HeroSection";
+import ProjectsList from "../components/sections/ProjectsList";
+import { useProjectHoverState } from "../hooks/useProjectHoverState";
+import { useScrollTracking } from "../hooks/useScrollTracking";
+import { useNameParts } from "../hooks/useNameParts";
+import { projectSummaries } from "../data/projects";
 
 interface MainContentProps {
   onProjectHover?: (project: ProjectData | null) => void;
@@ -22,7 +22,7 @@ const MainContent = ({
   onProjectHover,
   shouldScrambleFromWelcome = false,
   welcomeTransitionComplete = true,
-  welcomeTargetNameParts = ['JUSTIN', 'POTTER'],
+  welcomeTargetNameParts = ["JUSTIN", "POTTER"],
 }: MainContentProps) => {
   const sectionRef = useRef<HTMLElement | null>(null);
 
@@ -49,14 +49,18 @@ const MainContent = ({
     if (welcomeTransitionComplete) {
       setHoverTargetNameParts(welcomeTargetNameParts);
     }
-  }, [welcomeTransitionComplete, welcomeTargetNameParts, setHoverTargetNameParts]);
+  }, [
+    welcomeTransitionComplete,
+    welcomeTargetNameParts,
+    setHoverTargetNameParts,
+  ]);
 
   // Use shared hooks for consistent behavior
   const currentTime = useDisplayTime();
 
   // Memoize projects array to prevent unnecessary re-renders
   const projects = useMemo(() => {
-    const prioritizedSlug = 'commerceflow';
+    const prioritizedSlug = "commerceflow";
     return [...projectSummaries].sort((a, b) => {
       if (a.slug === prioritizedSlug && b.slug !== prioritizedSlug) return -1;
       if (b.slug === prioritizedSlug && a.slug !== prioritizedSlug) return 1;
@@ -69,41 +73,43 @@ const MainContent = ({
     try {
       return formatDisplayTime(hoveredProject, currentTime);
     } catch (error) {
-      return hoveredProject ? hoveredProject.year.toString() : '00:00:00';
+      return hoveredProject ? hoveredProject.year.toString() : "00:00:00";
     }
   }, [hoveredProject, currentTime]);
 
   // Determine which target name parts to use
   // Use hover-based name parts after welcome transition, otherwise use welcome transition name parts
-  const targetNameParts = welcomeTransitionComplete ? hoverTargetNameParts : welcomeTargetNameParts;
+  const targetNameParts = welcomeTransitionComplete
+    ? hoverTargetNameParts
+    : welcomeTargetNameParts;
 
   return (
     <motion.section
       ref={sectionRef}
       style={{
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        position: 'relative',
-        overflow: 'visible',
-        minHeight: 'calc(100vh + 20px)',
-        paddingTop: 'calc(var(--spacing-lg) + 50px)',
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        position: "relative",
+        overflow: "visible",
+        minHeight: "calc(100vh + 20px)",
+        paddingTop: "calc(var(--spacing-lg) + 50px)",
         paddingLeft: 0,
         paddingRight: 0,
-        paddingBottom: '20px',
-        backgroundColor: 'transparent'
+        paddingBottom: "20px",
+        backgroundColor: "transparent",
       }}
     >
       {/* Hero and Projects in separate containers */}
       <div
         style={{
-          width: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          margin: '0',
-          position: 'relative',
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          margin: "0",
+          position: "relative",
           zIndex: 1,
-          flex: 'none'
+          flex: "none",
         }}
       >
         <HeroSection

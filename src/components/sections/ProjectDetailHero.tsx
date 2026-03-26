@@ -1,8 +1,8 @@
-import React, { useRef } from 'react';
-import OptimizedImage from '../common/OptimizedImage';
-import commerceflowTasksImage from '../../assets/2du-tasks.png';
-import commerceflowLoginImage from '../../assets/2du-login.png';
-import commerceflowSettingsImage from '../../assets/2du-settings.png';
+import React, { useRef } from "react";
+import OptimizedImage from "../common/OptimizedImage";
+import commerceflowTasksImage from "../../assets/2du-tasks.png";
+import commerceflowLoginImage from "../../assets/2du-login.png";
+import commerceflowSettingsImage from "../../assets/2du-settings.png";
 
 interface ProjectDetailHeroProps {
   title: string;
@@ -17,9 +17,9 @@ interface ProjectDetailHeroProps {
 }
 
 const commerceflowStackImages = [
-  { src: commerceflowTasksImage, label: 'Tasks / Inbox' },
-  { src: commerceflowLoginImage, label: 'Login' },
-  { src: commerceflowSettingsImage, label: 'Settings' },
+  { src: commerceflowTasksImage, label: "Tasks / Inbox" },
+  { src: commerceflowLoginImage, label: "Login" },
+  { src: commerceflowSettingsImage, label: "Settings" },
 ] as const;
 
 const ProjectDetailHero: React.FC<ProjectDetailHeroProps> = ({
@@ -41,20 +41,27 @@ const ProjectDetailHero: React.FC<ProjectDetailHeroProps> = ({
   return (
     <section className="project-detail-hero" ref={heroRef}>
       <div
-        className={`project-detail-hero-text${isCommerceflow ? ' project-detail-hero-text-sticky' : ''}`}
+        className={`project-detail-hero-text${isCommerceflow ? " project-detail-hero-text-sticky" : ""}`}
         ref={textRef}
       >
-        <h1 className="project-detail-title" ref={titleRef}>{title}</h1>
+        <h1 className="project-detail-title" ref={titleRef}>
+          {title}
+        </h1>
         {!isCommerceflow && <p className="project-detail-role">{role}</p>}
         {children && <div className="project-detail-meta">{children}</div>}
         <p className="project-detail-summary">{summary}</p>
         <p className="project-detail-description">{description}</p>
       </div>
       {isCommerceflow ? (
-        <div className="project-detail-hero-media project-detail-hero-media-stack" ref={mediaRef}>
+        <div
+          className="project-detail-hero-media project-detail-hero-media-stack"
+          ref={mediaRef}
+        >
           <div className="project-detail-hero-stack">
             {Array.from({ length: placeholderCount }).map((_, index) => {
-              const stackImage = showCommerceflowStackImages ? commerceflowStackImages[index] : undefined;
+              const stackImage = showCommerceflowStackImages
+                ? commerceflowStackImages[index]
+                : undefined;
 
               return (
                 <div
@@ -67,9 +74,9 @@ const ProjectDetailHero: React.FC<ProjectDetailHeroProps> = ({
                       alt={`${title} - ${stackImage.label}`}
                       priority={true}
                       style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
                       }}
                     />
                   ) : null}
@@ -86,10 +93,10 @@ const ProjectDetailHero: React.FC<ProjectDetailHeroProps> = ({
               alt={`${title} hero`}
               priority={true}
               style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                borderRadius: '2px',
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                borderRadius: "2px",
               }}
             />
           </div>
