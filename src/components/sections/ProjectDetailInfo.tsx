@@ -4,14 +4,12 @@ interface ProjectDetailInfoProps {
   year: number;
   services: string[];
   liveUrl: string;
-  awards?: string[];
 }
 
 const ProjectDetailInfo: React.FC<ProjectDetailInfoProps> = ({
   year,
   services,
   liveUrl,
-  awards,
 }) => {
   return (
     <section className="project-detail-info">
@@ -40,22 +38,6 @@ const ProjectDetailInfo: React.FC<ProjectDetailInfoProps> = ({
           {liveUrl === "#" ? "Coming soon" : "Visit website"}
         </a>
       </div>
-      {awards && (
-        <div className="project-detail-info-card">
-          <p className="project-detail-label">Awards</p>
-          <div className="project-detail-list">
-            {awards.length ? (
-              awards.map((award) => (
-                <p key={award} className="project-detail-value">
-                  {award}
-                </p>
-              ))
-            ) : (
-              <p className="project-detail-value">—</p>
-            )}
-          </div>
-        </div>
-      )}
     </section>
   );
 };

@@ -60,10 +60,21 @@ const MainContent = ({
 
   // Memoize projects array to prevent unnecessary re-renders
   const projects = useMemo(() => {
-    const prioritizedSlug = "commerceflow";
+    const priorityOrder = ["limprimerie-bakery", "2du", "commerceflow"];
+    const priorityIndex = new Map<string, number>(
+      priorityOrder.map((slug, index) => [slug, index]),
+    );
+
     return [...projectSummaries].sort((a, b) => {
-      if (a.slug === prioritizedSlug && b.slug !== prioritizedSlug) return -1;
-      if (b.slug === prioritizedSlug && a.slug !== prioritizedSlug) return 1;
+      const aPriority = priorityIndex.get(a.slug);
+      const bPriority = priorityIndex.get(b.slug);
+
+      if (aPriority !== undefined && bPriority !== undefined) {
+        return aPriority - bPriority;
+      }
+      if (aPriority !== undefined) return -1;
+      if (bPriority !== undefined) return 1;
+
       return b.year - a.year || b.id - a.id;
     });
   }, []);

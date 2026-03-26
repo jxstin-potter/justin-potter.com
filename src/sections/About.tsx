@@ -20,7 +20,7 @@ const About = () => {
    * Primary contact email used in the social links collection.
    * Kept as a constant so it can be reused cleanly in the config below.
    */
-  const email = "Bjmpotter@gmail.com";
+  const email = "JXSTINPOTTER@GMAIL.COM";
 
   /**
    * Data-driven social/contact links.

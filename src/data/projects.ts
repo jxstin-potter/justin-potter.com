@@ -1,9 +1,6 @@
 import projectHeroImage from "../assets/landingpage.png";
 import twoDuLoginImage from "../assets/2du-login.png";
 import limpHomepageImage from "../assets/limp-homepage.jpg";
-import "../assets/limp-menu.jpg";
-import "../assets/limp-deliveries.png";
-import "../assets/limp-btmpage.jpg";
 
 export interface ProjectResult {
   label: string;
@@ -25,7 +22,6 @@ export interface ProjectDetailData {
   year: number;
   services: string[];
   liveUrl: string;
-  awards: string[];
   results: ProjectResult[];
   carbonFootprint: ProjectCarbonFootprint;
   summary: string;
@@ -52,7 +48,6 @@ export const projectDetails: ProjectDetailData[] = [
     year: 2025,
     services: ["Branding", "Product Design", "Fullstack Development"],
     liveUrl: "https://commerce-flow-v2.vercel.app/",
-    awards: ["Featured on Awwwards (Concept)"],
     results: [
       { label: "Monthly Active Users", value: "12k+" },
       { label: "Checkout Conversion", value: "+18%" },
@@ -77,7 +72,6 @@ export const projectDetails: ProjectDetailData[] = [
     year: 2026,
     services: ["Branding", "Web Design", "Full-stack Development"],
     liveUrl: "https://jxstin-potter.github.io/2DU/login",
-    awards: ["CSS Design Awards (Shortlist)"],
     results: [
       { label: "Avg. Session Time", value: "3:42" },
       { label: "Project Inquiries", value: "+64%" },
@@ -98,10 +92,9 @@ export const projectDetails: ProjectDetailData[] = [
     slug: "limprimerie-bakery",
     title: "Limprimerie - Bakery",
     role: "Product Design",
-    year: 2025,
+    year: 2026,
     services: ["Product Strategy", "UX Design", "UI Systems"],
     liveUrl: "#",
-    awards: ["Product Hunt (Top 10)"],
     results: [
       { label: "Teams Onboarded", value: "210+" },
       { label: "Avg. Tasks / Week", value: "1.8k" },
@@ -113,9 +106,9 @@ export const projectDetails: ProjectDetailData[] = [
       sourceUrl: "https://www.websitecarbon.com/",
     },
     summary:
-      "A task system designed to keep fast-moving teams aligned and focused.",
+      "A user-centered bakery experience designed to make ordering, browsing, and discovery feel effortless.",
     description:
-      "Task Manager introduces contextual prioritization and a calm UI to reduce operational noise across distributed teams.",
+      "Built for a modern bakery audience, the UX focuses on warm visual storytelling, clear product hierarchy, and frictionless flows so customers can explore the menu, place orders, and return with ease.",
     imageUrl: limpHomepageImage,
   },
   {
@@ -126,7 +119,6 @@ export const projectDetails: ProjectDetailData[] = [
     year: 2024,
     services: ["UI Engineering", "Data Visualization", "Design Systems"],
     liveUrl: "#",
-    awards: [],
     results: [
       { label: "Latency Reduction", value: "35%" },
       { label: "Dashboard Adoption", value: "4x" },
@@ -151,7 +143,6 @@ export const projectDetails: ProjectDetailData[] = [
     year: 2024,
     services: ["Creative Direction", "Prototype", "Brand Systems"],
     liveUrl: "#",
-    awards: [],
     results: [
       { label: "Prototype Users", value: "150+" },
       { label: "Engagement Rate", value: "62%" },

@@ -14,6 +14,7 @@ interface ProjectDetailHeroProps {
   isCommerceflow?: boolean;
   showCommerceflowStackImages?: boolean;
   placeholderCount?: number;
+  galleryImages?: Array<{ src: string; label: string }>;
 }
 
 const commerceflowStackImages = [
@@ -32,11 +33,15 @@ const ProjectDetailHero: React.FC<ProjectDetailHeroProps> = ({
   isCommerceflow = false,
   showCommerceflowStackImages = false,
   placeholderCount = 4,
+  galleryImages,
 }) => {
   const heroRef = useRef<HTMLElement | null>(null);
   const textRef = useRef<HTMLDivElement | null>(null);
   const mediaRef = useRef<HTMLDivElement | null>(null);
   const titleRef = useRef<HTMLHeadingElement | null>(null);
+
+  const stackImages = galleryImages ?? [];
+  const shouldRenderGalleryStack = stackImages.length > 0;
 
   return (
     <section className="project-detail-hero" ref={heroRef}>
@@ -52,37 +57,56 @@ const ProjectDetailHero: React.FC<ProjectDetailHeroProps> = ({
         <p className="project-detail-summary">{summary}</p>
         <p className="project-detail-description">{description}</p>
       </div>
-      {isCommerceflow ? (
+      {isCommerceflow || shouldRenderGalleryStack ? (
         <div
           className="project-detail-hero-media project-detail-hero-media-stack"
           ref={mediaRef}
         >
           <div className="project-detail-hero-stack">
-            {Array.from({ length: placeholderCount }).map((_, index) => {
-              const stackImage = showCommerceflowStackImages
-                ? commerceflowStackImages[index]
-                : undefined;
+            {isCommerceflow
+              ? Array.from({ length: placeholderCount }).map((_, index) => {
+                  const stackImage = showCommerceflowStackImages
+                    ? commerceflowStackImages[index]
+                    : undefined;
 
-              return (
-                <div
-                  key={`commerceflow-stack-${index}`}
-                  className="project-detail-hero-stack-card"
-                >
-                  {stackImage ? (
+                  return (
+                    <div
+                      key={`commerceflow-stack-${index}`}
+                      className="project-detail-hero-stack-card"
+                    >
+                      {stackImage ? (
+                        <OptimizedImage
+                          src={stackImage.src}
+                          alt={`${title} - ${stackImage.label}`}
+                          priority={true}
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                          }}
+                        />
+                      ) : null}
+                    </div>
+                  );
+                })
+              : stackImages.map((image, index) => (
+                  <div
+                    key={`${title}-stack-${index}`}
+                    className="project-detail-hero-stack-card"
+                  >
                     <OptimizedImage
-                      src={stackImage.src}
-                      alt={`${title} - ${stackImage.label}`}
-                      priority={true}
+                      src={image.src}
+                      alt={`${title} - ${image.label}`}
+                      priority={index === 0}
                       style={{
                         width: "100%",
                         height: "100%",
                         objectFit: "cover",
+                        objectPosition: "top center",
                       }}
                     />
-                  ) : null}
-                </div>
-              );
-            })}
+                  </div>
+                ))}
           </div>
         </div>
       ) : (

@@ -430,7 +430,7 @@ img {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-xs);
-  max-width: 320px;
+  max-width: 420px;
 }
 
 .project-detail-hero-eyebrow {
@@ -442,10 +442,12 @@ img {
 }
 
 .project-detail-title {
-  font-size: clamp(3rem, 7vw, 6rem);
+  font-size: clamp(2.25rem, 5.2vw, 4.75rem);
   font-weight: 600;
   margin: 0;
   letter-spacing: -0.02em;
+  line-height: 0.95;
+  text-wrap: balance;
 }
 
 .project-detail-commerceflow .project-detail-title {
@@ -519,10 +521,13 @@ img {
   min-height: 100vh;
 }
 
-.project-detail-commerceflow .project-detail-hero-media-stack {
+.project-detail-hero-media-stack {
   height: auto;
   background: transparent;
   overflow: visible;
+}
+
+.project-detail-commerceflow .project-detail-hero-media-stack {
   margin-left: clamp(12rem, 10vw, 14rem);
   margin-top: clamp(-2rem, -4vw, -5rem);
 }
@@ -705,6 +710,66 @@ img {
 .project-detail-next-link:hover {
   color: var(--lime-green);
   border-color: var(--lime-green);
+}
+
+.project-case-study {
+  margin-top: clamp(2rem, 6vw, 4rem);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.project-case-study-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1rem, 3vw, 2rem);
+}
+
+.project-case-study-card {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  padding: clamp(1rem, 2vw, 1.5rem);
+}
+
+.project-case-study-kicker {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--medium-grey);
+  margin-bottom: 0.5rem;
+}
+
+.project-case-study-heading {
+  font-size: clamp(1.2rem, 2.8vw, 1.8rem);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.8rem;
+}
+
+.project-case-study-copy {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.86);
+  margin: 0 0 0.8rem;
+}
+
+.project-case-study-image {
+  margin-top: 0.8rem;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--dark-grey);
+}
+
+.project-case-study-image picture,
+.project-case-study-image img {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 .project-detail-empty {
@@ -1429,6 +1494,10 @@ img {
   .project-detail-carbon-card {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .project-case-study-grid {
+    grid-template-columns: 1fr;
   }
 }
 
