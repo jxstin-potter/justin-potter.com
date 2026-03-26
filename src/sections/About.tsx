@@ -43,10 +43,10 @@ const About = () => {
     },
     {
       name: 'GitHub',
-      url: 'https://github.com/whitelight-whiteheat',
+      url: 'https://github.com/jxstin-potter',
       icon: githubIcon,
       primary: 'GitHub',
-      secondary: '/WHITELIGHT-WHITEHEAT',
+      secondary: '/JXSTIN-POTTER',
     },
   ];
 
