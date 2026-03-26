@@ -1,6 +1,9 @@
 import projectHeroImage from "../assets/landingpage.png";
 import twoDuLoginImage from "../assets/2du-login.png";
-// import limprHeroImage from '../assets/limp-landingpage';
+import limpHomepageImage from "../assets/limp-homepage.jpg";
+import "../assets/limp-menu.jpg";
+import "../assets/limp-deliveries.png";
+import "../assets/limp-btmpage.jpg";
 
 export interface ProjectResult {
   label: string;
@@ -113,7 +116,7 @@ export const projectDetails: ProjectDetailData[] = [
       "A task system designed to keep fast-moving teams aligned and focused.",
     description:
       "Task Manager introduces contextual prioritization and a calm UI to reduce operational noise across distributed teams.",
-    imageUrl: projectHeroImage,
+    imageUrl: limpHomepageImage,
   },
   {
     id: 4,
