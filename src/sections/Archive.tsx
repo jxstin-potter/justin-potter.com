@@ -196,7 +196,7 @@ const Archive = () => {
     borderRadius: '2px'
   }}
 >
-  
+
   {/* ACTUAL IMAGE */}
   <img
     src={project.imageUrl} // ✅ pulls from your data
@@ -204,7 +204,7 @@ const Archive = () => {
     style={{
       width: '100%',
       height: '100%',
-      objectFit: 'cover'
+      objectFit: 'contain'
     }}
   />
 
@@ -215,7 +215,8 @@ const Archive = () => {
       inset: 0,
       background: 'rgba(0,0,0,0.2)',
       opacity: 0,
-      transition: 'opacity 0.3s'
+      transition: 'opacity 0.3s',
+      pointerEvents: "none",
     }}
     className="hover-overlay"
   />
@@ -236,24 +237,6 @@ const Archive = () => {
     [{String(index + 1).padStart(2, '0')}]
   </div>
 </motion.div>
-
-                {/* Project Number - Bottom Left */}
-                <div style={{
-                  position: 'absolute',
-                  bottom: 0,
-                  left: 0,
-                  fontSize: '0.875rem',
-                  color: 'var(--primary-white)',
-                  fontFamily: 'var(--font-mono)',
-                  letterSpacing: '0.1em',
-                  backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                  padding: '0.25rem 0.5rem',
-                  borderRadius: '2px'
-                }}>
-                  <span className="bracket">[</span>
-                  {String(index + 1).padStart(2, '0')}
-                  <span className="bracket">]</span>
-                </div>
               </motion.div>
             );
           })}
