@@ -25,7 +25,9 @@ const Header = ({
 }: HeaderProps) => {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const isCommerceflowRoute = location.pathname === '/projects/commerceflow';
+  const isCommerceflowRoute =
+    location.pathname === '/projects/commerceflow' ||
+    location.pathname === '/projects/2du';
   const [isLogoHovered, setIsLogoHovered] = useState(false);
   const [hoveredNavItem, setHoveredNavItem] = useState<string | null>(null);
   // Track retrigger keys for logo and nav items to force rescramble

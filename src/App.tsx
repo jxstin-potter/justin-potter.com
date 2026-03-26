@@ -350,6 +350,10 @@ function App() {
             }
           />
           <Route
+            path="/projects/portfolio-site"
+            element={<Navigate to="/projects/2du" replace />}
+          />
+          <Route
             path="/projects/:slug"
             element={
               <motion.main

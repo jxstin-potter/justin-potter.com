@@ -519,10 +519,14 @@ img {
 
 .project-detail-hero-stack-card {
   width: 100%;
-  height: clamp(420px, 100vh, 960px);
+  /* Avoid upscaling screenshots into blur: keep a stable aspect ratio and cap height */
+  aspect-ratio: 1919 / 989;
+  height: auto;
+  max-height: 720px;
   background: var(--dark-grey);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 8px;
+  overflow: hidden; /* Clip stacked screenshots to rounded corners */
 }
 
 .project-detail-commerceflow .project-detail-hero-stack-card {

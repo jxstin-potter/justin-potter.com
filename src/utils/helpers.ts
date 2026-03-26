@@ -5,15 +5,22 @@
  */
 export const getDisplayName = (projectName: string): [string, string] => {
   try {
+    // Normalize separators/punctuation so display-name splitting is stable.
+    // Example: "2DU - Task Management System" -> ["2DU", "Task Management System"]
+    const normalizedProjectName = projectName
+      .replace(/[-–—:]+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
     // If it contains spaces, split on spaces
-    if (projectName.includes(' ')) {
-      const parts = projectName.toUpperCase().split(' ');
+    if (normalizedProjectName.includes(' ')) {
+      const parts = normalizedProjectName.toUpperCase().split(' ');
       return (parts.length >= 2 ? [parts[0], parts.slice(1).join(' ')] : [parts[0], '']) as [string, string];
     }
     
     // Split camelCase/PascalCase words (e.g., "CommerceFlow" -> ["COMMERCE", "FLOW"])
     // Match capital letters followed by lowercase letters
-    const words = projectName.match(/[A-Z][a-z]*/g) || [projectName];
+    const words = normalizedProjectName.match(/[A-Z][a-z]*/g) || [normalizedProjectName];
     if (words.length > 1) {
       return [words[0].toUpperCase(), words.slice(1).join('').toUpperCase()] as [string, string];
     }

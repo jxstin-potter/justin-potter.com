@@ -1,4 +1,5 @@
 import projectHeroImage from '../assets/landingpage.png';
+import twoDuLoginImage from '../assets/2du-login.png';
 
 export interface ProjectResult {
   label: string;
@@ -65,8 +66,8 @@ export const projectDetails: ProjectDetailData[] = [
   },
   {
     id: 2,
-    slug: 'portfolio-site',
-    title: 'Portfolio Site',
+    slug: '2du',
+    title: '2DU - Task Management System',
     role: 'Design & Development',
     year: 2025,
     services: ['Branding', 'Web Design', 'Frontend Development'],
@@ -86,7 +87,7 @@ export const projectDetails: ProjectDetailData[] = [
       'A minimal, motion-driven portfolio that highlights projects and creative direction.',
     description:
       'Built to showcase product and engineering work with fast load times, a flexible layout system, and a motion language inspired by editorial design.',
-    imageUrl: projectHeroImage,
+    imageUrl: twoDuLoginImage,
   },
   {
     id: 3,

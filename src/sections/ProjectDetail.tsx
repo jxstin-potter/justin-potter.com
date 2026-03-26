@@ -28,7 +28,8 @@ const ProjectDetail = () => {
     );
   }
 
-  const isCommerceflow = project.slug === 'commerceflow';
+  const isCommerceflow = project.slug === 'commerceflow' || project.slug === '2du';
+  const showCommerceflowStackImages = project.slug === '2du';
 
   return (
     <section
@@ -41,7 +42,8 @@ const ProjectDetail = () => {
         description={project.description}
         imageUrl={project.imageUrl}
         isCommerceflow={isCommerceflow}
-        placeholderCount={4}
+        showCommerceflowStackImages={showCommerceflowStackImages}
+        placeholderCount={showCommerceflowStackImages ? 3 : 4}
       >
         <ProjectDetailInfo
           year={project.year}
