@@ -1,66 +1,72 @@
 import { motion } from 'framer-motion';
-import project1Image from '../assets/landingpage.png';
 import { DURATION, EASING } from '../utils/animations';
 import Footer from '../components/layout/Footer';
+import ugImage from '../assets/ug23.png';
+import ugExhibit from '../assets/ugexh.png';
+import ugMstreet from '../assets/ugMst.png';
+import balmoris from '../assets/balmoris.png';
+import gbye from '../assets/gbyesunshine.png';
+import sublimit from '../assets/sublimit.png';
+import hvn from '../assets/heaven.png';
 
 const Archive = () => {
 
   const archiveProjects = [
     {
       id: 1,
-      title: 'Dataspot',
-      imageUrl: project1Image,
+      title: 'Underground Gallery',
+      imageUrl: ugImage,
       liveUrl: '#',
       year: 2024,
-      description: 'Branding concept'
+      description: 'Concept poster'
     },
     {
       id: 2,
-      title: 'Malea Studio',
-      imageUrl: project1Image,
+      title: 'Underground Exhibition',
+      imageUrl: ugExhibit,
       liveUrl: '#',
       year: 2024,
-      description: 'Website home page'
+      description: 'Concept poster'
     },
     {
       id: 3,
-      title: 'Intune',
-      imageUrl: project1Image,
+      title: 'Underground Gallery on M st.',
+      imageUrl: ugMstreet,
       liveUrl: '#',
       year: 2023,
       description: 'Concept poster'
     },
     {
       id: 4,
-      title: 'PlanCo',
-      imageUrl: project1Image,
+      title: 'balmoris',
+      imageUrl: balmoris,
       liveUrl: '#',
       year: 2022,
       description: 'Design Challenge'
     },
     {
       id: 5,
-      title: 'Vantage Point',
-      imageUrl: project1Image,
+      title: 'Goodbye Sunshine',
+      imageUrl: gbye,
       liveUrl: '#',
       year: 2023,
-      description: 'Promotional Flyer'
+      description: 'Concept poster'
     },
     {
       id: 6,
-      title: 'Dataspot',
-      imageUrl: project1Image,
+      title: 'Sublimit Records',
+      imageUrl: sublimit,
       liveUrl: '#',
       year: 2024,
-      description: 'Website concept'
+      description: 'Record design concept'
     },
     {
       id: 7,
-      title: 'Malea Studio',
-      imageUrl: project1Image,
+      title: 'Random design ',
+      imageUrl: hvn,
       liveUrl: '#',
       year: 2024,
-      description: 'Website'
+      description: 'PS'
     }
   ];
 
@@ -180,32 +186,56 @@ const Archive = () => {
                 zIndex: 2
               }}
             >
-              {/* COMING SOON Display */}
-              <motion.div
-                style={{
-                  width: '100%',
-                  height: 'clamp(200px, 30vw, 350px)',
-                  position: 'relative',
-                  overflow: 'hidden',
-                  backgroundColor: 'var(--dark-grey)',
-                  borderRadius: '2px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}
-              >
-                <motion.div
-                  style={{
-                    fontSize: 'clamp(0.875rem, 2vw, 1.125rem)',
-                    color: 'var(--medium-grey)',
-                    fontFamily: 'var(--font-mono)',
-                    letterSpacing: '0.2em',
-                    textTransform: 'uppercase',
-                    textAlign: 'center'
-                  }}
-                >
-                  COMING SOON
-                </motion.div>
+{/* IMAGE CONTAINER */}
+<motion.div
+  style={{
+    width: '100%',
+    height: 'clamp(200px, 30vw, 350px)',
+    position: 'relative',
+    overflow: 'hidden',
+    borderRadius: '2px'
+  }}
+>
+  
+  {/* ACTUAL IMAGE */}
+  <img
+    src={project.imageUrl} // ✅ pulls from your data
+    alt={project.title}    // ✅ accessibility
+    style={{
+      width: '100%',
+      height: '100%',
+      objectFit: 'cover'
+    }}
+  />
+
+  {/* OVERLAY (optional but clean UI touch) */}
+  <div
+    style={{
+      position: 'absolute',
+      inset: 0,
+      background: 'rgba(0,0,0,0.2)',
+      opacity: 0,
+      transition: 'opacity 0.3s'
+    }}
+    className="hover-overlay"
+  />
+
+  {/* PROJECT NUMBER */}
+  <div style={{
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    fontSize: '0.875rem',
+    color: 'var(--primary-white)',
+    fontFamily: 'var(--font-mono)',
+    letterSpacing: '0.1em',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    padding: '0.25rem 0.5rem',
+    borderRadius: '2px'
+  }}>
+    [{String(index + 1).padStart(2, '0')}]
+  </div>
+</motion.div>
 
                 {/* Project Number - Bottom Left */}
                 <div style={{
@@ -225,7 +255,6 @@ const Archive = () => {
                   <span className="bracket">]</span>
                 </div>
               </motion.div>
-            </motion.div>
             );
           })}
         </div>

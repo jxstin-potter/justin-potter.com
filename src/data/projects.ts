@@ -1,5 +1,6 @@
 import projectHeroImage from '../assets/landingpage.png';
 import twoDuLoginImage from '../assets/2du-login.png';
+// import limprHeroImage from '../assets/limp-landingpage';
 
 export interface ProjectResult {
   label: string;
@@ -45,8 +46,7 @@ export const projectDetails: ProjectDetailData[] = [
     slug: 'commerceflow',
     title: 'CommerceFlow',
     role: 'Fullstack Development',
-    year: 2025,
-    services: ['Branding', 'Product Design', 'Fullstack Development'],
+    year: 2025, services: ['Branding', 'Product Design', 'Fullstack Development'],
     liveUrl: 'https://commerce-flow-v2.vercel.app/',
     awards: ['Featured on Awwwards (Concept)'],
     results: [
@@ -57,23 +57,18 @@ export const projectDetails: ProjectDetailData[] = [
       gramsCO2: 0.12,
       cleanerThanPercent: 86,
       sourceLabel: 'Websitecarbon.com',
-      sourceUrl: 'https://www.websitecarbon.com/',
-    },
-    summary:
-      'A commerce platform focused on frictionless checkout and modern retail UX.',
-    description: '',
-    imageUrl: projectHeroImage,
-  },
-  {
-    id: 2,
-    slug: '2du',
-    title: '2DU - Task Management System',
-    role: 'Design & Development',
-    year: 2025,
-    services: ['Branding', 'Web Design', 'Frontend Development'],
-    liveUrl: 'https://www.justin-potter.com/',
-    awards: ['CSS Design Awards (Shortlist)'],
-    results: [
+      sourceUrl: 'https://www.websitecarbon.com/', }, summary: 'A commerce platform focused on frictionless checkout and modern retail UX.', description: '', imageUrl: projectHeroImage, },
+
+      {
+        id: 2,
+        slug: '2du',
+        title: '2DU - Task Management',
+        role: 'Design & Development',
+        year: 2026,
+        services: ['Branding', 'Web Design', 'Full-stack Development'],
+        liveUrl: 'https://jxstin-potter.github.io/2DU/login',
+        awards: ['CSS Design Awards (Shortlist)'],
+        results: [
       { label: 'Avg. Session Time', value: '3:42' },
       { label: 'Project Inquiries', value: '+64%' },
     ],
@@ -84,17 +79,17 @@ export const projectDetails: ProjectDetailData[] = [
       sourceUrl: 'https://www.websitecarbon.com/',
     },
     summary:
-      'A minimal, motion-driven portfolio that highlights projects and creative direction.',
+      'A minimal, experience-driven task management system',
     description:
       'Built to showcase product and engineering work with fast load times, a flexible layout system, and a motion language inspired by editorial design.',
     imageUrl: twoDuLoginImage,
   },
   {
     id: 3,
-    slug: 'task-manager',
-    title: 'Task Manager',
+    slug: 'limprimerie-bakery',
+    title: 'Limprimerie - Bakery',
     role: 'Product Design',
-    year: 2024,
+    year: 2025,
     services: ['Product Strategy', 'UX Design', 'UI Systems'],
     liveUrl: '#',
     awards: ['Product Hunt (Top 10)'],
