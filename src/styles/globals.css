@@ -1466,8 +1466,10 @@ img {
 
   /* Project detail mobile */
   .project-detail {
-    padding: calc(var(--spacing-md) + 70px) var(--spacing-sm) var(--spacing-lg);
-    gap: var(--spacing-lg);
+    padding: calc(var(--spacing-md) + 70px) var(--mobile-content-inset)
+      var(--spacing-lg);
+    gap: var(--spacing-md);
+    min-height: auto;
   }
 
   .project-detail-controls {
@@ -1479,16 +1481,94 @@ img {
   }
 
   .project-detail-hero {
+    display: grid;
     grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+    align-items: start;
+  }
+
+  .project-detail-hero-text {
+    max-width: 100%;
+    gap: var(--spacing-sm);
+  }
+
+  .project-detail-title {
+    font-size: clamp(2rem, 10vw, 3rem);
+    line-height: 1.02;
+  }
+
+  .project-detail-role {
+    margin-bottom: 0;
+  }
+
+  .project-detail-meta {
+    margin: 0;
+    gap: var(--spacing-sm);
+    width: 100%;
   }
 
   .project-detail-hero-media {
-    height: 280px;
+    height: auto;
+    min-height: 220px;
+    max-height: none;
   }
 
   .project-detail-summary,
   .project-detail-description {
     max-width: 100%;
+  }
+
+  .project-detail-summary {
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .project-detail-description {
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+
+  .project-detail-hero-stack {
+    gap: var(--spacing-md);
+  }
+
+  .project-detail-hero-stack-card {
+    max-height: none;
+  }
+
+  .project-detail-info-card {
+    grid-template-columns: 1fr;
+    row-gap: 0.2rem;
+    column-gap: 0;
+  }
+
+  .project-detail-commerceflow .project-detail-hero-text-sticky,
+  .project-detail-commerceflow .project-detail-summary,
+  .project-detail-commerceflow .project-detail-meta {
+    position: static;
+    top: auto;
+    left: auto;
+    bottom: auto;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    z-index: auto;
+    min-height: 0;
+  }
+
+  .project-detail-commerceflow .project-detail-hero-media-stack {
+    margin-left: 0;
+    margin-top: 0;
+  }
+
+  .project-detail-commerceflow .project-detail-hero-stack-card {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .project-case-study {
+    margin-top: var(--spacing-md);
+    gap: var(--spacing-sm);
   }
 
   .project-detail-carbon-card {
@@ -1498,6 +1578,7 @@ img {
 
   .project-case-study-grid {
     grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
   }
 }
 
@@ -1581,6 +1662,29 @@ img {
 
   .about-main-content {
     margin-bottom: var(--spacing-md) !important;
+  }
+
+  .project-detail {
+    padding-top: calc(var(--spacing-md) + 60px);
+    padding-left: var(--mobile-content-inset);
+    padding-right: var(--mobile-content-inset);
+    gap: var(--spacing-sm);
+  }
+
+  .project-detail-title {
+    font-size: clamp(1.7rem, 9vw, 2.35rem);
+  }
+
+  .project-detail-hero-media {
+    min-height: 190px;
+  }
+
+  .project-detail-hero-stack {
+    gap: var(--spacing-sm);
+  }
+
+  .project-case-study-card {
+    padding: 0.9rem;
   }
 
   .about-main-content p {

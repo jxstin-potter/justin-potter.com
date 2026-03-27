@@ -18,7 +18,7 @@ const Footer = ({ showFooter = false }: FooterProps) => {
       }}
       transition={{ duration: DURATION.normal, ease: EASING }}
       style={{
-        position: "fixed",
+        position: "absolute",
         bottom: 0,
         left: 0,
         right: 0,

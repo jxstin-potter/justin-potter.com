@@ -14,7 +14,12 @@ interface ProjectDetailHeroProps {
   isCommerceflow?: boolean;
   showCommerceflowStackImages?: boolean;
   placeholderCount?: number;
-  galleryImages?: Array<{ src: string; label: string }>;
+  galleryImages?: Array<{
+    src: string;
+    label: string;
+    objectPosition?: string;
+    imageScale?: number;
+  }>;
 }
 
 const commerceflowStackImages = [
@@ -102,7 +107,12 @@ const ProjectDetailHero: React.FC<ProjectDetailHeroProps> = ({
                         width: "100%",
                         height: "100%",
                         objectFit: "cover",
-                        objectPosition: "top center",
+                        objectPosition: image.objectPosition ?? "top center",
+                        transform:
+                          typeof image.imageScale === "number"
+                            ? `scale(${image.imageScale})`
+                            : undefined,
+                        transformOrigin: "center center",
                       }}
                     />
                   </div>

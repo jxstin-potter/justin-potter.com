@@ -12,7 +12,11 @@ import limpBeforeImage from "../assets/before-limp.png";
 
 const limprimerieGalleryImages = [
   { src: limpHomepageImage, label: "Homepage" },
-  { src: limpDeliveriesImage, label: "Deliveries" },
+  {
+    src: limpDeliveriesImage,
+    label: "Deliveries",
+    objectPosition: "center 100%",
+  },
   { src: limpMenuImage, label: "Menu" },
   { src: limpBottomPageImage, label: "Bottom page" },
 ];
@@ -24,6 +28,13 @@ const ProjectDetail = () => {
     () => (slug ? getProjectBySlug(slug) : undefined),
     [slug],
   );
+
+  const projectSlug = project?.slug ?? "";
+  const isCommerceflow = projectSlug === "commerceflow" || projectSlug === "2du";
+  const showCommerceflowStackImages = projectSlug === "2du";
+  const limprimerieGallery =
+    projectSlug === "limprimerie-bakery" ? limprimerieGalleryImages : undefined;
+  const isLimprimerieCaseStudy = projectSlug === "limprimerie-bakery";
 
   if (!project) {
     return (
@@ -44,13 +55,6 @@ const ProjectDetail = () => {
       </section>
     );
   }
-
-  const isCommerceflow =
-    project.slug === "commerceflow" || project.slug === "2du";
-  const showCommerceflowStackImages = project.slug === "2du";
-  const limprimerieGallery =
-    project.slug === "limprimerie-bakery" ? limprimerieGalleryImages : undefined;
-  const isLimprimerieCaseStudy = project.slug === "limprimerie-bakery";
 
   return (
     <section
