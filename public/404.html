@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Redirecting...</title>
+    <script type="text/javascript">
+      // Store the originally requested path so index.html can restore it.
+      sessionStorage.setItem(
+        "spa-path-redirect",
+        window.location.pathname +
+          window.location.search +
+          window.location.hash,
+      );
+      window.location.replace("/");
+    </script>
+  </head>
+  <body></body>
+</html>

@@ -9,6 +9,16 @@
     <meta name="keywords" content="Justin Potter, Fullstack Developer, Web Developer, Portfolio, React, TypeScript, Frontend Developer" />
     <meta name="author" content="Justin Potter" />
     <meta name="robots" content="index, follow" />
+    <script type="text/javascript">
+      // GitHub Pages SPA redirect handler.
+      // Converts /path requests from 404.html back into client-side routes.
+      (function redirectSpaPath() {
+        var redirect = sessionStorage.getItem("spa-path-redirect");
+        if (!redirect) return;
+        sessionStorage.removeItem("spa-path-redirect");
+        window.history.replaceState(null, "", redirect);
+      })();
+    </script>
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
