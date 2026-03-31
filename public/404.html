@@ -4,14 +4,15 @@
     <meta charset="utf-8" />
     <title>Redirecting...</title>
     <script type="text/javascript">
-      // Store the originally requested path so index.html can restore it.
-      sessionStorage.setItem(
-        "spa-path-redirect",
-        window.location.pathname +
-          window.location.search +
-          window.location.hash,
-      );
-      window.location.replace("/");
+      // Encode the full requested route and redirect to index.
+      var redirectTo =
+        "/?p=" +
+        encodeURIComponent(
+          window.location.pathname +
+            window.location.search +
+            window.location.hash,
+        );
+      window.location.replace(redirectTo);
     </script>
   </head>
   <body></body>

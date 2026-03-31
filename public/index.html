@@ -10,13 +10,15 @@
     <meta name="author" content="Justin Potter" />
     <meta name="robots" content="index, follow" />
     <script type="text/javascript">
-      // GitHub Pages SPA redirect handler.
-      // Converts /path requests from 404.html back into client-side routes.
-      (function redirectSpaPath() {
-        var redirect = sessionStorage.getItem("spa-path-redirect");
-        if (!redirect) return;
-        sessionStorage.removeItem("spa-path-redirect");
-        window.history.replaceState(null, "", redirect);
+      // GitHub Pages SPA redirect handler (query-string based).
+      // 404.html sends requested path as ?p=/requested/path, which we restore.
+      (function restoreSpaPath() {
+        var search = window.location.search || "";
+        if (!search.startsWith("?p=")) return;
+        var encodedPath = search.substring(3);
+        if (!encodedPath) return;
+        var decodedPath = decodeURIComponent(encodedPath);
+        window.history.replaceState(null, "", decodedPath);
       })();
     </script>
     
