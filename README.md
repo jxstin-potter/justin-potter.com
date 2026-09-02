@@ -25,7 +25,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 ## Contact
 
-Justin Potter - [Bjmpotter@gmail.com](mailto:Bjmpotter@gmail.com)
+Justin Potter - [jxstinpotter@gmail.com](mailto:jxstinpotter@gmail.com)
 
 - **LinkedIn**: [Justin Potter](https://www.linkedin.com/in/justin-mpotter/)
 - **GitHub**: [@whitelight-whiteheat](https://github.com/whitelight-whiteheat)
