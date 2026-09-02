@@ -168,7 +168,7 @@ const Contact = () => {
                   fontSize: "1.125rem",
                   fontWeight: 500,
                   marginBottom: "var(--spacing-sm)",
-                  color: "var(--primary-black)",
+                  color: "var(--primary-white)",
                 }}
               >
                 Email
@@ -226,7 +226,7 @@ const Contact = () => {
                   fontSize: "1.125rem",
                   fontWeight: 500,
                   marginBottom: "var(--spacing-sm)",
-                  color: "var(--primary-black)",
+                  color: "var(--primary-white)",
                 }}
               >
                 Location
@@ -275,7 +275,7 @@ const Contact = () => {
                   fontSize: "1.125rem",
                   fontWeight: 500,
                   marginBottom: "var(--spacing-sm)",
-                  color: "var(--primary-black)",
+                  color: "var(--primary-white)",
                 }}
               >
                 Status
@@ -304,7 +304,7 @@ const Contact = () => {
                 fontSize: "clamp(1.5rem, 3vw, 2rem)",
                 fontWeight: 400,
                 marginBottom: "var(--spacing-md)",
-                color: "var(--primary-black)",
+                color: "var(--primary-white)",
               }}
             >
               Connect With Me
