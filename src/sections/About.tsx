@@ -3,7 +3,8 @@ import { DURATION, EASING } from "../utils/animations";
 import linkedinIcon from "../assets/linkedin.png";
 import githubIcon from "../assets/github.png";
 import Footer from "../components/layout/Footer";
-import meImage from "../assets/me.png";
+import OptimizedImage from "../components/common/OptimizedImage";
+import { portrait } from "../data/images";
 
 /**
  * About
@@ -105,12 +106,9 @@ const About = () => {
             zIndex: 2,
           }}
         >
-          <img
-            src={meImage}
+          <OptimizedImage
+            {...portrait}
             alt="Justin Potter portrait"
-            loading="lazy"
-            decoding="async"
-            fetchPriority="low"
             draggable={false}
             style={{
               width: "100%",

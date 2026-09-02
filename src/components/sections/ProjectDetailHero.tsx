@@ -1,21 +1,20 @@
 import React, { useRef } from "react";
 import OptimizedImage from "../common/OptimizedImage";
-import commerceflowTasksImage from "../../assets/2du-tasks.png";
-import commerceflowLoginImage from "../../assets/2du-login.png";
-import commerceflowSettingsImage from "../../assets/2du-settings.png";
+import { ImageAsset } from "../../types";
+import { twoDuTasks, twoDuLogin, twoDuSettings } from "../../data/images";
 
 interface ProjectDetailHeroProps {
   title: string;
   role: string;
   summary: string;
   description: string;
-  imageUrl?: string;
+  image?: ImageAsset;
   children?: React.ReactNode;
   isCommerceflow?: boolean;
   showCommerceflowStackImages?: boolean;
   placeholderCount?: number;
   galleryImages?: Array<{
-    src: string;
+    image: ImageAsset;
     label: string;
     objectPosition?: string;
     imageScale?: number;
@@ -23,9 +22,9 @@ interface ProjectDetailHeroProps {
 }
 
 const commerceflowStackImages = [
-  { src: commerceflowTasksImage, label: "Tasks / Inbox" },
-  { src: commerceflowLoginImage, label: "Login" },
-  { src: commerceflowSettingsImage, label: "Settings" },
+  { image: twoDuTasks, label: "Tasks / Inbox" },
+  { image: twoDuLogin, label: "Login" },
+  { image: twoDuSettings, label: "Settings" },
 ] as const;
 
 const ProjectDetailHero: React.FC<ProjectDetailHeroProps> = ({
@@ -33,7 +32,7 @@ const ProjectDetailHero: React.FC<ProjectDetailHeroProps> = ({
   role,
   summary,
   description,
-  imageUrl,
+  image,
   children,
   isCommerceflow = false,
   showCommerceflowStackImages = false,
@@ -81,7 +80,7 @@ const ProjectDetailHero: React.FC<ProjectDetailHeroProps> = ({
                     >
                       {stackImage ? (
                         <OptimizedImage
-                          src={stackImage.src}
+                          {...stackImage.image}
                           alt={`${title} - ${stackImage.label}`}
                           priority={true}
                           style={{
@@ -94,23 +93,24 @@ const ProjectDetailHero: React.FC<ProjectDetailHeroProps> = ({
                     </div>
                   );
                 })
-              : stackImages.map((image, index) => (
+              : stackImages.map((galleryItem, index) => (
                   <div
                     key={`${title}-stack-${index}`}
                     className="project-detail-hero-stack-card"
                   >
                     <OptimizedImage
-                      src={image.src}
-                      alt={`${title} - ${image.label}`}
+                      {...galleryItem.image}
+                      alt={`${title} - ${galleryItem.label}`}
                       priority={index === 0}
                       style={{
                         width: "100%",
                         height: "100%",
                         objectFit: "cover",
-                        objectPosition: image.objectPosition ?? "top center",
+                        objectPosition:
+                          galleryItem.objectPosition ?? "top center",
                         transform:
-                          typeof image.imageScale === "number"
-                            ? `scale(${image.imageScale})`
+                          typeof galleryItem.imageScale === "number"
+                            ? `scale(${galleryItem.imageScale})`
                             : undefined,
                         transformOrigin: "center center",
                       }}
@@ -120,10 +120,10 @@ const ProjectDetailHero: React.FC<ProjectDetailHeroProps> = ({
           </div>
         </div>
       ) : (
-        imageUrl && (
+        image && (
           <div className="project-detail-hero-media" ref={mediaRef}>
             <OptimizedImage
-              src={imageUrl}
+              {...image}
               alt={`${title} hero`}
               priority={true}
               style={{

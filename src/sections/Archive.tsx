@@ -1,13 +1,16 @@
 import { motion } from "framer-motion";
 import { DURATION, EASING } from "../utils/animations";
 import Footer from "../components/layout/Footer";
-import ugImage from "../assets/ug23.png";
-import ugExhibit from "../assets/ugexh.png";
-import ugMstreet from "../assets/ugMst.png";
-import balmoris from "../assets/balmoris.png";
-import gbye from "../assets/gbyesunshine.png";
-import sublimit from "../assets/sublimit.png";
-import hvn from "../assets/heaven.png";
+import OptimizedImage from "../components/common/OptimizedImage";
+import {
+  ugGallery,
+  ugExhibition,
+  ugMstreet,
+  balmoris,
+  goodbyeSunshine,
+  sublimit,
+  heaven,
+} from "../data/images";
 
 const Archive = () => {
   const isTouchDevice =
@@ -18,7 +21,7 @@ const Archive = () => {
     {
       id: 1,
       title: "Underground Gallery",
-      imageUrl: ugImage,
+      image: ugGallery,
       liveUrl: "#",
       year: 2024,
       description: "Concept poster",
@@ -26,7 +29,7 @@ const Archive = () => {
     {
       id: 2,
       title: "Underground Exhibition",
-      imageUrl: ugExhibit,
+      image: ugExhibition,
       liveUrl: "#",
       year: 2024,
       description: "Concept poster",
@@ -34,7 +37,7 @@ const Archive = () => {
     {
       id: 3,
       title: "Underground Gallery on M st.",
-      imageUrl: ugMstreet,
+      image: ugMstreet,
       liveUrl: "#",
       year: 2023,
       description: "Concept poster",
@@ -42,7 +45,7 @@ const Archive = () => {
     {
       id: 4,
       title: "balmoris",
-      imageUrl: balmoris,
+      image: balmoris,
       liveUrl: "#",
       year: 2022,
       description: "Design Challenge",
@@ -50,7 +53,7 @@ const Archive = () => {
     {
       id: 5,
       title: "Goodbye Sunshine",
-      imageUrl: gbye,
+      image: goodbyeSunshine,
       liveUrl: "#",
       year: 2023,
       description: "Concept poster",
@@ -58,7 +61,7 @@ const Archive = () => {
     {
       id: 6,
       title: "Sublimit Records",
-      imageUrl: sublimit,
+      image: sublimit,
       liveUrl: "#",
       year: 2024,
       description: "Record design concept",
@@ -66,7 +69,7 @@ const Archive = () => {
     {
       id: 7,
       title: "Random design ",
-      imageUrl: hvn,
+      image: heaven,
       liveUrl: "#",
       year: 2024,
       description: "PS",
@@ -212,12 +215,9 @@ const Archive = () => {
                   }}
                 >
                   {/* ACTUAL IMAGE */}
-                  <img
-                    src={project.imageUrl} // ✅ pulls from your data
-                    alt={project.title} // ✅ accessibility
-                    loading="lazy"
-                    decoding="async"
-                    fetchPriority="low"
+                  <OptimizedImage
+                    {...project.image}
+                    alt={project.title}
                     draggable={false}
                     style={{
                       width: "100%",

@@ -135,7 +135,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           ) : (
             <>
               <OptimizedImage
-                src={project.imageUrl}
+                {...project.image}
                 alt={project.title}
                 priority={false}
                 whileHover={

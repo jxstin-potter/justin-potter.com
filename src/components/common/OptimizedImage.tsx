@@ -62,42 +62,29 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
 
   const imgRef = useRef<HTMLImageElement>(null);
 
+  // No manual `new Image()` preload here. The <picture> below already fetches
+  // exactly one file - whichever format the browser negotiates - and its own
+  // onLoad/onError set isLoaded/hasError. Preloading separately downloaded a
+  // second copy in a different format, and because onLoad/onError are usually
+  // inline arrows the effect re-ran on every render, restarting the fetch
+  // while the first was still in flight.
+
+  // Mark an already-complete image as loaded: if it comes from cache the load
+  // event can fire before React attaches its handler, which would otherwise
+  // leave the image stuck at opacity 0.
   useEffect(() => {
-    if (shouldLoad && !isLoaded && !hasError) {
-      // Preload the image
-      const img = new Image();
-      img.onload = () => {
-        setIsLoaded(true);
-        onLoad?.();
-      };
-      img.onerror = () => {
-        setHasError(true);
-        onError?.();
-      };
-
-      // Try AVIF first, then WebP, then fallback
-      if (avifSrc) {
-        img.src = avifSrc;
-      } else if (webpSrc) {
-        img.src = webpSrc;
-      } else {
-        img.src = src;
-      }
+    const img = imgRef.current;
+    if (img?.complete && img.naturalWidth > 0 && !isLoaded) {
+      setIsLoaded(true);
     }
-  }, [shouldLoad, isLoaded, hasError, src, webpSrc, avifSrc, onLoad, onError]);
+  }, [shouldLoad, isLoaded]);
 
-  // Generate srcset for responsive images
-  const generateSrcSet = () => {
-    if (srcSet) return srcSet;
-
-    // Auto-generate srcset if webpSrc or avifSrc provided
-    if (webpSrc || avifSrc) {
-      const baseSrc = webpSrc || avifSrc || src;
-      return `${baseSrc} 1x, ${baseSrc.replace(".webp", "@2x.webp").replace(".avif", "@2x.avif")} 2x`;
-    }
-
-    return undefined;
-  };
+  // Each <source> is given its OWN format's url, so the AVIF source can never
+  // serve WebP bytes. The `srcSet` prop deliberately does NOT override these -
+  // it is a single format-less string, and applying it to both sources would
+  // reintroduce exactly that mismatch. It applies to the <img> fallback only.
+  // No @2x filenames are synthesized: a descriptor must name a file that
+  // actually exists, so distinct sizes are passed as distinct assets.
 
   const imageStyle: React.CSSProperties = {
     opacity: isLoaded ? 1 : placeholder ? 0.5 : 0,
@@ -121,7 +108,10 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
       ? src
       : placeholder ||
         'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg"%3E%3C/svg%3E',
-    srcSet: shouldLoad ? generateSrcSet() : undefined,
+    // Only an explicit srcSet from the caller. Never the webp/avif urls:
+    // srcSet on <img> carries no type, so a browser that cannot decode those
+    // formats would still pick them and the fallback would be defeated.
+    srcSet: shouldLoad ? srcSet : undefined,
     sizes,
     className,
     style: imageStyle,
@@ -145,12 +135,12 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
     <picture style={{ display: "block", width: "100%", height: "100%" }}>
       {/* AVIF source (best compression) */}
       {avifSrc && shouldLoad && (
-        <source srcSet={generateSrcSet()} type="image/avif" sizes={sizes} />
+        <source srcSet={avifSrc} type="image/avif" sizes={sizes} />
       )}
 
       {/* WebP source (good compression, wider support) */}
       {webpSrc && shouldLoad && (
-        <source srcSet={generateSrcSet()} type="image/webp" sizes={sizes} />
+        <source srcSet={webpSrc} type="image/webp" sizes={sizes} />
       )}
 
       {/* Fallback image */}

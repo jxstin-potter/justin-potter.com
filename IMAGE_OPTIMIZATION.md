@@ -1,163 +1,97 @@
-# Image Optimization Guide
+# Image Optimization
 
-This project uses optimized image components that support WebP and AVIF formats with automatic fallbacks.
+Every picture on the site is served through `<picture>`. The browser is offered
+AVIF first, then WebP, and falls back to a JPEG it is guaranteed to understand.
+A modern client downloads the AVIF and nothing else.
 
-## Components
+## Where things live
 
-- **OptimizedImage**: For large images (project screenshots, etc.)
-- **OptimizedIcon**: For small icons (social media, email, etc.)
+| Path | What it is |
+|---|---|
+| `src/assets/_originals/` | Master images. Never imported by the app; the only input to the generator. |
+| `src/assets/*.{avif,webp,jpg}` | Generated variants. These are what ship. |
+| `scripts/generate-images.py` | Regenerates every variant from the originals. |
+| `src/data/images.ts` | Binds the three files of each image into one `ImageAsset`. |
+| `src/components/common/OptimizedImage.tsx` | Renders the `<picture>`. |
 
-## Converting Images to WebP/AVIF
+Variants are committed. The build does not run the generator.
 
-### Using Online Tools
-1. **Squoosh** (https://squoosh.app/) - Best quality, browser-based
-2. **CloudConvert** (https://cloudconvert.com/) - Batch conversion
-3. **ImageOptim** (Mac) - Desktop app with WebP support
+## Regenerating
 
-### Using Command Line Tools
-
-#### WebP (using cwebp)
 ```bash
-# Install webp tools
-# macOS: brew install webp
-# Ubuntu: sudo apt-get install webp
-
-# Convert single image
-cwebp -q 80 input.png -o output.webp
-
-# Convert all PNGs in assets folder
-for file in src/assets/*.png; do
-  cwebp -q 80 "$file" -o "${file%.png}.webp"
-done
+pip install 'pillow>=11'      # AVIF support is built in from Pillow 11
+python3 scripts/generate-images.py
 ```
 
-#### AVIF (using avifenc)
-```bash
-# Install libavif tools
-# macOS: brew install libavif
-# Ubuntu: sudo apt-get install libavif-bin
+To add a new image: drop the master in `src/assets/_originals/`, add an entry to
+`FULL_WIDTHS` in the script, run it, then export the asset from
+`src/data/images.ts` so a component can reach it.
 
-# Convert single image
-avifenc -c aom -q 60 input.png output.avif
+## Sizing
 
-# Convert all PNGs in assets folder
-for file in src/assets/*.png; do
-  avifenc -c aom -q 60 "$file" "${file%.png}.avif"
-done
-```
+Each variant is generated at roughly **2x the size it is actually rendered at**,
+so retina displays are covered and nothing bigger is shipped. Sources are never
+upscaled.
 
-### Using Node.js Script
+| Group | Rendered at | Generated |
+|---|---|---|
+| Detail screenshots | up to ~1400px in the hero stack | 1600px |
+| Archive posters | up to 600px, two across | 1200px |
+| Case study (`before-limp`) | ~600px card | 1200px |
+| Portrait (`me`) | `clamp(240px, 24vw, 340px)` | 700px |
+| Home page cards | 325px | **700px, separate asset** |
+| Icons | 12-60px | 128px, PNG with alpha |
 
-Create a script to automate conversion:
+The home page cards are deliberately their own smaller files. Three of those
+images are also used full-size on project detail pages, and the landing page —
+the critical path — should not have to download a 1600px screenshot to fill a
+325px card.
 
-```javascript
-// scripts/convert-images.js
-const sharp = require('sharp');
-const fs = require('fs');
-const path = require('path');
+## Using an image
 
-const assetsDir = path.join(__dirname, '../src/assets');
-const files = fs.readdirSync(assetsDir).filter(f => f.endsWith('.png'));
+`ImageAsset` bundles the three URLs, so spreading it passes all of them and a
+call site cannot mismatch a WebP url with an AVIF slot:
 
-files.forEach(async (file) => {
-  const inputPath = path.join(assetsDir, file);
-  const baseName = path.basename(file, '.png');
-  
-  // Convert to WebP
-  await sharp(inputPath)
-    .webp({ quality: 80 })
-    .toFile(path.join(assetsDir, `${baseName}.webp`));
-  
-  // Convert to AVIF
-  await sharp(inputPath)
-    .avif({ quality: 60 })
-    .toFile(path.join(assetsDir, `${baseName}.avif`));
-});
-```
-
-## Usage
-
-### Basic Usage (PNG only - will work, but not optimized)
 ```tsx
-import OptimizedImage from './components/OptimizedImage';
-import projectImage from './assets/landingpage.png';
+import OptimizedImage from "../components/common/OptimizedImage";
+import { landingPage } from "../data/images";
 
-<OptimizedImage
-  src={projectImage}
-  alt="Project screenshot"
-/>
+<OptimizedImage {...landingPage} alt="CommerceFlow home page" />;
 ```
 
-### With WebP/AVIF (Optimized)
+`priority` controls loading. Leave it `false` (the default) for anything below
+the fold — the component lazy-loads via `IntersectionObserver`. Set it `true`
+for the first image on a detail page so it is not deferred:
+
 ```tsx
-import OptimizedImage from './components/OptimizedImage';
-import projectImage from './assets/landingpage.png';
-import projectImageWebp from './assets/landingpage.webp';
-import projectImageAvif from './assets/landingpage.avif';
-
-<OptimizedImage
-  src={projectImage}
-  webpSrc={projectImageWebp}
-  avifSrc={projectImageAvif}
-  alt="Project screenshot"
-  priority={false} // Use lazy loading
-/>
+<OptimizedImage {...limpHomepage} alt="Homepage" priority={true} />
 ```
 
-### With Framer Motion Hover Effects
-```tsx
-<OptimizedImage
-  src={projectImage}
-  webpSrc={projectImageWebp}
-  alt="Project screenshot"
-  whileHover={{
-    filter: 'brightness(1.1)',
-    transition: { duration: 0.3 }
-  }}
-/>
-```
+## Two things to be careful about
 
-### Icons
-```tsx
-import OptimizedIcon from './components/OptimizedIcon';
-import emailIcon from './assets/email.png';
-import emailIconWebp from './assets/email.webp';
+**Do not pass a bare `srcSet`.** It is a single format-less string. It applies
+to the `<img>` fallback only and deliberately does not override the `<source>`
+tags — putting one string on both would hand the AVIF source WebP urls, and a
+browser that prefers AVIF would download WebP bytes under an AVIF content type
+and fail to decode. Distinct sizes belong in distinct `ImageAsset`s, the way the
+`*Card` variants are done.
 
-<OptimizedIcon
-  src={emailIcon}
-  webpSrc={emailIconWebp}
-  alt="Email icon"
-  size={24}
-/>
-```
+**Inlining is switched off.** `.env` sets `IMAGE_INLINE_SIZE_LIMIT=0`. Create
+React App otherwise inlines any asset under 10kB into the JS bundle as base64,
+which is the wrong trade here: an inlined variant is downloaded by every
+browser as part of the bundle, including ones that cannot decode that format
+and will never display it. The small AVIF card images were adding ~10kB to the
+main chunk this way.
 
-## Current Image Status
+## Results
 
-### Project Images
-- `landingpage.png` - Used in MainContent and Archive
-  - ✅ Infrastructure ready
-  - ⏳ Needs WebP/AVIF conversion
+Measured from `build/static/media` on a browser that takes the AVIF:
 
-### Social Icons
-- `email.png` - Used in Contact
-- `linkedin.png` - Used in About and Contact
-- `github.png` - Used in About and Contact
-  - ✅ Infrastructure ready
-  - ⏳ Needs WebP/AVIF conversion
-
-### Unused Assets
-- `education.png`
-- `experience.png`
-
-## Performance Benefits
-
-- **WebP**: ~30% smaller than PNG with same quality
-- **AVIF**: ~50% smaller than PNG with same quality
-- **Lazy Loading**: Images load only when near viewport
-- **Automatic Fallbacks**: Browser automatically chooses best supported format
-
-## Browser Support
-
-- **AVIF**: Chrome 85+, Firefox 93+, Safari 16+
-- **WebP**: Chrome 23+, Firefox 65+, Safari 14+, Edge 18+
-- **PNG**: Universal fallback
+| Route | Before | After |
+|---|---|---|
+| `/` (home) | 1,540 KB | **20 KB** |
+| `/about` | 973 KB | **32 KB** |
+| `/projects/2du` | 301 KB | **24 KB** |
+| `/projects/limprimerie-bakery` | 2,962 KB | **189 KB** |
+| `/archive` | 2,572 KB | **491 KB** |
+| All routes | 8,348 KB | **756 KB** |
