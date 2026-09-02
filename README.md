@@ -28,5 +28,5 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 Justin Potter - [jxstinpotter@gmail.com](mailto:jxstinpotter@gmail.com)
 
 - **LinkedIn**: [Justin Potter](https://www.linkedin.com/in/justin-mpotter/)
-- **GitHub**: [@whitelight-whiteheat](https://github.com/whitelight-whiteheat)
+- **GitHub**: [@jxstin-potter](https://github.com/jxstin-potter)
 - **Location**: Brooklyn, NY
