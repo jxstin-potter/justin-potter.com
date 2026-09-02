@@ -1,6 +1,12 @@
-import projectHeroImage from "../assets/landingpage.png";
-import twoDuLoginImage from "../assets/2du-login.png";
-import limpHomepageImage from "../assets/limp-homepage.jpg";
+import { ImageAsset } from "../types";
+import {
+  landingPage,
+  landingPageCard,
+  twoDuLogin,
+  twoDuLoginCard,
+  limpHomepage,
+  limpHomepageCard,
+} from "./images";
 
 export interface ProjectResult {
   label: string;
@@ -26,14 +32,17 @@ export interface ProjectDetailData {
   carbonFootprint: ProjectCarbonFootprint;
   summary: string;
   description: string;
-  imageUrl: string;
+  /** Full-size asset for the project detail hero. */
+  image: ImageAsset;
+  /** Smaller asset for the 325px home-page card. */
+  cardImage: ImageAsset;
 }
 
 export interface ProjectSummary {
   id: number;
   slug: string;
   title: string;
-  imageUrl: string;
+  image: ImageAsset;
   liveUrl: string;
   role: string;
   year: number;
@@ -61,7 +70,8 @@ export const projectDetails: ProjectDetailData[] = [
     summary:
       "A commerce platform focused on frictionless checkout and modern retail UX.",
     description: "",
-    imageUrl: projectHeroImage,
+    image: landingPage,
+    cardImage: landingPageCard,
   },
 
   {
@@ -85,7 +95,8 @@ export const projectDetails: ProjectDetailData[] = [
     summary: "A minimal, experience-driven task management system",
     description:
       "Built to showcase product and engineering work with fast load times, a flexible layout system, and a motion language inspired by editorial design.",
-    imageUrl: twoDuLoginImage,
+    image: twoDuLogin,
+    cardImage: twoDuLoginCard,
   },
   {
     id: 3,
@@ -109,7 +120,8 @@ export const projectDetails: ProjectDetailData[] = [
       "A user-centered bakery experience designed to make ordering, browsing, and discovery feel effortless.",
     description:
       "Built for a modern bakery audience, the UX focuses on warm visual storytelling, clear product hierarchy, and frictionless flows so customers can explore the menu, place orders, and return with ease.",
-    imageUrl: limpHomepageImage,
+    image: limpHomepage,
+    cardImage: limpHomepageCard,
   },
   {
     id: 4,
@@ -133,7 +145,8 @@ export const projectDetails: ProjectDetailData[] = [
       "A telemetry dashboard that translates complex API data into clear insights.",
     description:
       "The dashboard pairs dense data with a flexible system of charts, filters, and alerts to help teams monitor their critical endpoints in real time.",
-    imageUrl: projectHeroImage,
+    image: landingPage,
+    cardImage: landingPageCard,
   },
   {
     id: 5,
@@ -157,7 +170,8 @@ export const projectDetails: ProjectDetailData[] = [
       "An experimental experience exploring interaction and brand storytelling.",
     description:
       "New Project is a sandbox for testing emerging interaction patterns and storytelling mechanics ahead of a full release.",
-    imageUrl: projectHeroImage,
+    image: landingPage,
+    cardImage: landingPageCard,
   },
 ];
 
@@ -166,7 +180,7 @@ export const projectSummaries: ProjectSummary[] = projectDetails.map(
     id: project.id,
     slug: project.slug,
     title: project.title,
-    imageUrl: project.imageUrl,
+    image: project.cardImage,
     liveUrl: project.liveUrl,
     role: project.role,
     year: project.year,

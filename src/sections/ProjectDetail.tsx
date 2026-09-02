@@ -4,21 +4,23 @@ import { getProjectBySlug } from "../data/projects";
 import ProjectDetailHero from "../components/sections/ProjectDetailHero";
 import ProjectDetailInfo from "../components/sections/ProjectDetailInfo";
 import OptimizedImage from "../components/common/OptimizedImage";
-import limpHomepageImage from "../assets/limp-homepage.jpg";
-import limpMenuImage from "../assets/limp-menu.jpg";
-import limpDeliveriesImage from "../assets/limp-deliveries.png";
-import limpBottomPageImage from "../assets/limp-btmpage.jpg";
-import limpBeforeImage from "../assets/before-limp.png";
+import {
+  limpHomepage,
+  limpMenu,
+  limpDeliveries,
+  limpBottomPage,
+  limpBefore,
+} from "../data/images";
 
 const limprimerieGalleryImages = [
-  { src: limpHomepageImage, label: "Homepage" },
+  { image: limpHomepage, label: "Homepage" },
   {
-    src: limpDeliveriesImage,
+    image: limpDeliveries,
     label: "Deliveries",
     objectPosition: "center 100%",
   },
-  { src: limpMenuImage, label: "Menu" },
-  { src: limpBottomPageImage, label: "Bottom page" },
+  { image: limpMenu, label: "Menu" },
+  { image: limpBottomPage, label: "Bottom page" },
 ];
 
 const ProjectDetail = () => {
@@ -65,7 +67,7 @@ const ProjectDetail = () => {
         role={project.role}
         summary={project.summary}
         description={project.description}
-        imageUrl={project.imageUrl}
+        image={project.image}
         isCommerceflow={isCommerceflow}
         showCommerceflowStackImages={showCommerceflowStackImages}
         placeholderCount={showCommerceflowStackImages ? 3 : 4}
@@ -95,7 +97,7 @@ const ProjectDetail = () => {
               </p>
               <div className="project-case-study-image">
                 <OptimizedImage
-                  src={limpBeforeImage}
+                  {...limpBefore}
                   alt="Limprimerie website before redesign"
                   priority={false}
                   style={{
