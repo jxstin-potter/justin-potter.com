@@ -1,5 +1,12 @@
 import { motion } from "framer-motion";
 import { DURATION, EASING } from "../utils/animations";
+import {
+  CONTACT_EMAIL,
+  GITHUB_URL,
+  GITHUB_HANDLE,
+  LINKEDIN_URL,
+  LINKEDIN_HANDLE,
+} from "../utils/constants";
 import linkedinIcon from "../assets/linkedin.png";
 import githubIcon from "../assets/github.png";
 import Footer from "../components/layout/Footer";
@@ -18,36 +25,30 @@ import { portrait } from "../data/images";
  */
 const About = () => {
   /**
-   * Primary contact email used in the social links collection.
-   * Kept as a constant so it can be reused cleanly in the config below.
-   */
-  const email = "JXSTINPOTTER@GMAIL.COM";
-
-  /**
    * Data-driven social/contact links.
    * This keeps the UI easy to maintain and avoids repeating markup.
    */
   const socialLinks = [
     {
       name: "Email",
-      url: `mailto:${email}`,
+      url: `mailto:${CONTACT_EMAIL}`,
       icon: null,
       primary: "Email",
-      secondary: email.toUpperCase(),
+      secondary: CONTACT_EMAIL.toUpperCase(),
     },
     {
       name: "LinkedIn",
-      url: "https://www.linkedin.com/in/justin-mpotter/",
+      url: LINKEDIN_URL,
       icon: linkedinIcon,
       primary: "LinkedIn",
-      secondary: "/IN/JUSTIN-MPOTTER",
+      secondary: LINKEDIN_HANDLE,
     },
     {
       name: "GitHub",
-      url: "https://github.com/jxstin-potter",
+      url: GITHUB_URL,
       icon: githubIcon,
       primary: "GitHub",
-      secondary: "/JXSTIN-POTTER",
+      secondary: GITHUB_HANDLE,
     },
   ];
 

@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { DURATION, EASING } from "../utils/animations";
+import { CONTACT_EMAIL, GITHUB_URL, LINKEDIN_URL } from "../utils/constants";
 import emailIcon from "../assets/email.png";
 import linkedinIcon from "../assets/linkedin.png";
 import githubIcon from "../assets/github.png";
@@ -11,7 +12,7 @@ const Contact = () => {
     window.matchMedia("(hover: none), (pointer: coarse)").matches;
 
   const contactInfo = {
-    email: "Bjmpotter@gmail.com",
+    email: CONTACT_EMAIL,
     location: "Brooklyn, NY",
     availability: "Available for new opportunities",
   };
@@ -19,17 +20,17 @@ const Contact = () => {
   const socialLinks = [
     {
       name: "LinkedIn",
-      url: "https://www.linkedin.com/in/justin-mpotter/",
+      url: LINKEDIN_URL,
       icon: linkedinIcon,
     },
     {
       name: "GitHub",
-      url: "https://github.com/whitelight-whiteheat",
+      url: GITHUB_URL,
       icon: githubIcon,
     },
     {
       name: "Email",
-      url: "mailto:Bjmpotter@gmail.com",
+      url: `mailto:${CONTACT_EMAIL}`,
       icon: emailIcon,
     },
   ];

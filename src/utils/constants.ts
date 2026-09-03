@@ -27,3 +27,19 @@ export const SCROLL_THROTTLE_MS = 16; // ~60fps
 export const WELCOME_SCRAMBLE_TIMEOUT = 900; // ms
 export const WELCOME_HIDE_DELAY = 300; // ms
 export const FOCUS_DELAY = 100; // ms for focus management
+
+// Contact identity
+//
+// Defined once and imported everywhere it appears. About and Contact
+// previously each hardcoded their own copy and drifted apart, advertising two
+// different email addresses and two different GitHub accounts at the same
+// time. The JSON-LD block in public/index.html is static HTML and has to be
+// kept in step by hand.
+//
+// The email is stored lowercase because local-parts are case-sensitive per
+// RFC 5321; pages that show it in caps do so as a display choice.
+export const CONTACT_EMAIL = "jxstinpotter@gmail.com";
+export const GITHUB_URL = "https://github.com/jxstin-potter";
+export const GITHUB_HANDLE = "/JXSTIN-POTTER";
+export const LINKEDIN_URL = "https://www.linkedin.com/in/justin-mpotter/";
+export const LINKEDIN_HANDLE = "/IN/JUSTIN-MPOTTER";
