@@ -49,7 +49,7 @@ const ProjectDetail = () => {
     if (projectSlug === "limprimerie-bakery") return limprimerieGalleryImages;
     if (projectSlug === "2du") return twoDuGalleryImages;
     if (projectSlug === "keyvault" && project?.image) {
-      return [{ image: project.image, label: "Homepage" }];
+      return [{ image: project.image, label: "Homepage", fit: "natural" }];
     }
     return undefined;
   })();
