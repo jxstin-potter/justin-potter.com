@@ -1389,7 +1389,8 @@ img {
     bottom: 0 !important;
     z-index: 20 !important;
     width: 100vw !important;
-    padding: 0.4rem var(--mobile-content-inset) calc(0.6rem + env(safe-area-inset-bottom)) !important;
+    padding: 0.4rem var(--mobile-content-inset)
+      calc(0.6rem + env(safe-area-inset-bottom)) !important;
     background: rgba(0, 0, 0, 0.6) !important;
     backdrop-filter: blur(8px);
   }

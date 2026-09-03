@@ -1,41 +1,100 @@
 name: Deploy to GitHub Pages
 
+# Pull requests run the quality job only. Pushes to main run it too, and
+# deploy just after it passes - so nothing reaches the live site without
+# having been linted, typechecked and tested first.
 on:
   push:
-    branches: [ main ]
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# One run per branch. Superseded pull request runs are cancelled, but a
+# deploy in flight on main is never cancelled - interrupting a Pages
+# deployment can leave the site published from a half-uploaded artifact.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
+  quality:
+    name: Lint, typecheck and test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Each check runs even if an earlier one failed, so a single push
+      # reports every problem at once instead of one per round trip.
+      #
+      # `npm run lint` carries --max-warnings 0. Without it eslint exits 0 on
+      # warnings, and every rule this project configures is warn-level -
+      # exhaustive-deps, no-unused-vars and no-console - so the gate would
+      # have reported success while letting all three through.
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        if: '!cancelled()'
+        run: npx tsc --noEmit
+
+      - name: Format check
+        if: '!cancelled()'
+        run: npm run format:check
+
+      # --passWithNoTests keeps this green until the first test file lands;
+      # remove the flag once src/ has tests, so an empty suite fails loudly.
+      - name: Test
+        if: '!cancelled()'
+        run: npm test -- --watchAll=false --passWithNoTests
+
   build-and-deploy:
+    name: Build and deploy
+    needs: quality
+    # Only main deploys. Pull requests stop after the quality job above.
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
       contents: read
       pages: write
       id-token: write
-    
+
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-      
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'npm'
-        
-    - name: Install dependencies
-      run: npm ci
-      
-    - name: Build
-      run: npm run build
-      
-    - name: Setup Pages
-      uses: actions/configure-pages@v4
-      
-    - name: Upload artifact
-      uses: actions/upload-pages-artifact@v3
-      with:
-        path: './build'
-        
-    - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v4 
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './build'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

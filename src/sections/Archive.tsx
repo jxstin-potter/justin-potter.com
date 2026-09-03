@@ -76,7 +76,6 @@ const Archive = () => {
     },
   ];
 
-
   return (
     <section
       id="archive"
