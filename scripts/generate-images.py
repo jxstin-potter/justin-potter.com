@@ -34,6 +34,7 @@ ORIGINALS = os.path.join(ASSETS, "_originals")
 #   me (portrait)       rendered at clamp(240px, 24vw, 340px)
 FULL_WIDTHS = {
     "landingpage": 1600,
+    "keyvault-homepage": 1600,
     "2du-login": 1600,
     "2du-tasks": 1600,
     "2du-settings": 1600,
@@ -55,7 +56,7 @@ FULL_WIDTHS = {
 # These three are also shown in 325px cards on the home page. That is the
 # critical path, so they get a second, much smaller asset rather than making
 # the landing page download a 1600px detail screenshot.
-CARD_IMAGES = {"landingpage", "2du-login", "limp-homepage"}
+CARD_IMAGES = {"landingpage", "2du-login", "limp-homepage", "keyvault-homepage"}
 CARD_WIDTH = 700
 
 # Icons keep their alpha channel and their .png extension, so no import

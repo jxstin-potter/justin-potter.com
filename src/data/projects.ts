@@ -6,6 +6,8 @@ import {
   twoDuLoginCard,
   limpHomepage,
   limpHomepageCard,
+  keyvaultHomepage,
+  keyvaultHomepageCard,
 } from "./images";
 
 export interface ProjectResult {
@@ -55,7 +57,11 @@ export const projectDetails: ProjectDetailData[] = [
     title: "KeyVault",
     role: "Fullstack Development",
     year: 2025,
-    services: ["Backend Architecture", "Database Engineering", "Fullstack Development"],
+    services: [
+      "Backend Architecture",
+      "Database Engineering",
+      "Fullstack Development",
+    ],
     liveUrl: "https://keyv.vercel.app",
     results: [
       { label: "Automated Tests", value: "164" },
@@ -71,8 +77,8 @@ export const projectDetails: ProjectDetailData[] = [
       "A digital game-key marketplace where concurrent buyers can never claim the same key twice.",
     description:
       "Checkout claims stock with PostgreSQL row-level locking, proven by a 164-test suite run against a real database, with idempotent Stripe fulfillment and ordered refunds.",
-    image: landingPage,
-    cardImage: landingPageCard,
+    image: keyvaultHomepage,
+    cardImage: keyvaultHomepageCard,
   },
 
   {

@@ -32,8 +32,7 @@ const ProjectDetail = () => {
   );
 
   const projectSlug = project?.slug ?? "";
-  const isCommerceflow =
-    projectSlug === "keyvault" || projectSlug === "2du";
+  const isCommerceflow = projectSlug === "keyvault" || projectSlug === "2du";
   const showCommerceflowStackImages = projectSlug === "2du";
   const limprimerieGallery =
     projectSlug === "limprimerie-bakery" ? limprimerieGalleryImages : undefined;

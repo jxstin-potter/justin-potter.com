@@ -21,6 +21,12 @@ import landingPageAvif from "../assets/landingpage.avif";
 import landingPageCardJpg from "../assets/landingpage-card.jpg";
 import landingPageCardWebp from "../assets/landingpage-card.webp";
 import landingPageCardAvif from "../assets/landingpage-card.avif";
+import keyvaultHomepageJpg from "../assets/keyvault-homepage.jpg";
+import keyvaultHomepageWebp from "../assets/keyvault-homepage.webp";
+import keyvaultHomepageAvif from "../assets/keyvault-homepage.avif";
+import keyvaultHomepageCardJpg from "../assets/keyvault-homepage-card.jpg";
+import keyvaultHomepageCardWebp from "../assets/keyvault-homepage-card.webp";
+import keyvaultHomepageCardAvif from "../assets/keyvault-homepage-card.avif";
 import twoDuLoginJpg from "../assets/2du-login.jpg";
 import twoDuLoginWebp from "../assets/2du-login.webp";
 import twoDuLoginAvif from "../assets/2du-login.avif";
@@ -86,6 +92,18 @@ export const landingPageCard: ImageAsset = {
   src: landingPageCardJpg,
   webpSrc: landingPageCardWebp,
   avifSrc: landingPageCardAvif,
+};
+
+export const keyvaultHomepage: ImageAsset = {
+  src: keyvaultHomepageJpg,
+  webpSrc: keyvaultHomepageWebp,
+  avifSrc: keyvaultHomepageAvif,
+};
+
+export const keyvaultHomepageCard: ImageAsset = {
+  src: keyvaultHomepageCardJpg,
+  webpSrc: keyvaultHomepageCardWebp,
+  avifSrc: keyvaultHomepageCardAvif,
 };
 
 export const twoDuLogin: ImageAsset = {
