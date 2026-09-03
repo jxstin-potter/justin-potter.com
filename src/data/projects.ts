@@ -51,25 +51,26 @@ export interface ProjectSummary {
 export const projectDetails: ProjectDetailData[] = [
   {
     id: 1,
-    slug: "commerceflow",
-    title: "CommerceFlow",
+    slug: "keyvault",
+    title: "KeyVault",
     role: "Fullstack Development",
     year: 2025,
-    services: ["Branding", "Product Design", "Fullstack Development"],
-    liveUrl: "https://commerce-flow-v2.vercel.app/",
+    services: ["Backend Architecture", "Database Engineering", "Fullstack Development"],
+    liveUrl: "https://keyv.vercel.app",
     results: [
-      { label: "Monthly Active Users", value: "12k+" },
-      { label: "Checkout Conversion", value: "+18%" },
+      { label: "Automated Tests", value: "164" },
+      { label: "Bundle Size (gzip)", value: "-48%" },
     ],
     carbonFootprint: {
-      gramsCO2: 0.12,
-      cleanerThanPercent: 86,
+      gramsCO2: 0.14,
+      cleanerThanPercent: 85,
       sourceLabel: "Websitecarbon.com",
       sourceUrl: "https://www.websitecarbon.com/",
     },
     summary:
-      "A commerce platform focused on frictionless checkout and modern retail UX.",
-    description: "",
+      "A digital game-key marketplace where concurrent buyers can never claim the same key twice.",
+    description:
+      "Checkout claims stock with PostgreSQL row-level locking, proven by a 164-test suite run against a real database, with idempotent Stripe fulfillment and ordered refunds.",
     image: landingPage,
     cardImage: landingPageCard,
   },

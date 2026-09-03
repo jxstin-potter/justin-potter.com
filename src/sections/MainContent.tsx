@@ -60,7 +60,7 @@ const MainContent = ({
 
   // Memoize projects array to prevent unnecessary re-renders
   const projects = useMemo(() => {
-    const priorityOrder = ["limprimerie-bakery", "2du", "commerceflow"];
+    const priorityOrder = ["keyvault", "limprimerie-bakery", "2du"];
     const priorityIndex = new Map<string, number>(
       priorityOrder.map((slug, index) => [slug, index]),
     );

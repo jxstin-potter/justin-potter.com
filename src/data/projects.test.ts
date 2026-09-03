@@ -30,11 +30,11 @@ describe("getProjectBySlug", () => {
 
 describe("getNextProjects", () => {
   it("returns three projects by default", () => {
-    expect(getNextProjects("commerceflow")).toHaveLength(3);
+    expect(getNextProjects("keyvault")).toHaveLength(3);
   });
 
   it("starts from the project after the given slug", () => {
-    const [first] = getNextProjects("commerceflow");
+    const [first] = getNextProjects("keyvault");
     expect(first.slug).toBe(projectDetails[1].slug);
   });
 
@@ -62,12 +62,12 @@ describe("getNextProjects", () => {
   });
 
   it("honours a custom count", () => {
-    expect(getNextProjects("commerceflow", 1)).toHaveLength(1);
-    expect(getNextProjects("commerceflow", 4)).toHaveLength(4);
+    expect(getNextProjects("keyvault", 1)).toHaveLength(1);
+    expect(getNextProjects("keyvault", 4)).toHaveLength(4);
   });
 
   it("returns nothing when asked for nothing", () => {
-    expect(getNextProjects("commerceflow", 0)).toEqual([]);
+    expect(getNextProjects("keyvault", 0)).toEqual([]);
   });
 });
 
