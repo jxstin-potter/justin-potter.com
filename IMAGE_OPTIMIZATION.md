@@ -54,9 +54,9 @@ call site cannot mismatch a WebP url with an AVIF slot:
 
 ```tsx
 import OptimizedImage from "../components/common/OptimizedImage";
-import { landingPage } from "../data/images";
+import { keyvaultHomepage } from "../data/images";
 
-<OptimizedImage {...landingPage} alt="CommerceFlow home page" />;
+<OptimizedImage {...keyvaultHomepage} alt="KeyVault home page" />;
 ```
 
 `priority` controls loading. Leave it `false` (the default) for anything below

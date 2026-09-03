@@ -25,7 +25,7 @@ const Header = ({
 }: HeaderProps) => {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const isCommerceflowRoute =
+  const isStackedHeroRoute =
     location.pathname === "/projects/keyvault" ||
     location.pathname === "/projects/2du";
   const [isLogoHovered, setIsLogoHovered] = useState(false);
@@ -150,7 +150,7 @@ const Header = ({
             : { y: 0, opacity: 1 }
         }
         transition={{ duration: DURATION.fast, ease: EASING }}
-        className={`site-header${isCommerceflowRoute ? " site-header-commerceflow" : ""}`}
+        className={`site-header${isStackedHeroRoute ? " site-header-stacked" : ""}`}
         style={{
           position: "fixed",
           top: 0,

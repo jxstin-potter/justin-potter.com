@@ -10,9 +10,13 @@ import {
   limpDeliveries,
   limpBottomPage,
   limpBefore,
+  twoDuTasks,
+  twoDuLogin,
+  twoDuSettings,
 } from "../data/images";
+import type { HeroStackImage } from "../components/sections/ProjectDetailHero";
 
-const limprimerieGalleryImages = [
+const limprimerieGalleryImages: HeroStackImage[] = [
   { image: limpHomepage, label: "Homepage" },
   {
     image: limpDeliveries,
@@ -21,6 +25,12 @@ const limprimerieGalleryImages = [
   },
   { image: limpMenu, label: "Menu" },
   { image: limpBottomPage, label: "Bottom page" },
+];
+
+const twoDuGalleryImages: HeroStackImage[] = [
+  { image: twoDuTasks, label: "Tasks / Inbox" },
+  { image: twoDuLogin, label: "Login" },
+  { image: twoDuSettings, label: "Settings" },
 ];
 
 const ProjectDetail = () => {
@@ -32,11 +42,17 @@ const ProjectDetail = () => {
   );
 
   const projectSlug = project?.slug ?? "";
-  const isCommerceflow = projectSlug === "keyvault" || projectSlug === "2du";
-  const showCommerceflowStackImages = projectSlug === "2du";
-  const limprimerieGallery =
-    projectSlug === "limprimerie-bakery" ? limprimerieGalleryImages : undefined;
+  const isStackedHero = projectSlug === "keyvault" || projectSlug === "2du";
   const isLimprimerieCaseStudy = projectSlug === "limprimerie-bakery";
+
+  const heroGalleryImages = ((): HeroStackImage[] | undefined => {
+    if (projectSlug === "limprimerie-bakery") return limprimerieGalleryImages;
+    if (projectSlug === "2du") return twoDuGalleryImages;
+    if (projectSlug === "keyvault" && project?.image) {
+      return [{ image: project.image, label: "Homepage" }];
+    }
+    return undefined;
+  })();
 
   if (!project) {
     return (
@@ -60,7 +76,7 @@ const ProjectDetail = () => {
 
   return (
     <section
-      className={`project-detail${isCommerceflow ? " project-detail-commerceflow" : ""}`}
+      className={`project-detail${isStackedHero ? " project-detail-stacked" : ""}`}
     >
       <ProjectDetailHero
         title={project.title}
@@ -68,10 +84,8 @@ const ProjectDetail = () => {
         summary={project.summary}
         description={project.description}
         image={project.image}
-        isCommerceflow={isCommerceflow}
-        showCommerceflowStackImages={showCommerceflowStackImages}
-        placeholderCount={showCommerceflowStackImages ? 3 : 4}
-        galleryImages={limprimerieGallery}
+        isStackedHero={isStackedHero}
+        galleryImages={heroGalleryImages}
       >
         <ProjectDetailInfo
           year={project.year}

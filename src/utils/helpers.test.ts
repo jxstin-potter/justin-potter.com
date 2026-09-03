@@ -6,7 +6,7 @@ import {
 
 describe("getDisplayName", () => {
   it("splits PascalCase into two parts", () => {
-    expect(getDisplayName("CommerceFlow")).toEqual(["COMMERCE", "FLOW"]);
+    expect(getDisplayName("KeyVault")).toEqual(["KEY", "VAULT"]);
   });
 
   it("splits on spaces, keeping everything after the first word together", () => {
@@ -47,7 +47,7 @@ describe("getDisplayName", () => {
   });
 
   it("always returns a two-element tuple", () => {
-    const inputs = ["CommerceFlow", "New Project", "x", "", "A - B - C"];
+    const inputs = ["KeyVault", "New Project", "x", "", "A - B - C"];
     inputs.forEach((input) => {
       expect(getDisplayName(input)).toHaveLength(2);
     });
