@@ -382,7 +382,7 @@ img {
   position: relative;
 }
 
-.project-detail-commerceflow {
+.project-detail-stacked {
   padding-left: var(--header-left-padding);
   padding-right: var(--header-right-padding);
 }
@@ -450,12 +450,12 @@ img {
   text-wrap: balance;
 }
 
-.project-detail-commerceflow .project-detail-title {
+.project-detail-stacked .project-detail-title {
   font-size: clamp(1.8rem, 3.2vw, 2.8rem);
   letter-spacing: -0.01em;
 }
 
-.project-detail-commerceflow .project-detail-meta {
+.project-detail-stacked .project-detail-meta {
   position: absolute;
   left: 0;
   top: clamp(13rem, 24vh, 20rem);
@@ -485,7 +485,7 @@ img {
   max-width: 520px;
 }
 
-.project-detail-commerceflow .project-detail-summary {
+.project-detail-stacked .project-detail-summary {
   position: fixed;
   left: var(--header-left-padding);
   bottom: clamp(2rem, 5vh, 3.5rem);
@@ -510,11 +510,11 @@ img {
   justify-self: stretch;
 }
 
-.project-detail-commerceflow .project-detail-hero-media {
+.project-detail-stacked .project-detail-hero-media {
   height: clamp(180px, 50vh, 640px);
 }
 
-.project-detail-commerceflow .project-detail-hero-text-sticky {
+.project-detail-stacked .project-detail-hero-text-sticky {
   position: sticky;
   top: calc(var(--header-top-padding) + 3.5rem);
   margin-top: -3rem;
@@ -527,7 +527,7 @@ img {
   overflow: visible;
 }
 
-.project-detail-commerceflow .project-detail-hero-media-stack {
+.project-detail-stacked .project-detail-hero-media-stack {
   margin-left: clamp(12rem, 10vw, 14rem);
   margin-top: clamp(-2rem, -4vw, -5rem);
 }
@@ -550,7 +550,7 @@ img {
   overflow: hidden; /* Clip stacked screenshots to rounded corners */
 }
 
-.project-detail-commerceflow .project-detail-hero-stack-card {
+.project-detail-stacked .project-detail-hero-stack-card {
   width: calc(100% + clamp(2rem, 6vw, 6rem));
   margin-left: calc(clamp(2rem, 6vw, 6rem) * -1);
 }
@@ -571,7 +571,7 @@ img {
   margin-top: 0;
 }
 
-.project-detail-commerceflow .project-detail-info {
+.project-detail-stacked .project-detail-info {
   margin-top: clamp(3.5rem, 12vw, 8rem);
 }
 
@@ -814,11 +814,11 @@ img {
   opacity: 1 !important;
 }
 
-.site-header-commerceflow .nav-bracket-active {
+.site-header-stacked .nav-bracket-active {
   opacity: 0 !important;
 }
 
-.site-header-commerceflow .nav-link:hover .nav-bracket {
+.site-header-stacked .nav-link:hover .nav-bracket {
   opacity: 1 !important;
 }
 
@@ -1543,9 +1543,9 @@ img {
     column-gap: 0;
   }
 
-  .project-detail-commerceflow .project-detail-hero-text-sticky,
-  .project-detail-commerceflow .project-detail-summary,
-  .project-detail-commerceflow .project-detail-meta {
+  .project-detail-stacked .project-detail-hero-text-sticky,
+  .project-detail-stacked .project-detail-summary,
+  .project-detail-stacked .project-detail-meta {
     position: static;
     top: auto;
     left: auto;
@@ -1557,12 +1557,12 @@ img {
     min-height: 0;
   }
 
-  .project-detail-commerceflow .project-detail-hero-media-stack {
+  .project-detail-stacked .project-detail-hero-media-stack {
     margin-left: 0;
     margin-top: 0;
   }
 
-  .project-detail-commerceflow .project-detail-hero-stack-card {
+  .project-detail-stacked .project-detail-hero-stack-card {
     width: 100%;
     margin-left: 0;
   }

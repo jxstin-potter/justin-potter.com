@@ -1,6 +1,6 @@
 /**
  * Splits a project name intelligently for display
- * "CommerceFlow" becomes ["COMMERCE", "FLOW"]
+ * "KeyVault" becomes ["KEY", "VAULT"]
  * "My Project" becomes ["MY", "PROJECT"]
  */
 export const getDisplayName = (projectName: string): [string, string] => {
@@ -22,7 +22,7 @@ export const getDisplayName = (projectName: string): [string, string] => {
       ) as [string, string];
     }
 
-    // Split camelCase/PascalCase words (e.g., "CommerceFlow" -> ["COMMERCE", "FLOW"])
+    // Split camelCase/PascalCase words (e.g., "KeyVault" -> ["KEY", "VAULT"])
     // Match capital letters followed by lowercase letters
     const words = normalizedProjectName.match(/[A-Z][a-z]*/g) || [
       normalizedProjectName,
