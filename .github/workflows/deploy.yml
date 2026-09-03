@@ -54,11 +54,11 @@ jobs:
         if: '!cancelled()'
         run: npm run format:check
 
-      # --passWithNoTests keeps this green until the first test file lands;
-      # remove the flag once src/ has tests, so an empty suite fails loudly.
+      # No --passWithNoTests: src/ has tests now, so a run that finds none
+      # means they were deleted or the matcher broke, and should fail loudly.
       - name: Test
         if: '!cancelled()'
-        run: npm test -- --watchAll=false --passWithNoTests
+        run: npm test -- --watchAll=false
 
   build-and-deploy:
     name: Build and deploy
