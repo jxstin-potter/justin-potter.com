@@ -112,7 +112,7 @@ export const projectDetails: ProjectDetailData[] = [
     role: "Product Design",
     year: 2026,
     services: ["Product Strategy", "UX Design", "UI Systems"],
-    liveUrl: "#",
+    liveUrl: "https://jxstin-potter.github.io/Limprimerie-Bakery-Website/",
     results: [
       { label: "Teams Onboarded", value: "210+" },
       { label: "Avg. Tasks / Week", value: "1.8k" },
