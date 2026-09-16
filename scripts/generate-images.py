@@ -59,6 +59,16 @@ FULL_WIDTHS = {
 CARD_IMAGES = {"landingpage", "2du-login", "limp-homepage", "keyvault-homepage"}
 CARD_WIDTH = 700
 
+# Pixel box (left, top, right, bottom), in the original screenshot's own
+# resolution, cropped before the card resize. Only needed where the full
+# frame reads as browser chrome at card size instead of a composed thumbnail
+# - keyvault-homepage's top nav/search bar - so the crop isolates the hero
+# headline and CTAs instead. A base with no entry here gets the full frame
+# resized, same as its full-size asset.
+CARD_CROPS = {
+    "keyvault-homepage": (900, 200, 2300, 1120),
+}
+
 # Icons keep their alpha channel and their .png extension, so no import
 # changes are needed. They render at 12-60px.
 ICONS = {"email": 128, "linkedin": 128, "github": 128}
@@ -106,7 +116,9 @@ def main():
         emit(resize(image, width), base)
         written += 3
         if base in CARD_IMAGES:
-            emit(resize(image, CARD_WIDTH), base, "-card")
+            crop_box = CARD_CROPS.get(base)
+            card_source = image.crop(crop_box) if crop_box else image
+            emit(resize(card_source, CARD_WIDTH), base, "-card")
             written += 3
         print(f"  {base}")
 
