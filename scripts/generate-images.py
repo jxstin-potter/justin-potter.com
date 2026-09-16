@@ -35,6 +35,8 @@ ORIGINALS = os.path.join(ASSETS, "_originals")
 FULL_WIDTHS = {
     "landingpage": 1600,
     "keyvault-homepage": 1600,
+    "keyvault-games": 1600,
+    "keyvault-game-detail": 1600,
     "2du-login": 1600,
     "2du-tasks": 1600,
     "2du-settings": 1600,

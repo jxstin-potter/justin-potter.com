@@ -27,6 +27,12 @@ import keyvaultHomepageAvif from "../assets/keyvault-homepage.avif";
 import keyvaultHomepageCardJpg from "../assets/keyvault-homepage-card.jpg";
 import keyvaultHomepageCardWebp from "../assets/keyvault-homepage-card.webp";
 import keyvaultHomepageCardAvif from "../assets/keyvault-homepage-card.avif";
+import keyvaultGamesJpg from "../assets/keyvault-games.jpg";
+import keyvaultGamesWebp from "../assets/keyvault-games.webp";
+import keyvaultGamesAvif from "../assets/keyvault-games.avif";
+import keyvaultGameDetailJpg from "../assets/keyvault-game-detail.jpg";
+import keyvaultGameDetailWebp from "../assets/keyvault-game-detail.webp";
+import keyvaultGameDetailAvif from "../assets/keyvault-game-detail.avif";
 import twoDuLoginJpg from "../assets/2du-login.jpg";
 import twoDuLoginWebp from "../assets/2du-login.webp";
 import twoDuLoginAvif from "../assets/2du-login.avif";
@@ -104,6 +110,18 @@ export const keyvaultHomepageCard: ImageAsset = {
   src: keyvaultHomepageCardJpg,
   webpSrc: keyvaultHomepageCardWebp,
   avifSrc: keyvaultHomepageCardAvif,
+};
+
+export const keyvaultGames: ImageAsset = {
+  src: keyvaultGamesJpg,
+  webpSrc: keyvaultGamesWebp,
+  avifSrc: keyvaultGamesAvif,
+};
+
+export const keyvaultGameDetail: ImageAsset = {
+  src: keyvaultGameDetailJpg,
+  webpSrc: keyvaultGameDetailWebp,
+  avifSrc: keyvaultGameDetailAvif,
 };
 
 export const twoDuLogin: ImageAsset = {

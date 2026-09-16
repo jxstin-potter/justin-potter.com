@@ -13,6 +13,8 @@ import {
   twoDuTasks,
   twoDuLogin,
   twoDuSettings,
+  keyvaultGames,
+  keyvaultGameDetail,
 } from "../data/images";
 import type { HeroStackImage } from "../components/sections/ProjectDetailHero";
 
@@ -49,7 +51,11 @@ const ProjectDetail = () => {
     if (projectSlug === "limprimerie-bakery") return limprimerieGalleryImages;
     if (projectSlug === "2du") return twoDuGalleryImages;
     if (projectSlug === "keyvault" && project?.image) {
-      return [{ image: project.image, label: "Homepage", fit: "natural" }];
+      return [
+        { image: project.image, label: "Homepage", fit: "natural" },
+        { image: keyvaultGames, label: "Games" },
+        { image: keyvaultGameDetail, label: "Game detail" },
+      ];
     }
     return undefined;
   })();
