@@ -88,7 +88,11 @@ export const projectDetails: ProjectDetailData[] = [
     role: "Design & Development",
     year: 2026,
     services: ["Branding", "Web Design", "Full-stack Development"],
-    liveUrl: "https://jxstin-potter.github.io/2DU/login",
+    // Not /login: GitHub Pages has no server-side routing, so every deep link
+    // resolves through 404.html and returns HTTP 404 even though the SPA then
+    // renders fine. The root returns 200 and the auth guard redirects to
+    // /login anyway, so this is the same destination without the 404.
+    liveUrl: "https://jxstin-potter.github.io/2DU/",
     results: [
       { label: "Avg. Session Time", value: "3:42" },
       { label: "Project Inquiries", value: "+64%" },
