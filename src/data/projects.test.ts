@@ -104,6 +104,14 @@ describe("project data integrity", () => {
     });
   });
 
+  it("links every project to its public GitHub repository", () => {
+    projectDetails.forEach((project) => {
+      expect(project.repoUrl).toMatch(
+        /^https:\/\/github\.com\/jxstin-potter\/[\w.-]+$/,
+      );
+    });
+  });
+
   it("derives one summary per project, carrying the card image", () => {
     expect(projectSummaries).toHaveLength(projectDetails.length);
     projectSummaries.forEach((summary, index) => {

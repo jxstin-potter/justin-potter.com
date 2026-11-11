@@ -4,12 +4,14 @@ interface ProjectDetailInfoProps {
   year: number;
   services: string[];
   liveUrl: string;
+  repoUrl: string;
 }
 
 const ProjectDetailInfo: React.FC<ProjectDetailInfoProps> = ({
   year,
   services,
   liveUrl,
+  repoUrl,
 }) => {
   return (
     <section className="project-detail-info">
@@ -36,6 +38,17 @@ const ProjectDetailInfo: React.FC<ProjectDetailInfoProps> = ({
           rel={liveUrl === "#" ? undefined : "noopener noreferrer"}
         >
           {liveUrl === "#" ? "Coming soon" : "Visit website"}
+        </a>
+      </div>
+      <div className="project-detail-info-card">
+        <p className="project-detail-label">Source code</p>
+        <a
+          className="project-detail-link"
+          href={repoUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View code
         </a>
       </div>
     </section>

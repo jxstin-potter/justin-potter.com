@@ -97,6 +97,7 @@ const ProjectDetail = () => {
           year={project.year}
           services={project.services}
           liveUrl={project.liveUrl}
+          repoUrl={project.repoUrl}
         />
       </ProjectDetailHero>
 

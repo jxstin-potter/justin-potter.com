@@ -28,6 +28,8 @@ export interface ProjectDetailData {
   year: number;
   services: string[];
   liveUrl: string;
+  /** Public GitHub repository, shown as "View code" on the detail page. */
+  repoUrl: string;
   results: ProjectResult[];
   carbonFootprint: ProjectCarbonFootprint;
   summary: string;
@@ -61,6 +63,7 @@ export const projectDetails: ProjectDetailData[] = [
       "Fullstack Development",
     ],
     liveUrl: "https://keyv.vercel.app",
+    repoUrl: "https://github.com/jxstin-potter/Key-Vault",
     results: [
       { label: "Automated Tests", value: "164" },
       { label: "Bundle Size (gzip)", value: "-48%" },
@@ -95,6 +98,7 @@ export const projectDetails: ProjectDetailData[] = [
     // renders fine. The root returns 200 and the auth guard redirects to
     // /login anyway, so this is the same destination without the 404.
     liveUrl: "https://jxstin-potter.github.io/2DU/",
+    repoUrl: "https://github.com/jxstin-potter/2DU",
     results: [
       { label: "Avg. Session Time", value: "3:42" },
       { label: "Project Inquiries", value: "+64%" },
@@ -120,6 +124,7 @@ export const projectDetails: ProjectDetailData[] = [
     year: 2026,
     services: ["Product Strategy", "UX Design", "UI Systems"],
     liveUrl: "https://jxstin-potter.github.io/Limprimerie-Bakery-Website/",
+    repoUrl: "https://github.com/jxstin-potter/Limprimerie-Bakery-Website",
     results: [
       { label: "Teams Onboarded", value: "210+" },
       { label: "Avg. Tasks / Week", value: "1.8k" },
