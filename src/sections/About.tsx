@@ -50,6 +50,13 @@ const About = () => {
       primary: "GitHub",
       secondary: GITHUB_HANDLE,
     },
+    {
+      name: "Resume",
+      url: `${process.env.PUBLIC_URL}/Justin-Potter-Resume.pdf`,
+      icon: null,
+      primary: "Resume",
+      secondary: "PDF",
+    },
   ];
 
   return (
@@ -302,6 +309,35 @@ const About = () => {
                       />
                       <path
                         d="M2 2L6 6L10 2"
+                        stroke="white"
+                        strokeWidth="1"
+                        fill="none"
+                      />
+                    </svg>
+                  )}
+
+                  {/* Inline document icon for the resume item. */}
+                  {!social.icon && social.name === "Resume" && (
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 12 12"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                      style={{
+                        opacity: "1",
+                        pointerEvents: "none",
+                      }}
+                    >
+                      <path
+                        d="M3 1.5H7L9 3.5V10.5H3V1.5Z"
+                        stroke="white"
+                        strokeWidth="1"
+                        fill="none"
+                      />
+                      <path
+                        d="M4.5 6H7.5M4.5 8H7.5"
                         stroke="white"
                         strokeWidth="1"
                         fill="none"
