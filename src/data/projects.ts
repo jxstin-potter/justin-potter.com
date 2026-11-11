@@ -1,7 +1,5 @@
 import { ImageAsset } from "../types";
 import {
-  landingPage,
-  landingPageCard,
   twoDuLogin,
   twoDuLoginCard,
   limpHomepage,
@@ -134,56 +132,6 @@ export const projectDetails: ProjectDetailData[] = [
     image: limpHomepage,
     cardImage: limpHomepageCard,
   },
-  {
-    id: 4,
-    slug: "api-dashboard",
-    title: "API Dashboard",
-    role: "Frontend Engineering",
-    year: 2024,
-    services: ["UI Engineering", "Data Visualization", "Design Systems"],
-    liveUrl: "#",
-    results: [
-      { label: "Latency Reduction", value: "35%" },
-      { label: "Dashboard Adoption", value: "4x" },
-    ],
-    carbonFootprint: {
-      gramsCO2: 0.2,
-      cleanerThanPercent: 74,
-      sourceLabel: "Websitecarbon.com",
-      sourceUrl: "https://www.websitecarbon.com/",
-    },
-    summary:
-      "A telemetry dashboard that translates complex API data into clear insights.",
-    description:
-      "The dashboard pairs dense data with a flexible system of charts, filters, and alerts to help teams monitor their critical endpoints in real time.",
-    image: landingPage,
-    cardImage: landingPageCard,
-  },
-  {
-    id: 5,
-    slug: "new-project",
-    title: "New Project",
-    role: "Creative Direction",
-    year: 2024,
-    services: ["Creative Direction", "Prototype", "Brand Systems"],
-    liveUrl: "#",
-    results: [
-      { label: "Prototype Users", value: "150+" },
-      { label: "Engagement Rate", value: "62%" },
-    ],
-    carbonFootprint: {
-      gramsCO2: 0.18,
-      cleanerThanPercent: 82,
-      sourceLabel: "Websitecarbon.com",
-      sourceUrl: "https://www.websitecarbon.com/",
-    },
-    summary:
-      "An experimental experience exploring interaction and brand storytelling.",
-    description:
-      "New Project is a sandbox for testing emerging interaction patterns and storytelling mechanics ahead of a full release.",
-    image: landingPage,
-    cardImage: landingPageCard,
-  },
 ];
 
 export const projectSummaries: ProjectSummary[] = projectDetails.map(
@@ -210,8 +158,11 @@ export const getNextProjects = (
   );
   if (currentIndex === -1) return projectDetails.slice(0, count);
 
+  // Never wrap back around to the current project, even when the list is
+  // shorter than the requested count.
+  const limit = Math.min(count, projectDetails.length - 1);
   const nextProjects: ProjectDetailData[] = [];
-  for (let offset = 1; offset <= count; offset += 1) {
+  for (let offset = 1; offset <= limit; offset += 1) {
     const nextIndex = (currentIndex + offset) % projectDetails.length;
     nextProjects.push(projectDetails[nextIndex]);
   }

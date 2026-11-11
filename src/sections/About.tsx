@@ -154,7 +154,7 @@ const About = () => {
                 fontFamily: "var(--font-primary)",
               }}
             >
-              I'm Justin Potter, a front-end developer based in Brooklyn, NY.
+              I'm Justin Potter, a frontend developer based in Brooklyn, NY.
               Originally from Arlington, Virginia, I'm passionate about creating
               digital experiences that stand out and drive meaningful results.
             </p>
@@ -168,7 +168,7 @@ const About = () => {
                 fontFamily: "var(--font-primary)",
               }}
             >
-              Specializing in front-end development, user-centered design, and
+              Specializing in frontend development, user-centered design, and
               modern web technologies. I create memorable experiences through
               clean code, intuitive interfaces, and thoughtful design.
             </p>

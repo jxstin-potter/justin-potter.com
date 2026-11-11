@@ -29,8 +29,10 @@ describe("getProjectBySlug", () => {
 });
 
 describe("getNextProjects", () => {
-  it("returns three projects by default", () => {
-    expect(getNextProjects("keyvault")).toHaveLength(3);
+  it("returns up to three other projects by default", () => {
+    expect(getNextProjects("keyvault")).toHaveLength(
+      Math.min(3, projectDetails.length - 1),
+    );
   });
 
   it("starts from the project after the given slug", () => {
@@ -48,11 +50,10 @@ describe("getNextProjects", () => {
   it("wraps around past the end of the list", () => {
     const last = projectDetails[projectDetails.length - 1];
     const slugs = getNextProjects(last.slug).map((p) => p.slug);
-    expect(slugs).toEqual([
-      projectDetails[0].slug,
-      projectDetails[1].slug,
-      projectDetails[2].slug,
-    ]);
+    const expected = projectDetails
+      .slice(0, Math.min(3, projectDetails.length - 1))
+      .map((p) => p.slug);
+    expect(slugs).toEqual(expected);
   });
 
   it("falls back to the first projects for an unknown slug", () => {
@@ -63,7 +64,12 @@ describe("getNextProjects", () => {
 
   it("honours a custom count", () => {
     expect(getNextProjects("keyvault", 1)).toHaveLength(1);
-    expect(getNextProjects("keyvault", 4)).toHaveLength(4);
+  });
+
+  it("caps the count at every other project", () => {
+    expect(getNextProjects("keyvault", 99)).toHaveLength(
+      projectDetails.length - 1,
+    );
   });
 
   it("returns nothing when asked for nothing", () => {

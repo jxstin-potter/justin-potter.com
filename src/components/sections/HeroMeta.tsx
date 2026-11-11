@@ -24,7 +24,7 @@ const HeroMeta: React.FC<HeroMetaProps> = ({
   const getRoleParts = (role: string): [string, string] => {
     const normalized = role.trim().toUpperCase();
     if (!normalized) {
-      return ["DESIGNER &", "DEVELOPER"];
+      return ["FRONTEND", "DEVELOPER"];
     }
 
     if (normalized.includes("&")) {
@@ -49,13 +49,13 @@ const HeroMeta: React.FC<HeroMetaProps> = ({
 
   const roleParts = hoveredProject
     ? getRoleParts(hoveredProject.role)
-    : ["DESIGNER &", "DEVELOPER"];
+    : ["FRONTEND", "DEVELOPER"];
   const locationTarget = hoveredProject
     ? hoveredProject.year.toString()
     : "BROOKLYN, NY";
   const locationIsActive = welcomeTransitionComplete || !!hoveredProject;
   const roleRevealDelay = 0;
-  const roleLine1Text = welcomeTransitionComplete ? "DESIGNER &" : " ";
+  const roleLine1Text = welcomeTransitionComplete ? "FRONTEND" : " ";
   const roleLine2Text = welcomeTransitionComplete ? "DEVELOPER" : " ";
   const roleLine1Target =
     welcomeTransitionComplete && hoveredProject ? roleParts[0] : undefined;
@@ -92,7 +92,7 @@ const HeroMeta: React.FC<HeroMetaProps> = ({
         position: "relative",
       }}
     >
-      {/* Designer & Developer / Design & Development - Second column, first row */}
+      {/* Frontend Developer - second column, first row */}
       <motion.div
         className="hero-role-block"
         initial={false}
@@ -159,7 +159,7 @@ const HeroMeta: React.FC<HeroMetaProps> = ({
               }}
               aria-hidden="true"
             >
-              DESIGNER & DEVELOPER
+              FRONTEND DEVELOPER
             </span>
             <span
               style={{
@@ -184,9 +184,9 @@ const HeroMeta: React.FC<HeroMetaProps> = ({
             >
               {hoveredProject
                 ? hoveredProject.role.toUpperCase()
-                : "DESIGNER & DEVELOPER"}
+                : "FRONTEND DEVELOPER"}
             </span>
-            {/* Spacer for DESIGNER DEVELOPER (without &) - also in normal flow for width calculation */}
+            {/* Second width spacer - also in normal flow for width calculation */}
             <span
               style={{
                 fontSize: "0.875rem",
@@ -208,9 +208,9 @@ const HeroMeta: React.FC<HeroMetaProps> = ({
               }}
               aria-hidden="true"
             >
-              DESIGNER DEVELOPER
+              FRONTEND DEVELOPER
             </span>
-            {/* Two-line layout: DESIGNER & on first line, DEVELOPER on second line */}
+            {/* Two-line layout: FRONTEND on first line, DEVELOPER on second line */}
             <div
               style={{
                 position: "absolute",
@@ -222,7 +222,7 @@ const HeroMeta: React.FC<HeroMetaProps> = ({
                 gap: 0,
               }}
             >
-              {/* First line: DESIGNER & */}
+              {/* First line: FRONTEND */}
               <p
                 style={{
                   fontSize: "0.875rem",
