@@ -1,6 +1,14 @@
 import React from "react";
+import { motion } from "framer-motion";
 import ScrambleText from "../animations/ScrambleText";
+import { DURATION, EASING } from "../../utils/animations";
 import { ProjectData } from "../../types";
+
+// Two sentences, one per line, so the wrap never strands the "I".
+const HERO_TAGLINE = [
+  "React + TypeScript developer.",
+  "I build fast, tested interfaces.",
+] as const;
 
 interface HeroNameProps {
   welcomeTransitionComplete: boolean;
@@ -185,6 +193,32 @@ const HeroName: React.FC<HeroNameProps> = ({
             </h1>
           )}
         </>
+      )}
+      {/* Tagline sits in normal flow under the two reserved name lines. It
+          mounts only after the intro, when the mobile POTTER spacer unmounts,
+          so the container height stays roughly constant. */}
+      {welcomeTransitionComplete && (
+        <motion.p
+          className="hero-tagline"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: hoveredProject ? 0 : 0.8 }}
+          transition={{ duration: DURATION.slow, ease: EASING }}
+          style={{
+            margin: "var(--spacing-md) 0 0",
+            fontFamily: "var(--font-mono)",
+            fontSize: "0.875rem",
+            fontWeight: 400,
+            lineHeight: 1.5,
+            letterSpacing: "0.02em",
+            color: "var(--primary-white)",
+          }}
+        >
+          {HERO_TAGLINE.map((line) => (
+            <span key={line} style={{ display: "block" }}>
+              {line}
+            </span>
+          ))}
+        </motion.p>
       )}
     </div>
   );
