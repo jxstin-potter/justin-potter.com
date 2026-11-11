@@ -182,7 +182,7 @@ const About = () => {
                 fontFamily: "var(--font-primary)",
               }}
             >
-              Available for freelance opportunities.
+              Open to full-time frontend roles.
             </p>
           </motion.div>
         </div>

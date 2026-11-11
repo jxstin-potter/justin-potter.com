@@ -85,7 +85,11 @@ export const projectDetails: ProjectDetailData[] = [
     title: "2DU - Task Management",
     role: "Design & Development",
     year: 2026,
-    services: ["Branding", "Web Design", "Full-stack Development"],
+    services: [
+      "Frontend Engineering",
+      "State Management",
+      "Testing & Accessibility",
+    ],
     // Not /login: GitHub Pages has no server-side routing, so every deep link
     // resolves through 404.html and returns HTTP 404 even though the SPA then
     // renders fine. The root returns 200 and the auth guard redirects to
@@ -101,9 +105,10 @@ export const projectDetails: ProjectDetailData[] = [
       sourceLabel: "Websitecarbon.com",
       sourceUrl: "https://www.websitecarbon.com/",
     },
-    summary: "A minimal, experience-driven task management system",
+    summary:
+      "A keyboard-first task manager where every user's tasks stay private and in sync across Inbox, Today and Upcoming.",
     description:
-      "Built to showcase product and engineering work with fast load times, a flexible layout system, and a motion language inspired by editorial design.",
+      "React 18 and TypeScript with Redux Toolkit and TanStack Query over Firebase Auth and Firestore, locked down by versioned security rules. Covered by 130+ Jest, React Testing Library and Cypress tests, with cypress-axe accessibility checks in the end-to-end flows.",
     image: twoDuLogin,
     cardImage: twoDuLoginCard,
   },
